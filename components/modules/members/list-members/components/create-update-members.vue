@@ -518,9 +518,9 @@ export default {
         workAdd: this.iRules('', false),
         mobile: this.iRules('', false),
         phone: this.iRules('', false),
-        chapter: this.iRules('', false),
+        chapter: this.iRules('', true),
+        membership: this.iRules('', true),
         email: this.iRules('', false),
-        membership: this.iRules('', false),
         photo: this.iRules('', false)
       },
       genderList: [ 

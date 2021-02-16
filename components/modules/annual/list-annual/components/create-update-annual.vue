@@ -120,7 +120,7 @@
               cols="12"
               :sm="annualId ? 12 : 1"
               :md="annualId ? 12 : 1"
-              class="mt-n3">
+              class="mt-n2">
               <v-btn
                 elevation="0"
                 v-if="form.length > 1"
@@ -207,7 +207,7 @@ export default {
   fetch () {
     if (this.annualId) this.fetchArrears()
     else this.getMemberships()
-    this.generateArrayOfYears()
+    this.generateArrayOfYears() // Mixins
   },
 
   methods: {
