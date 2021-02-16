@@ -53,48 +53,31 @@
             :items-per-page="15"
             :loading="members.loading">
             <template v-slot:item.actions="{ item }">
-              <v-tooltip top>
+               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    elevation="0"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="showAnnualFees = true, memberId = item.prcNo, memberDetail = item"
-                    color="success"
-                    small>
-                    <v-icon>mdi-cards</v-icon>
-                  </v-btn>
-                </template>
-                <span>Show Annual Fees</span>
-              </v-tooltip>
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    elevation="0"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="showActivity = true, memberId = item.prcNo, memberDetail = item"
-                    color="warning"
-                    small>
-                    <v-icon>mdi-book-marker-outline</v-icon>
-                  </v-btn>
-                </template>
-                <span>Show Activities</span>
-              </v-tooltip>
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    elevation="0"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="$emit('show', item.prcNo)"
                     color="primary"
-                    small>
-                    <v-icon>mdi-brush</v-icon>
+                    v-bind="attrs"
+                    small
+                    v-on="on"
+                  >
+                  <v-icon>mdi-menu-down</v-icon>
+                  Menu
                   </v-btn>
                 </template>
-                <span>Update</span>
-              </v-tooltip>
+                <v-list>
+                  <v-list-item
+                    v-for="(list, index) in menus"
+                    :key="index"
+                    @click="goTo(item, list)"
+                  >
+                    <v-list-item-title>
+                      <v-icon class="mr-2">{{ list.icon }}</v-icon>
+                      {{ list.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </template>
             <template v-slot:item.photo="{ item }">
               <v-avatar size="35">
@@ -106,24 +89,43 @@
             </template>
             <template v-slot:item.status="{ item }">
               <v-chip
+                small
                 :color="item.yearArrear.length >= 3 ? 'default' : 'success'">
                 {{ item.yearArrear.length >= 3 ? 'Inactive' : 'Active' }}
               </v-chip>
             </template>
             <template v-slot:item.yearArrear="{ item }">
-              <v-chip
-                class="mt-1"
-                color="error"
-                small
-                v-for="(chip, index) in item.yearArrear"
-                :key="index">
-                {{ chip }}
-              </v-chip>
+              <div
+                class="unsettled"
+                @click="settleArrear(item)"
+                v-if="item.yearArrear.length">
+                <v-chip
+                  class="ma-1 unsettled"
+                  color="error"
+                  small
+                  v-for="(chip, index) in item.yearArrear"
+                  :key="index">
+                  {{ chip }}
+                </v-chip>
+              </div>
+              <div v-else>
+                <v-chip
+                  class="mt-1"
+                  color="success"
+                  small>
+                  Updated
+                </v-chip>
+              </div>
             </template>
           </v-data-table>
         </v-container>
       </v-card>
     </v-col>
+  <MemberTransaction
+    v-if="showTransaction"
+    :items="memberArrears"
+    @event="fetchMembers"
+    @close="showTransaction = false" />
   <Activities
     v-if="showActivity"
     :memberId="memberId"
@@ -139,12 +141,14 @@
 <script>
 import Activities from './activities'
 import AnnualFees from './annualFees'
+import MemberTransaction from './member-transaction'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Members-List',
   components: {
     Activities,
-    AnnualFees
+    AnnualFees,
+    MemberTransaction
   },
   props: {
     reFetch: {
@@ -167,6 +171,11 @@ export default {
         { text: 'Year Of Arrear', value: 'yearArrear' },
         { text: 'Action', value: 'actions'}
       ],
+      menus: [
+        { id: 1, icon: 'mdi-brush', title: 'Update' },
+        { id: 2, icon: 'mdi-book-marker-outline', title: 'Show Activities' },
+        { id: 3, icon: 'mdi-cards', title: 'Show Annual Fee / Arrears' },
+      ],
       memberId: '',
       members: {
         data: [], 
@@ -180,7 +189,9 @@ export default {
       },
       showActivity: false,
       showAnnualFees: false,
-      memberDetail: {}
+      memberDetail: {},
+      memberArrears: {},
+      showTransaction: false
     }
   },
 
@@ -201,6 +212,24 @@ export default {
   },
 
   methods: {
+    goTo (item, list) {
+      if (list.id === 3) {
+        this.showAnnualFees = true
+        this.memberId = item.prcNo,
+        this.memberDetail = item
+        return
+      }
+      if (list.id === 2) {
+        this.showActivity = true
+        this.memberId = item.prcNo,
+        this.memberDetail = item
+        return
+      }
+      if (list.id === 1) {
+        this.$emit('show', item.prcNo)
+      }
+    },
+  
     search (search) {
       this.members.keyword = search
       this.fetchMembers(1)
@@ -233,6 +262,7 @@ export default {
             chapterName: items.chapterName,
             membershipName: items.membershipName,
             status: items.status,
+            membershipId: items.membership_id,
             yearArrear: items.yearArrear
           }
         })
@@ -245,7 +275,21 @@ export default {
 
     getValue (item) {
       return Object.values(item)
+    },
+
+    settleArrear (item){
+      console.log(item)
+      this.showTransaction = true
+      this.memberArrears = item
     }
   }
 }
 </script>
+<style scoped>
+  .unsettled {
+    cursor: pointer;
+  }
+  .updated {
+    color: #4caf50;
+  }
+</style>

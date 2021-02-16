@@ -2,7 +2,7 @@
   <v-row>
     <v-col>
       <h3>
-        Pangasinan Medical Society
+        PMS
         <v-icon large color="success" class="mt-n2">mdi-hospital-box-outline</v-icon>
       </h3>
     </v-col>
