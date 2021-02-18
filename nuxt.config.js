@@ -1,5 +1,8 @@
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
+  generate: {
+    dir: '../production/fe'
+  },
   head: {
     titleTemplate: '%s',
     title: 'Pangasinan Medical Society',
