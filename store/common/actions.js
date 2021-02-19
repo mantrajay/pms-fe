@@ -27,6 +27,7 @@ export default {
         let response = await this.$axios.$post(url, data, headers)
         resolve(response)
       } catch (error) {
+        console.log(error)
         dispatch('UNSET_TOKEN', { error, reject})
       }
     })
@@ -67,19 +68,23 @@ export default {
   },
 
   SET_HEADERS ({ getters }) {
-    return new Promise( async (resolve) => { 
-      resolve({ headers: { Authorization: getters.GET_AUTH.token }})
+    return new Promise( async (resolve, reject) => {
+      if (getters.GET_AUTH.token) {
+        resolve({ headers: { Authorization: getters.GET_AUTH.token }})
+      }  else resolve({ headers: {}})
     })
   },
 
   UNSET_TOKEN: ({ commit }, { error, reject}) => {
     const errors = error.response.data
     const status = error.response.status
-
-    // if (status === 401 && path !== '/') {
-    //   commit('common/SET_DESTROY_AUTH', {}, { root: true })
-    //   router.push('/')
-    // }
+    let router = $nuxt._router
+    let path = router.app._route.fullPath
+    if (status === 401 && path !== '/') {
+      commit('SET_AUTH')
+      $nuxt._router.push('/')
+      return
+    }
     reject(errors)
   }
 }

@@ -5,6 +5,7 @@
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col
+      class=""
       v-if="GET_AUTH.roleId == 1"
       cols="12"
       sm="12"

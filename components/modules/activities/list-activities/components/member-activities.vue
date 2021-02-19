@@ -72,7 +72,7 @@ export default {
     totalPoints () {
       let points = 0
       this.activities.forEach(items => {
-        points+=parseInt(items.points)
+        points+=parseFloat(items.points)
       })
       return points
     }

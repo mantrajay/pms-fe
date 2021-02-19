@@ -31,7 +31,7 @@
               <v-btn
                 elevation="0"
                 color="primary"
-                @click="$emit('show')">
+                @click="$emit('show', '', 'create')">
                 <v-icon>mdi-plus</v-icon>
                 Create User
               </v-btn>
@@ -58,7 +58,7 @@
                     elevation="0"
                     v-bind="attrs"
                     v-on="on"
-                    @click="$emit('show', item.id)"
+                    @click="$emit('show', item.id, 'update')"
                     color="primary"
                     small>
                     <v-icon>mdi-brush</v-icon>

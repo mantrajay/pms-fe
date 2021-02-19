@@ -6,7 +6,8 @@ export default () => ({
     roleName: '',
     accountName: '',
     chapter: '',
-    membership: ''
+    membership: '',
+    photo: ''
   },
   alert: {
     toggle: false,

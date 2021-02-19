@@ -7,6 +7,7 @@ export default {
     state.auth.accountName = data.accountName || ''
     state.auth.chapter = data.chapter || ''
     state.auth.membership = data.membership || ''
+    state.auth.photo = data.photo || ''
   },
 
   /**

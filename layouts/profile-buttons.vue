@@ -66,22 +66,6 @@ export default {
         variant: 'error'
       }
     }
-  },
-
-  methods: {
-    confirmLogout (item) {
-      this.confirm.show = true
-      this.confirm.msg = `Are you sure you want to logout your account?`
-    },
-
-    async logout () {
-      this.SET_LOADING()
-      setTimeout(() => {
-        this.SET_AUTH()
-        this.SET_CLOSE_LOADING()
-        this.$router.push('/')
-      }, 1500)
-    }
   }
 }
 </script>

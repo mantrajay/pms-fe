@@ -1,10 +1,11 @@
 <template>
   <v-row>
-    <v-col>
-      <h3>
-        PMS
-        <v-icon large color="success" class="mt-n2">mdi-hospital-box-outline</v-icon>
-      </h3>
+    <v-col
+      cols="12"
+      md="12"
+      sm="12"
+      class="text-left">
+      <h1>PMS</h1>
     </v-col>
   </v-row>
 </template>
@@ -14,8 +15,8 @@ export default {
 }
 </script>
 <style scoped>
-h3 {
-  color: #4caf50;
-  font-size: 1.5em;
+h1 {
+  color: #1976d2;
+  font-size: 4em;
 }
 </style>

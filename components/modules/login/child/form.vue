@@ -18,7 +18,7 @@
         outlined
         v-model="form.username.value"
         :class="{'text-input': form.username.isEmpty}"
-
+        @input="validationKey(form.username,  'Username')"
         dense
         label="Enter username"
       ></v-text-field>
@@ -35,6 +35,7 @@
         outlined
         v-model="form.password.value"
         :class="{'text-input': form.password.isEmpty}"
+        @input="validationKey(form.password,  'Password')"
         dense
         label="Enter password"
       ></v-text-field>
@@ -45,9 +46,8 @@
       cols="12"
       md="12"
       class="mt-n8">
-      <v-btn color="success"
+      <v-btn color="primary"
         block
-        :disabled="loading || isSubmitBtn"
         @click="login"
         :loading="loading">
         Sign In
@@ -58,11 +58,12 @@
     <v-col
       cols="12"
       md="12"
-      sm="12">
+      sm="12"
+      class="text-center">
       <p class="copy-right">
         &copy; Copyright 2020
-        <span class="laundry">
-          <b>Health Care</b>
+        <span class="copy-text">
+          <b>Pangasinan Medical Society</b>
         </span>
       </p>
     </v-col>
@@ -124,6 +125,7 @@ export default {
           accountName: data.accountName,
           chapter: data.chapterName,
           membership: data.membershipName,
+          photo: data.photo
         })
         let route = data.roleId == 1 ? 'members' : 'activities'
         this.goTo(route)
@@ -144,12 +146,11 @@ export default {
 .footer {
   position: absolute;
   bottom: 0;
-  left: 8%;
 }
 .copy-right {
   font-size: 10px;
 }
-.laundry {
-  color: #4caf50;
+.copy-text {
+  color: #1976d2;
 }
 </style>

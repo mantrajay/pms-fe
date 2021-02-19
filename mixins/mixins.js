@@ -54,7 +54,7 @@ export const Mixins = {
   
     errorHandle (error) {
       let errorCode = error.response
-      if (errorCode === 'Unauthorized!') {
+      if (errorCode === 'Unauthorized!' || error.status === 401) {
         this.SET_AUTH()
         this.goTo('/')
         return

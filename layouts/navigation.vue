@@ -1,41 +1,31 @@
 <template>
 <div>
-  <v-btn
-    class="mt-4"
-    absolute
-    top
-    left
-    color="primary"
-    small
-    text
-    @click="drawer = true"
-    fab>
-  <v-icon>mdi-format-horizontal-align-right</v-icon>
-  </v-btn>
-  <!-- <v-app-bar app
+  <v-app-bar
+    app
     :clipped-left="$vuetify.breakpoint.lgAndUp"
     color="primary"
-    :collapse-on-scroll="collapseOnScroll"
     dark>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    <v-toolbar-title
-      style="width: 300px"
-      class="ml-0 pl-4">
-      <v-icon>mdi-stethoscope</v-icon>
-      <b class="hidden-sm-and-down">Health Care</b>
-    </v-toolbar-title>
-  </v-app-bar> -->
+    <v-icon class="mr-2">mdi-stethoscope</v-icon>
+    <h2>PMS</h2>
+    <v-btn
+        class="mt-n1"
+        absolute
+        top
+        right
+        color="default"
+        outlined
+        @click="confirmLogout">
+        <v-icon>mdi-calendar-end</v-icon>
+        Logout
+    </v-btn>
+  </v-app-bar>
   <v-navigation-drawer
     v-model="drawer"
     :clipped="$vuetify.breakpoint.lgAndUp"
     app>
     <v-list>
-      <v-list-item class="mt-n5">
-        <v-list-item-content>
-          <ProfileButtons @event="drawer = !drawer"/>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item class="mt-n10">
+      <v-list-item class="mt-n2">
         <v-list-item-content>
           <v-list-item-title>
            <v-row>
@@ -51,8 +41,19 @@
               cols="10"
               sm="10"
               md="10"
-              class="mt-1 ml-n6">
-                <h4 class="mt-1">{{ GET_AUTH.accountName }}</h4>
+              class="mt-n3">
+                <v-avatar
+                  color="primary"
+                  size="120"
+                >
+                  <v-img
+                    :lazy-src="require('@/assets/images/avatar.png')"
+                    max-height="120"
+                    max-width="140"
+                    :src="GET_AUTH.photo"
+                  />
+                </v-avatar>
+                <h4 class="mt-3">{{ GET_AUTH.accountName }}</h4>
                 <span>Role: {{ GET_AUTH.roleName }}</span>
                 <div v-if="GET_AUTH.roleId != 1">
                   <div class="mt-1">
@@ -101,6 +102,11 @@
       </template>
     </v-list>
   </v-navigation-drawer>
+  <AlertCallBack
+    v-if="confirm.show"
+    :callBack="confirm"
+    @close="confirm.show = false"
+    @event="logout"/>
 </div>
 </template>
 <script>
@@ -156,7 +162,14 @@ export default {
           icon: 'mdi-account-supervisor-circle',
           to: '/administrators'
         }
-			]
+			],
+      confirm: {
+        msg: '',
+        show: false,
+        loading: false,
+        title: 'Confirm',
+        variant: 'error'
+      }
     }
   },
 
@@ -188,6 +201,22 @@ export default {
         ]
         
       }
+    }
+  },
+
+  methods: {
+    confirmLogout () {
+      this.confirm.show = true
+      this.confirm.msg = `Are you sure you want to logout your account?`
+    },
+
+    async logout () {
+      this.SET_LOADING()
+      setTimeout(() => {
+        this.SET_AUTH()
+        this.SET_CLOSE_LOADING()
+        this.$router.push('/')
+      }, 1500)
     }
   }
 }

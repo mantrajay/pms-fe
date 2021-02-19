@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
     <client-only>
-      <Navigation v-if="GET_AUTH.token"/>
       <v-main>
+      <Navigation v-if="GET_AUTH.token"/>
         <nuxt />
       </v-main>
       <Alert />
@@ -22,6 +22,10 @@ export default {
     ...mapGetters({
       GET_AUTH: 'common/GET_AUTH'
     })
+  },
+
+  created () {
+    console.log(this.GET_AUTH.token)
   }
 }
 </script>
