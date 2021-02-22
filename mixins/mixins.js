@@ -154,7 +154,7 @@ export const Mixins = {
 
     generateArrayOfYears() {
       let max = new Date().getFullYear() + 9
-      let min = max - 20
+      let min = max - 70
       for (let i = max; i >= min; i--) {
         this.yearList.push(i)
       }

@@ -105,7 +105,7 @@
                   small
                   v-for="(chip, index) in item.yearArrear"
                   :key="index">
-                  {{ chip }}
+                  {{ chip.year }}
                 </v-chip>
               </div>
               <div v-else>

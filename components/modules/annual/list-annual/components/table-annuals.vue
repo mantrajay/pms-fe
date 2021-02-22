@@ -67,13 +67,13 @@
               >
               {{ item.membersCount }}
               </v-chip>
-              <v-chip
+              <!-- <v-chip
                 v-if="item.membership_id != 4"
                 label
                 color="error"
               >
               3
-              </v-chip>
+              </v-chip> -->
             </template>
             <template v-slot:item.actions="{ item }">
               <v-tooltip top>

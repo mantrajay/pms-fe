@@ -309,6 +309,24 @@
                   label="Select Membership *"
                 ></v-select>
               </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-select
+                  class="mt-n3"
+                  :items="yearList"
+                  v-model="form.year.value"
+                  item-text="name"
+                  item-value="id"
+                  :disabled="setting === 'view'"
+                  :class="{'text-input': form.year.isEmpty, 'view-only': setting === 'view'}"
+                  @blur="validationKey(form.year)"
+                  dense
+                  outlined
+                  label="Select Year Registered *"
+                ></v-select>
+              </v-col>
             </v-row>
             <v-row class="mt-n7">
               <v-col
@@ -520,9 +538,11 @@ export default {
         phone: this.iRules('', false),
         chapter: this.iRules('', true),
         membership: this.iRules('', true),
+        year: this.iRules('', true),
         email: this.iRules('', false),
         photo: this.iRules('', false)
       },
+      yearList: [],
       genderList: [ 
         { value: 'Male', text: 'Male' },
         { value: 'Female', text: 'Female' },
@@ -571,6 +591,7 @@ export default {
   fetch () {
     if (this.memberId) this.fetchMember()
     this.fetchAttribute()
+    this.generateArrayOfYears()
   },
 
   methods: {
@@ -618,6 +639,7 @@ export default {
       this.form.email.value = data.email
       this.form.membership.value = data.membership_id
       this.form.photo.value = image
+      this.form.year.value = parseInt(data.year)
     },
 
     fileImageHandler() {
@@ -676,7 +698,8 @@ export default {
         chapter_id: this.form.chapter.value,
         membership_id: this.form.membership.value,
         photo: this.selectedFile ? this.selectedFile : '',
-        removeImage: this.removeImage
+        removeImage: this.removeImage,
+        year: this.form.year.value,
       })
       let method = 'create'
       if (this.memberId) {
