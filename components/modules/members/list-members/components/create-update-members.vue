@@ -154,6 +154,7 @@
                   min-width="290px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
+                    type="date"
                     class="mt-n3"
                     v-model="form.birthday.value"
                     :disabled="setting === 'view'"
@@ -161,8 +162,6 @@
                     @blur="validationKey(form.birthday,  'birthday')"
                     outlined
                     dense
-                    append-icon="mdi-calendar"
-                    readonly
                     label="Select Birth Date *"
                     v-bind="attrs"
                     v-on="on"
@@ -253,6 +252,7 @@
                   min-width="290px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
+                    type="date"
                     class="mt-n3"
                     v-model="form.prcExp.value"
                     :disabled="setting === 'view'"
@@ -260,8 +260,6 @@
                     @blur="validationKey(form.prcExp,  'PRC Expiration')"
                     outlined
                     dense
-                    append-icon="mdi-calendar"
-                    readonly
                     label="Select PRC License Expiration Date *"
                     v-bind="attrs"
                     v-on="on"

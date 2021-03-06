@@ -274,9 +274,9 @@ export default {
     },
 
     capitalizeName (item) {
-      let lastName = item.lastName.charAt(0).toUpperCase() + item.lastName.slice(1)
-      let firstName = item.firstName.charAt(0).toUpperCase() + item.firstName.slice(1)
-      let middleName = item.middleName.charAt(0).toUpperCase() + item.middleName.slice(1)
+      let lastName = item.lastName.charAt(0).toUpperCase() + item.lastName.slice(1).toLowerCase()
+      let firstName = item.firstName.charAt(0).toUpperCase() + item.firstName.slice(1).toLowerCase()
+      let middleName = item.middleName.charAt(0).toUpperCase() + item.middleName.slice(1).toLowerCase()
       return `${lastName}, ${firstName} ${middleName}`
     },
 
