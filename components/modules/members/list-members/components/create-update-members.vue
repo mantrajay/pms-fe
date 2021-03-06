@@ -58,6 +58,20 @@
                 <v-text-field
                   class="mt-n3"
                   outlined
+                  v-model="form.lastName.value"
+                  :disabled="setting === 'view'"
+                  :class="{'text-input': form.lastName.isEmpty, 'view-only': setting === 'view'}"
+                  @blur="validationKey(form.lastName, 'Last Name')"
+                  dense
+                  label="Enter Last Name *" />
+              </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-text-field
+                  class="mt-n3"
+                  outlined
                   v-model="form.firstName.value"
                   :disabled="setting === 'view'"
                   :class="{'text-input': form.firstName.isEmpty, 'view-only': setting === 'view'}"
@@ -78,20 +92,6 @@
                   @blur="validationKey(form.middleName, 'Middle Name')"
                   dense
                   label="Enter Middle Name *" />
-              </v-col>
-              <v-col
-                cols="12"
-                sm="4"
-                md="4">
-                <v-text-field
-                  class="mt-n3"
-                  outlined
-                  v-model="form.lastName.value"
-                  :disabled="setting === 'view'"
-                  :class="{'text-input': form.lastName.isEmpty, 'view-only': setting === 'view'}"
-                  @blur="validationKey(form.lastName, 'Last Name')"
-                  dense
-                  label="Enter Last Name *" />
               </v-col>
               <v-col
                 cols="12"

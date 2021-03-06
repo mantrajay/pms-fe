@@ -257,7 +257,7 @@ export default {
             photo: items.photo,
             prcNo: items.prcNo,
             pmaNo: items.pmaNo,
-            fullName: items.fullName,
+            fullName: this.capitalizeName(items),
             prcExp: items.prcExp,
             chapterName: items.chapterName,
             membershipName: items.membershipName,
@@ -271,6 +271,13 @@ export default {
       } catch (error) {
         this.errorHandle(error)
       } finally {this.members.loading = false }
+    },
+
+    capitalizeName (item) {
+      let lastName = item.lastName.charAt(0).toUpperCase() + item.lastName.slice(1)
+      let firstName = item.firstName.charAt(0).toUpperCase() + item.firstName.slice(1)
+      let middleName = item.middleName.charAt(0).toUpperCase() + item.middleName.slice(1)
+      return `${lastName}, ${firstName} ${middleName}`
     },
 
     getValue (item) {
