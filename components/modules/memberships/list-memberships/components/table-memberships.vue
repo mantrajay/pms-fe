@@ -124,7 +124,7 @@ export default {
         msg: '',
         show: false,
         loading: false,
-        title: 'Delete Member',
+        title: 'Delete Membership',
         variant: 'error'
       },
       membershipId: ''

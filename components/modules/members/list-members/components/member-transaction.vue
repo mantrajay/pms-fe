@@ -148,8 +148,8 @@ export default {
   name: 'Create-Member-Transaction',
   props:{
     items: {
-      type: Object,
-      default: {}
+      type: Array,
+      default: null
     }
   },
 
@@ -174,6 +174,7 @@ export default {
       let enable = true
       this.form.forEach(items => {
         Object.keys(items).forEach(index => {
+          console.log(index)
           let value = items[index].value
           let required = items[index].required
           if (required) {
@@ -194,24 +195,23 @@ export default {
       this.loading = true
       let formData = new FormData()
       formData.append('membershipId', this.items.membershipId)
-      formData.append('years', JSON.stringify(this.items.yearArrear))
+      formData.append('years', JSON.stringify(this.items.years))
       this.API_POST({ url: 'Members/fetchMembershipAmount', data: formData })
       .then(response => {
-          let data = response.data
-          this.form = data.map(items => {
-            return {
-              arrearId: this.iRules(items.id, true),
-              // membershipId: this.iRules(items.membership_id, true),
-              prcNo: this.iRules(this.items.prcNo, true),
-              amount: this.iRules(items.amount, true),
-              date: this.iRules('', true),
-              datePicker: false,
-              description: this.iRules(items.description, false),
-              year: this.iRules(items.year, true),
-            }
-          })
-        }).catch(error => {  })
-        .finally( this.loading = false )
+        let data = response.data
+        this.form = data.map(items => {
+          return {
+            arrearId: this.iRules(items.id, true),
+            prcNo: this.iRules(this.items.prcNo, true),
+            amount: this.iRules(items.amount, true),
+            date: this.iRules('', true),
+            datePicker: false,
+            description: this.iRules(items.description, false),
+            year: this.iRules(items.year, true),
+          }
+        })
+      }).catch(error => {  })
+      .finally( this.loading = false )
     },
 
     remove (index) {

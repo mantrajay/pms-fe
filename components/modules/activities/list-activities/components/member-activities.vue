@@ -57,14 +57,13 @@ export default {
       dialog: true,
       loading: false,
       activities: [],
-      search: '',
       headers: [
         { text: 'Code', value: 'code' },
         { text: 'Name', value: 'name' },
         { text: 'Points', value: 'points' },
         { text: 'Start Time', value: 'start_time' },
         { text: 'End Time', value: 'end_time' }
-      ],
+      ]
     }
   },
 
@@ -83,7 +82,6 @@ export default {
   },
 
   methods: {
-
     fetchMemberActivities () {
       this.loading = true
       this.API_POST({ url: 'Members/fetchMemberActivities/' + this.memberId})

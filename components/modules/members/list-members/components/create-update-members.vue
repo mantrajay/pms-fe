@@ -154,7 +154,6 @@
                   min-width="290px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    type="date"
                     class="mt-n3"
                     v-model="form.birthday.value"
                     :disabled="setting === 'view'"
@@ -234,6 +233,7 @@
                   outlined
                   v-model="form.prcNo.value"
                   :disabled="setting === 'view'"
+                  @keypress="checkChar($event)"
                   :class="{'text-input': form.prcNo.isEmpty, 'view-only': setting === 'view'}"
                   @blur="validationKey(form.prcNo, 'First Name')"
                   dense
@@ -513,6 +513,8 @@ export default {
   },
 
   data() {
+    let date = new Date()
+    let currentYear = parseInt(date.getFullYear())
     return {
       dialog: true,
       birthDate: false,
@@ -536,7 +538,7 @@ export default {
         phone: this.iRules('', false),
         chapter: this.iRules('', true),
         membership: this.iRules('', true),
-        year: this.iRules('', true),
+        year: this.iRules(currentYear, true),
         email: this.iRules('', false),
         photo: this.iRules('', false)
       },
@@ -673,6 +675,13 @@ export default {
 
     submit () {
       this.confirm.loading = true
+      let date = new Date()
+      let currentYear = parseInt(date.getFullYear())
+      let yearChoose = parseInt(this.form.year.value)
+      let yearArrears = []
+      for (let i = currentYear; i >= yearChoose; i--) {
+        yearArrears.push(i)
+      }
       let formData = this.formParams({
         user_id: this.GET_AUTH.userId,
         first_name: this.form.firstName.value,
@@ -698,6 +707,7 @@ export default {
         photo: this.selectedFile ? this.selectedFile : '',
         removeImage: this.removeImage,
         year: this.form.year.value,
+        yearArrears: JSON.stringify(yearArrears),
       })
       let method = 'create'
       if (this.memberId) {

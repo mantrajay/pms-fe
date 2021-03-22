@@ -48,10 +48,11 @@
         <v-container fluid>
           <v-data-table
             class="pa-3"
+            :items-per-page="pager.limit"
             :headers="headers"
             :items="members.data"
-            :items-per-page="15"
-            :loading="members.loading">
+            :loading="members.loading"
+            hide-default-footer>
             <template v-slot:item.actions="{ item }">
                <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
@@ -95,29 +96,35 @@
               </v-chip>
             </template>
             <template v-slot:item.yearArrear="{ item }">
-              <div
-                class="unsettled"
-                @click="settleArrear(item)"
-                v-if="item.yearArrear.length">
-                <v-chip
-                  class="ma-1 unsettled"
-                  color="error"
-                  small
-                  v-for="(chip, index) in item.yearArrear"
-                  :key="index">
-                  {{ chip.year }}
-                </v-chip>
-              </div>
-              <div v-else>
-                <v-chip
-                  class="mt-1"
-                  color="success"
-                  small>
-                  Updated
-                </v-chip>
+              <div v-if="item.membershipName !== 'Emeritus'">
+                <div
+                  class="unsettled"
+                  @click="settleArrear(item)"
+                  v-if="item.yearArrear.length">
+                  <v-chip
+                    class="ma-1 unsettled"
+                    color="error"
+                    small
+                    v-for="(chip, index) in item.yearArrear"
+                    :key="index">
+                    {{ chip.years }}
+                  </v-chip>
+                </div>
+                <div v-else>
+                  <v-chip
+                    class="mt-1"
+                    color="success"
+                    small>
+                    Updated
+                  </v-chip>
+                </div>
               </div>
             </template>
           </v-data-table>
+          <Pagination
+            @go-to-page="fetchMembers"
+            :currentPage="pager.currentPage"
+            :length="pager.totalPage" />
         </v-container>
       </v-card>
     </v-col>
@@ -136,6 +143,11 @@
     :memberId="memberId"
     :memberDetail="memberDetail"
     @close="showAnnualFees = false" />
+  <AlertCallBack
+    v-if="confirm.show"
+    :callBack="confirm"
+    @close="confirm.show = false"
+    @event="deleteSubmit"/>
   </v-row>
 </template>
 <script>
@@ -160,10 +172,9 @@ export default {
   data () {
     return {
       headers: [
-        { text: 'Photo', value: 'photo' },
+        { text: 'Member Name', value: 'fullName' },
         { text: 'PRC Number', value: 'prcNo' },
         { text: 'PMA Number', value: 'pmaNo' },
-        { text: 'Member Name', value: 'fullName' },
         { text: 'PRC Expiration', value: 'prcExp' },
         { text: 'Chapter', value: 'chapterName' },
         { text: 'Membership', value: 'membershipName' },
@@ -175,6 +186,7 @@ export default {
         { id: 1, icon: 'mdi-brush', title: 'Update' },
         { id: 2, icon: 'mdi-book-marker-outline', title: 'Show Activities' },
         { id: 3, icon: 'mdi-cards', title: 'Show Annual Fee / Arrears' },
+        { id: 4, icon: 'mdi-eraser', title: 'Remove Member' },
       ],
       memberId: '',
       members: {
@@ -185,13 +197,20 @@ export default {
       pager: {
         pageNo: 1,
         totalPage: 1,
-        limit: 5000
+        limit: 10
       },
       showActivity: false,
       showAnnualFees: false,
       memberDetail: {},
       memberArrears: {},
-      showTransaction: false
+      showTransaction: false,
+      confirm: {
+        msg: '',
+        show: false,
+        loading: false,
+        title: 'Delete Member',
+        variant: 'error'
+      }
     }
   },
 
@@ -213,6 +232,17 @@ export default {
 
   methods: {
     goTo (item, list) {
+      if (list.id === 4) {
+        this.memberId = item.prcNo
+        this.confirm = {
+          msg: `Are you sure you want to delete (${item.fullName})?`,
+          show: true,
+          loading: false,
+          title: 'Delete Member',
+          variant: 'error'
+        }
+        return
+      }
       if (list.id === 3) {
         this.showAnnualFees = true
         this.memberId = item.prcNo,
@@ -228,6 +258,19 @@ export default {
       if (list.id === 1) {
         this.$emit('show', item.prcNo)
       }
+    },
+
+    deleteSubmit () {
+      this.confirm.loading = true
+      this.API_POST({ url: `Members/removeMembers/${this.memberId}` })
+        .then(response => {
+          this.SET_ALERT_SUCCESS(response.response)
+          this.fetchMembers(1)
+          this.confirm.show = false
+        }).catch(error => { this.SET_ALERT_ERROR(error.response) })
+        .finally(() => {
+          this.confirm.loading = false
+        })
     },
   
     search (search) {
@@ -251,10 +294,8 @@ export default {
           url: '/Members',
           data: this.searchParams(this.pager.pageNo)
         })
-        this.members.data = []
-        this.members.data = response.data.map(items => {
+        this.members.data = response.data.map((items, index)  => {
           return {
-            photo: items.photo,
             prcNo: items.prcNo,
             pmaNo: items.pmaNo,
             fullName: this.capitalizeName(items),
@@ -273,19 +314,11 @@ export default {
       } finally {this.members.loading = false }
     },
 
-    capitalizeName (item) {
-      let lastName = item.lastName.charAt(0).toUpperCase() + item.lastName.slice(1).toLowerCase()
-      let firstName = item.firstName.charAt(0).toUpperCase() + item.firstName.slice(1).toLowerCase()
-      let middleName = item.middleName.charAt(0).toUpperCase() + item.middleName.slice(1).toLowerCase()
-      return `${lastName}, ${firstName} ${middleName}`
-    },
-
     getValue (item) {
       return Object.values(item)
     },
 
     settleArrear (item){
-      console.log(item)
       this.showTransaction = true
       this.memberArrears = item
     }

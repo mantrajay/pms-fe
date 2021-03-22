@@ -64,25 +64,63 @@
                     @click="$emit('show', item.id)"
                     color="primary"
                     small>
-                    <v-icon>mdi-brush</v-icon>
+                    Update
                   </v-btn>
                 </template>
                 <span>Update</span>
               </v-tooltip>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    small
+                    color="indigo"
+                    class="white--text"
+                    @click="showSerach = true, activityId = item.id">
+                    Assign Members
+                  </v-btn>
+                </template>
+                <span>Assign Members</span>
+              </v-tooltip>
+            </template>
+            <template v-slot:item.points="{ item }">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-chip
+                    v-bind="attrs"
+                    v-on="on"
+                    class="ma-2"
+                    color="primary"
+                    outlined>
+                    {{ item.points }}
+                  </v-chip>
+                </template>
+                <span>Activity points {{ item.points }}</span>
+              </v-tooltip>
             </template>
             <template v-slot:item.countAttendees="{ item }">
-              <v-chip
-                @click="activityId = item.id, showAttendees = true"
-                label
-                color="success"
-              >
-              {{ item.countAttendees }}
-              </v-chip>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-chip
+                    v-bind="attrs"
+                    v-on="on"
+                    color="success"
+                    @click="activityId = item.id, showAttendees = true">
+                    {{ item.countAttendees }}
+                  </v-chip>
+                </template>
+                <span>Number of attendees {{ item.countAttendees }}</span>
+              </v-tooltip>
             </template>
           </v-data-table>
         </v-container>
       </v-card>
     </v-col>
+    <SearchMembers
+      v-if="showSerach"
+      :activityId="activityId"
+      @close="closeMembers"/>
     <Attendees
       v-if="showAttendees"
       @close="showAttendees = false"
@@ -116,7 +154,8 @@ export default {
         limit: 5000
       },
       activityId: '',
-      showAttendees: false
+      showAttendees: false,
+      showSerach: false
     }
   },
 
@@ -183,6 +222,11 @@ export default {
       } catch (error) {
         this.errorHandle(error)
       } finally {this.activities.loading = false }
+    },
+
+    closeMembers () {
+      this.showSerach = false
+      this.fetchActivities()
     }
   }
 }

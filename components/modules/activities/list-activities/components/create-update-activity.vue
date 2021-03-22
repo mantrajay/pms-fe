@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog"
     persistent
-    max-width="90%">
+    max-width="40%">
     <v-card>
       <v-card-title>
         <v-row>
@@ -16,21 +16,21 @@
             sm="6"
             md="6"
             class="text-right">
-              <v-btn
-                color="primary"
-                text
-                @click="$emit('close')"
-                v-if="!confirm.loading">
-                Close
-              </v-btn>
-              <v-btn
-                color="primary"
-                elevation="0"
-                :loading="confirm.loading"
-                :disabled="confirm.loading"
-                @click="confirmSubmit">
-                {{ activityId ? 'Update' : 'Create'}}
-              </v-btn>
+            <v-btn
+              color="primary"
+              elevation="0"
+              :loading="confirm.loading"
+              :disabled="confirm.loading"
+              @click="confirmSubmit">
+              {{ activityId ? 'Update' : 'Create'}}
+            </v-btn>
+            <v-btn
+              color="primary"
+              text
+              @click="$emit('close')"
+              v-if="!confirm.loading">
+              Close
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-title>
@@ -41,8 +41,8 @@
           <v-row class="mt-n3">
             <v-col
               cols="12"
-              md="4"
-              sm="4">
+              md="12"
+              sm="12">
               <v-row>
                 <v-col
                   cols="12"
@@ -290,32 +290,6 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col
-              cols="12"
-              md="8"
-              sm="8">
-              <h3>MEMBER LIST</h3>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                dense
-                placeholder="Search chapters..."
-                outlined
-                hide-details
-                class="mt-5"
-              ></v-text-field>
-              <v-data-table
-                :headers="headers"
-                :items="members"
-                show-select
-                :search="search"
-                :items-per-page="15"
-                :loading="loadingMembers"
-                item-key="name"
-                v-model="form.prcNo.value">
-              </v-data-table>
-            </v-col>
           </v-row>
         </v-container>
     </v-card-text>
@@ -328,8 +302,12 @@
 </v-dialog>
 </template>
 <script>
+import SearchMembers from './search-members'
 export default {
   name: 'Create-Activity',
+  comments: {
+    SearchMembers
+  },
   props:{
     activityId: {
       type: String,
@@ -378,32 +356,15 @@ export default {
         { text: 'Full Name', value: 'name' },
         { text: 'Chapter', value: 'chapter_name' },
         { text: 'Membership', value: 'membership_name' }
-      ],
+      ]
     }
   },
 
   fetch () {
-    this.fetchMembers()
     if (this.activityId) this.fetchActivities()
   },
 
   methods: {
-    fetchMembers () {
-      this.loadingMembers = true
-      this.API_POST({ url: 'Common/getAllMembersDetail'})
-        .then(response => {
-          this.members = response.data.map(items => {
-            return {
-              prc_no: items.prc_no,
-              name: `${items.first_name} ${items.middle_name} ${items.last_name}`,
-              chapter_name: items.chapter_name,
-              membership_name: items.membership_name,
-            }
-          })
-        }).catch(error => {  })
-        .finally(this.loadingMembers = false)
-    },
-
     fetchActivities () {
       this.loading = true
       this.API_POST({ url: 'Activities/fetchById/' + this.activityId})

@@ -8,6 +8,20 @@ export const Mixins = {
         { type: 'image/jpeg' },
         { type: 'image/png' }
       ],
+      metaKeyWordNotAllowed: [
+        { key: 35, char: '#' },
+        { key: 59, char: ';' },
+        { key: 60, char: '<' },
+        { key: 61, char: '=' },
+        { key: 62, char: '>' },
+        { key: 123, char: '{' },
+        { key: 125, char: '}' },
+        {key: 46, char: '.'},
+        {key: 44, char: ','},
+        {key: 45, char: '-'},
+        {key: 32, char: ' '},
+        {key: 39, char: `'`}, 
+      ],
       queueLoading: false
     }
   },
@@ -44,6 +58,32 @@ export const Mixins = {
       API_POST: 'common/API_POST',
       API_GET: 'common/API_GET'
     }),
+
+    capitalizeChar (item) {
+      let lastName = item.last_name.charAt(0).toUpperCase() + item.last_name.slice(1).toLowerCase()
+      let firstName = item.first_name.charAt(0).toUpperCase() + item.first_name.slice(1).toLowerCase()
+      let middleName = item.middle_name.charAt(0).toUpperCase() + item.middle_name.slice(1).toLowerCase()
+      return `${lastName}, ${firstName} ${middleName}`
+    },
+
+    capitalizeName (item) {
+      let lastName = item.lastName.charAt(0).toUpperCase() + item.lastName.slice(1).toLowerCase()
+      let firstName = item.firstName.charAt(0).toUpperCase() + item.firstName.slice(1).toLowerCase()
+      let middleName = item.middleName.charAt(0).toUpperCase() + item.middleName.slice(1).toLowerCase()
+      return `${lastName}, ${firstName} ${middleName}`
+    },
+
+    checkChar(event) {
+      let keyCode = event.keyCode
+      this.metaKeyWordNotAllowed.forEach(item => {
+        if (item.key === keyCode) event.preventDefault()
+      })
+    },
+
+    isSpecialChar (event) {
+      let specialChar = /[~`!#$%\^&*()@+=\\[\]\\;/{}|\\":<>\?1234567890]/g.test(event.key)
+      if (specialChar) event.preventDefault()
+    },
 
     integerOnly(event) {
       var key = window.event ? event.keyCode : event.which;

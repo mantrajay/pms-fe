@@ -1,5 +1,6 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    v-model="dialog"
     persistent
     max-width="60%">
     <v-card>
@@ -9,7 +10,7 @@
             cols="12"
             sm="6"
             md="6">
-            <h4>ACTIVITY ATTENDEEDS</h4>
+            <h4>MEMBER LIST</h4>
           </v-col>
           <v-col
             cols="12"
@@ -35,13 +36,14 @@
               sm="6"
               md="6">
               <v-text-field
-                v-model="search"
+                v-debounce:500ms="fetchMembers"
                 append-icon="mdi-magnify"
                 label="Search"
                 dense
-                placeholder="Search members..."
+                placeholder="Search first name, last name, prc no...."
                 outlined
                 hide-details
+                class="mt-5"
               ></v-text-field>
             </v-col>
             <v-col
@@ -49,12 +51,17 @@
               md="12"
               sm="12">
               <v-data-table
-                :search="search"
                 :headers="headers"
-                :items="attendees"
-                :items-per-page="attendees.length"
-                :hide-default-footer="true"
+                :items="members"
+                :items-per-page="15"
                 :loading="loading">
+                <template v-slot:item.actions="{ item }">
+                <v-switch
+                  v-model="item.isAssigned"
+                  @click="assignMember(item)"
+                  inset
+                ></v-switch>
+                </template>
               </v-data-table>
             </v-col>
           </v-row>
@@ -76,30 +83,57 @@ export default {
   data() {
     return {
       dialog: true,
-      attendees: [],
-      search: '',
+      loading: false,
+      members: [],
       headers: [
-        { text: 'Member Name', value: 'fullName' },
         { text: 'PRC Number', value: 'prc_no' },
-        { text: 'PRC Expiration', value: 'prc_exp' },
+        { text: 'Full Name', value: 'fullName' },
+        { text: 'Chapter', value: 'chapter_name' },
+        { text: 'Membership', value: 'membership_name' },
+        { text: 'Actions', value: 'actions' }
       ],
     }
   },
 
-  fetch () {
-    this.fetchAttendees()
-  },
-
   methods: {
-    fetchAttendees () {
+    assignMember (item) {
+      let data = new FormData()
+      data.append('prc_no', item.prc_no)
+      data.append('activity_id', this.activityId)
+      data.append('is_assgined', item.isAssigned)
+      data.append('status', item.isAssigned ? 'assgined' : 'unassgined')
       this.loading = true
-      this.API_POST({ url: 'Activities/fetchAttendees/' + this.activityId})
+      this.API_POST({
+        url: 'Activities/assignMemberInActivity',
+        data: data
+      })
         .then(response => {
-          this.attendees = response.data.map(items => {
+          this.SET_ALERT_SUCCESS(response.response)
+        }).catch(error => { this.SET_ALERT_ERROR(error.response) })
+        .finally(this.loading = false)
+    },
+  
+    fetchMembers (keyword) {
+      if (!keyword) {
+        this.members = []
+        return
+      } 
+      let data = new FormData()
+      data.append('keyword', keyword)
+      data.append('activityId', this.activityId)
+      this.loading = true
+      this.API_POST({
+        url: 'Common/getAllMembersDetail',
+        data: data
+      })
+        .then(response => {
+          this.members = response.data.map(items => {
             return {
               prc_no: items.prc_no,
               fullName: this.capitalizeChar(items),
-              prc_exp: this.getLocalDate(items.prc_exp)
+              chapter_name: items.chapter_name,
+              membership_name: items.membership_name,
+              isAssigned: items.is_assigned
             }
           })
         }).catch(error => {  })
