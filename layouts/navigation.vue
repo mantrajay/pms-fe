@@ -24,59 +24,60 @@
     v-model="drawer"
     :clipped="$vuetify.breakpoint.lgAndUp"
     app>
-    <v-list>
-      <v-list-item class="mt-n2">
-        <v-list-item-content>
-          <v-list-item-title>
-           <v-row>
-             <v-col
-              cols="2"
-              sm="2"
-              md="2">
-              <v-avatar size="40">
-                <v-img src="https://scontent.fmnl4-6.fna.fbcdn.net/v/t1.0-9/10425524_10152481831031087_1877481359685655291_n.jpg?_nc_cat=107&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeEPS8Rm8qupo5dmXTJJpcVmvSjV3XJGRlO9KNXdckZGU7SD5NAV-Ui4O4iplrV1hIH-zBUFVDR7PZWVYcLELZzs&_nc_ohc=o30DZc-AB14AX92wz6I&_nc_ht=scontent.fmnl4-6.fna&oh=4cab91dd0982b412d51cdf22ad9d43c6&oe=5FF48B4F"></v-img>
-              </v-avatar>
-             </v-col>
-             <v-col
-              cols="10"
-              sm="10"
-              md="10"
-              class="mt-n3">
-                <v-avatar
-                  color="primary"
-                  size="120"
-                >
-                  <v-img
-                    :lazy-src="require('@/assets/images/avatar.png')"
-                    max-height="120"
-                    max-width="140"
-                    :src="GET_AUTH.photo"
-                  />
-                </v-avatar>
-                <h4 class="mt-3">{{ GET_AUTH.accountName }}</h4>
-                <span>Role: {{ GET_AUTH.roleName }}</span>
-                <div v-if="GET_AUTH.roleId != 1">
-                  <div class="mt-1">
-                    <v-chip color="success">
-                      {{ GET_AUTH.chapter }}
-                    </v-chip>
-                  </div>
-                  <div class="mt-1">
-                    <v-chip color="success">
-                      {{ GET_AUTH.membership }}
-                    </v-chip>
-                  </div>
-                  <!-- <p class="member">Chapter: {{ GET_AUTH.chapter }}</p> -->
-                  <!-- <p class="member mt-n3">Membership: {{ GET_AUTH.membership }}</p> -->
-                </div>
-             </v-col>
-           </v-row>
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-    <v-divider class="mt-n2"></v-divider>
-    <v-list dense>
+    <v-row class="mt-n12">
+      <v-col
+        cols="2"
+        sm="2"
+        md="2">
+        <v-avatar size="40">
+          <v-img src="https://scontent.fmnl4-6.fna.fbcdn.net/v/t1.0-9/10425524_10152481831031087_1877481359685655291_n.jpg?_nc_cat=107&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeEPS8Rm8qupo5dmXTJJpcVmvSjV3XJGRlO9KNXdckZGU7SD5NAV-Ui4O4iplrV1hIH-zBUFVDR7PZWVYcLELZzs&_nc_ohc=o30DZc-AB14AX92wz6I&_nc_ht=scontent.fmnl4-6.fna&oh=4cab91dd0982b412d51cdf22ad9d43c6&oe=5FF48B4F"></v-img>
+        </v-avatar>
+      </v-col>
+      <v-col
+        cols="11"
+        sm="11"
+        md="11"
+        class="text-center">
+        <v-avatar
+          color="primary"
+          size="120">
+          <v-img
+            :lazy-src="require('@/assets/images/avatar.png')"
+            max-height="120"
+            max-width="140"
+            :src="GET_AUTH.photo" />
+        </v-avatar>
+        <h4 class="mt-3">{{ GET_AUTH.accountName }}</h4>
+        <div
+          class="mt-2"
+          v-if="GET_AUTH.roleId != 1">
+          <div
+            v-if="GET_AUTH.membership"
+            class="mt-1">
+            <v-chip color="success">
+              {{ GET_AUTH.membership }}
+            </v-chip>
+          </div>
+          <div
+            class="mt-1"
+            v-if="GET_AUTH.chapter">
+            <v-chip color="success">
+              {{ GET_AUTH.chapter }}
+            </v-chip>
+          </div>
+        </div>
+        <v-btn
+          class="mt-2"
+          text
+          @click="showProfile = true">
+          Update Profile
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-list
+      class="mt-1"
+      dense>
       <template v-for="item in navItems">
         <v-list-item
           :key="item.text"
@@ -107,26 +108,29 @@
     :callBack="confirm"
     @close="confirm.show = false"
     @event="logout"/>
+  <UserInfo
+    @close="showProfile = false"
+    :memberId="GET_AUTH.userId"
+    :isPorfile="true"
+    v-if="showProfile"/>
 </div>
 </template>
 <script>
 import ProfileButtons from './profile-buttons'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
+import UserInfo from '~/components/modules/activities/list-activities/components/user-info'
 export default {
   name: 'Navigation',
   components: {
-    ProfileButtons
+    ProfileButtons,
+    UserInfo
   },
   data () {
     return {
       drawer: true,
+      showProfile: false,
       collapseOnScroll: true,
       items: [
-        // {
-        //   text: 'Dashboard',
-        //   icon: 'mdi-chart-areaspline',
-        //   to: '/dashboard'
-        // },
         {
           text: 'Members',
           icon: 'mdi-account-group',

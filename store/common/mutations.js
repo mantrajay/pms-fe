@@ -8,6 +8,11 @@ export default {
     state.auth.chapter = data.chapter || ''
     state.auth.membership = data.membership || ''
     state.auth.photo = data.photo || ''
+    state.auth.isInfoUpdated = data.isInfoUpdated || false
+  },
+
+  SET_AUTH_INFO: (state) => {
+    state.auth.isInfoUpdated = false
   },
 
   /**

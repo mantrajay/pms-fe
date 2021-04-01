@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-container
       fluid>
       <v-row class="pa-3 mt-2">
@@ -57,6 +57,7 @@ export default {
       dialog: true,
       loading: false,
       activities: [],
+      search: '',
       headers: [
         { text: 'Code', value: 'code' },
         { text: 'Name', value: 'name' },

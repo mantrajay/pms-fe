@@ -52,7 +52,8 @@ export const Mixins = {
       SET_ALERT_CONFIRM: 'common/SET_ALERT_CONFIRM',
       SET_ALERT_SUCCESS: 'common/SET_ALERT_SUCCESS',
       SET_PAGE_LOADING: 'common/SET_PAGE_LOADING',
-      SET_AUTH: 'common/SET_AUTH'
+      SET_AUTH: 'common/SET_AUTH',
+      SET_AUTH_INFO: 'common/SET_AUTH_INFO'
     }),
     ...mapActions({
       API_POST: 'common/API_POST',

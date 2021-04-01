@@ -31,13 +31,15 @@
       class="mt-n8">
       <v-text-field
         :disabled="loading"
-        type="password"
+        :append-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="visiblePassword ? 'text' : 'password'"
         outlined
         v-model="form.password.value"
         :class="{'text-input': form.password.isEmpty}"
         @input="validationKey(form.password,  'Password')"
         dense
         label="Enter password"
+        @click:append="visiblePassword = !visiblePassword"
       ></v-text-field>
       <span class="error-text">{{ form.password.msg }}</span>
     </v-col>
@@ -95,6 +97,7 @@ export default {
   data () {
     return {
       loading: false,
+      visiblePassword: false,
       form: {
         username: this.iRules('', true),
         password: this.iRules('', true)
@@ -116,10 +119,11 @@ export default {
           url: 'Auth/validateAuth',
           data: formData
         })
-        let data = response.data 
+        let data = response.data
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,
+          isInfoUpdated: !parseInt(data.isInfoUpdated) ? true : false,
           roleId: data.roleId,
           roleName: data.roleName,
           accountName: data.accountName,
@@ -132,8 +136,7 @@ export default {
         this.SET_ALERT_SUCCESS(response.totalPage)
       } catch (error) {
         this.SET_ALERT_ERROR(error.response)
-      }
-      this.loading = false
+      } finally { this.loading = false }
     }
   }
 }

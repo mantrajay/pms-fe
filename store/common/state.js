@@ -7,7 +7,8 @@ export default () => ({
     accountName: '',
     chapter: '',
     membership: '',
-    photo: ''
+    photo: '',
+    isInfoUpdated: ''
   },
   alert: {
     toggle: false,

@@ -22,10 +22,6 @@ export default {
     ...mapGetters({
       GET_AUTH: 'common/GET_AUTH'
     })
-  },
-
-  created () {
-    console.log(this.GET_AUTH.token)
   }
 }
 </script>

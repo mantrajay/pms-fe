@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-container fluid>
       <div v-if="loading">
         <v-row>
