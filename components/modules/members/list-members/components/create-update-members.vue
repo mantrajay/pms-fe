@@ -526,15 +526,15 @@ export default {
         pmaNo: this.iRules('', true),
         prcNo: this.iRules('', true),
         prcExp: this.iRules('', true),
-        birthday: this.iRules('', false),
-        religion: this.iRules('', false),
-        civilStatus: this.iRules('', false),
-        gender: this.iRules('', false),
-        hospitalAffiliation: this.iRules('', false),
-        specialty: this.iRules('', false),
-        homeAdd: this.iRules('', false),
+        birthday: this.iRules('', true),
+        religion: this.iRules('', true),
+        civilStatus: this.iRules('', true),
+        gender: this.iRules('', true),
+        hospitalAffiliation: this.iRules('', true),
+        specialty: this.iRules('', true),
+        homeAdd: this.iRules('', true),
         workAdd: this.iRules('', false),
-        mobile: this.iRules('', false),
+        mobile: this.iRules('', true),
         phone: this.iRules('', false),
         chapter: this.iRules('', true),
         membership: this.iRules('', true),
@@ -627,7 +627,7 @@ export default {
       this.form.hospitalAffiliation.value = data.hospital_affiliation
       this.form.specialty.value = data.specialty
       this.form.pmaNo.value = data.pma_no
-      this.form.prcNo.value = data.prc_no
+      this.form.prcNo.value = data.prcNumber
       this.form.prcExp.value = data.prc_exp
       this.form.birthday.value = data.birthday
       this.form.gender.value = data.gender
@@ -708,6 +708,7 @@ export default {
         removeImage: this.removeImage,
         year: this.form.year.value,
         yearArrears: JSON.stringify(yearArrears),
+        isUsernameUpdate: true
       })
       let method = 'create'
       if (this.memberId) {

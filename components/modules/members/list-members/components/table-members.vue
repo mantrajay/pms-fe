@@ -173,7 +173,7 @@ export default {
     return {
       headers: [
         { text: 'Member Name', value: 'fullName' },
-        { text: 'PRC Number', value: 'prcNo' },
+        { text: 'PRC Number', value: 'prcNumber' },
         { text: 'PMA Number', value: 'pmaNo' },
         { text: 'PRC Expiration', value: 'prcExp' },
         { text: 'Chapter', value: 'chapterName' },
@@ -297,6 +297,7 @@ export default {
         this.members.data = response.data.map((items, index)  => {
           return {
             prcNo: items.prcNo,
+            prcNumber: items.prcNumber,
             pmaNo: items.pmaNo,
             fullName: this.capitalizeName(items),
             prcExp: items.prcExp,

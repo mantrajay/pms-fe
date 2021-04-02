@@ -9,7 +9,7 @@
             cols="12"
             sm="6"
             md="6">
-            <h4>UPDATED PERSONAL INFORMATION</h4>
+            <h4>PERSONAL INFORMATION</h4>
           </v-col>
           <v-col
             cols="12"
@@ -47,24 +47,28 @@
               <v-col
                 cols="12"
                 sm="12"
-                md="12"
-                class="d-flex">
+                md="12">
                 <h4>Authentication Information</h4>
-                <v-switch
-                  class="mt-n2 ml-5"
-                  v-model="isChangePassword"
-                  label="Change Passwor"
-                  color="primary"
-                  hide-details />
               </v-col>
               <v-col
                 cols="12"
                 sm="12"
                 md="12"
-                class="mt-2 mb-n8">
+                class="mt-4">
                 <small class="error-text">Please  change your password for first use and every 30-90 days.</small>
               </v-col>
               <v-col
+                cols="12"
+                sm="12"
+                md="12"
+                class="mt-n14">
+                <v-switch
+                  v-model="isChangePassword"
+                  label="Change Password"
+                  color="primary"
+                  hide-details />
+              </v-col>
+              <!-- <v-col
                 cols="12"
                 sm="4"
                 md="4">
@@ -74,10 +78,10 @@
                   disabled
                   v-model="form.username.value"
                   :class="{'text-input': form.username.isEmpty}"
-                  @blur="validationKey(form.username, 'Last Name')"
+                  @blur="validationKey(form.username, 'Username')"
                   dense
                   label="Enter Username *" />
-              </v-col>
+              </v-col> -->
               <v-col
                 cols="12"
                 sm="4"
@@ -572,7 +576,7 @@ export default {
       visiblePassword: false,
       visibleConfirmPassword: false,
       form: {
-        username: this.iRules('', true),
+        username: this.iRules('', false),
         password: this.iRules('', true),
         confirmPassword: this.iRules('', true),
         firstName: this.iRules('', true),
@@ -581,15 +585,15 @@ export default {
         pmaNo: this.iRules('', true),
         prcNo: this.iRules('', true),
         prcExp: this.iRules('', true),
-        birthday: this.iRules('', false),
-        religion: this.iRules('', false),
-        civilStatus: this.iRules('', false),
-        gender: this.iRules('', false),
-        hospitalAffiliation: this.iRules('', false),
-        specialty: this.iRules('', false),
+        birthday: this.iRules('', true),
+        religion: this.iRules('', true),
+        civilStatus: this.iRules('', true),
+        gender: this.iRules('', true),
+        hospitalAffiliation: this.iRules('', true),
+        specialty: this.iRules('', true),
         homeAdd: this.iRules('', false),
         workAdd: this.iRules('', false),
-        mobile: this.iRules('', false),
+        mobile: this.iRules('', true),
         phone: this.iRules('', false),
         chapter: this.iRules('', true),
         membership: this.iRules('', true),
@@ -700,7 +704,7 @@ export default {
       this.form.hospitalAffiliation.value = data.hospital_affiliation
       this.form.specialty.value = data.specialty
       this.form.pmaNo.value = data.pma_no
-      this.form.prcNo.value = data.prc_no
+      this.form.prcNo.value = data.prcNumber
       this.form.prcExp.value = data.prc_exp
       this.form.birthday.value = data.birthday
       this.form.gender.value = data.gender
@@ -791,6 +795,7 @@ export default {
         year: this.form.year.value,
         yearArrears: JSON.stringify(yearArrears),
         isChangePassword: this.isChangePassword ? 1 : 0,
+        isUsernameUpdate: true
       })
       let method = 'create'
       if (this.memberId) {
