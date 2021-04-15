@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <client-only>
       <v-main>
-      <Navigation v-if="GET_AUTH.token"/>
+        <Navigation v-if="GET_AUTH.token"/>
         <nuxt />
       </v-main>
       <Alert />

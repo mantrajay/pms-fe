@@ -11,11 +11,14 @@
     class="d-none d-md-flex d-sm-none"
     cols="12"
     md="9"
-    sm="9"
-    :style="{'background-image': `url(${loginLogo})`,
-    'background-size': 'cover',
-    'min-height': '100vh' }">
+    sm="9">
+    <img
+      class="background-logo"
+      :src="loginLogo" />
   </v-col>
+  <!-- :style="{'background-image': `url(${loginLogo})`,
+    'background-size': 'cover',
+    'min-height': '100vh' }" -->
 </v-row>
 </template>
 <script>
@@ -28,8 +31,14 @@ export default {
   },
   data () {
     return {
-      loginLogo: require('@/assets/images/login-background.jpg')
+      loginLogo: require('@/assets/images/logo.jpg')
     }
   }
 }
 </script>
+<style scoped>
+.background-logo {
+  width: 100%;
+  height: 100vh;
+}
+</style>

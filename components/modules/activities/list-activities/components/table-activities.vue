@@ -55,34 +55,37 @@
             :items-per-page="15"
             :loading="activities.loading">
             <template v-slot:item.actions="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    elevation="0"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="$emit('show', item.id)"
-                    color="primary"
-                    small>
-                    Update
-                  </v-btn>
-                </template>
-                <span>Update</span>
-              </v-tooltip>
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    v-bind="attrs"
-                    v-on="on"
-                    small
-                    color="indigo"
-                    class="white--text"
-                    @click="showSerach = true, activityId = item.id">
-                    Assign Members
-                  </v-btn>
-                </template>
-                <span>Assign Members</span>
-              </v-tooltip>
+              <div class="d-flex">
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      elevation="0"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="$emit('show', item.id)"
+                      color="primary"
+                      class="ma-1"
+                      small>
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Update</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      small
+                      color="indigo"
+                      class="white--text ma-1"
+                      @click="showSerach = true, activityId = item.id">
+                      <v-icon>mdi-briefcase-plus</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Assign Members</span>
+                </v-tooltip>
+              </div>
             </template>
             <template v-slot:item.points="{ item }">
               <v-tooltip top>

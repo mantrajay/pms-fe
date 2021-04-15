@@ -63,7 +63,7 @@
       sm="12"
       class="text-center">
       <p class="copy-right">
-        &copy; Copyright 2020
+        &copy; Copyright 2021
         <span class="copy-text">
           <b>Pangasinan Medical Society</b>
         </span>
