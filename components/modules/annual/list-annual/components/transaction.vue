@@ -43,7 +43,6 @@
               md="4">
               <v-row>
                 <v-col
-                  class="mt-n5"
                   cols="12"
                   sm="6"
                   md="6">
@@ -368,7 +367,11 @@ export default {
 
     deleteTransaction () {
       this.deleteConfirm.loading = true
-      this.API_POST({url: `Arrears/deleteTransaction/${this.transactionId}`})
+      let formData = this.formParams({
+        prcNo: this.memberDetail.prcNo,
+        year: this.arrears.year
+      })
+      this.API_POST({url: `Arrears/deleteTransaction/${this.transactionId}`, data: formData})
         .then(response => {
           this.$emit('event')
           this.fetchArrearDetail()

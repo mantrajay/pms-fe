@@ -2,7 +2,7 @@
 <div>
   <v-dialog v-model="dialog"
     persistent
-    :max-width="annualId ? '30%' : '80%'">
+    max-width="80%">
     <v-card>
       <v-card-title>
         <v-row>
@@ -10,7 +10,7 @@
             cols="12"
             sm="7"
             md="7">
-            <h4>{{ annualId ? 'UPDATE' : 'CREATE'}} ANNUAL(S)</h4>
+            <h4>{{ arrears ? 'UPDATE' : 'CREATE'}} ANNUAL(S)</h4>
           </v-col>
           <v-col
             cols="12"
@@ -31,7 +31,7 @@
                 :disabled="confirm.loading"
                 v-if="isBtnEnabled"
                 @click="confirmSubmit">
-                {{ annualId ? 'Update' : 'Create'}}
+                {{ arrears ? 'Update' : 'Create'}}
               </v-btn>
           </v-col>
         </v-row>
@@ -57,23 +57,23 @@
             :class="{'mt-n3': index > 0}">
             <v-col
               cols="12"
-              :md="annualId ? 12 : 3"
-              :sm="annualId ? 12 : 3"
+              :md="4"
+              :sm="4"
               class="mt-n3">
               <v-text-field
                 outlined
-                readonly
+                :readonly="!arrears"
                 v-model="items.membership.value"
                 :class="{'text-input': items.membership.isEmpty, 'view-only': setting === 'view'}"
                 @blur="validationKey(items.membership, 'Arrear arrear')"
                 dense
-                label="Enter Amount *"
+                label="Mermbership Name"
               ></v-text-field>
             </v-col>
             <v-col
               cols="12"
-              :sm="annualId ? 12 : 6"
-              :md="annualId ? 12 : 2"
+              :md="4"
+              :sm="4"
               class="mt-n3">
               <v-text-field
                 outlined
@@ -82,13 +82,14 @@
                 :class="{'text-input': items.amount.isEmpty, 'view-only': setting === 'view'}"
                 @blur="validationKey(items.amount, 'Arrear amount')"
                 dense
+                @keypress="integerOnly($event)"
                 label="Enter Amount *"
               ></v-text-field>
             </v-col>
             <v-col
               cols="12"
-              :sm="annualId ? 12 : 6"
-              :md="annualId ? 12 : 2"
+              :md="3"
+              :sm="3"
               class="mt-n3">
               <v-select
                 :items="yearList"
@@ -98,28 +99,13 @@
                 v-model="items.year.value"
                 :class="{'text-input': items.year.isEmpty, 'view-only': setting === 'view'}"
                 @blur="validationKey(items.year, 'Year')"
+                @change="changeDate(index, items.year.value)"
               ></v-select>
             </v-col>
             <v-col
               cols="12"
-              :sm="annualId ? 12 : 4"
-              :md="annualId ? 12 : 4"
-              class="mt-n3">
-              <v-text-field
-                outlined
-                v-model="items.description.value"
-                :disabled="setting === 'view'"
-                :class="{'text-input': items.description.isEmpty, 'view-only': setting === 'view'}"
-                @blur="validationKey(items.description, 'Description')"
-                required
-                dense
-                label="Enter Description *"
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="12"
-              :sm="annualId ? 12 : 1"
-              :md="annualId ? 12 : 1"
+              :md="1"
+              :sm="1"
               class="mt-n2">
               <v-btn
                 elevation="0"
@@ -150,8 +136,8 @@
 export default {
   name: 'Create-Annual',
   props:{
-    annualId: {
-      type: String,
+    arrears: {
+      type: Object,
       default: ''
     },
     setting: {
@@ -205,7 +191,7 @@ export default {
   },
 
   fetch () {
-    if (this.annualId) this.fetchArrears()
+    if (this.arrears) this.fetchArrears()
     else this.getMemberships()
     this.generateArrayOfYears() // Mixins
   },
@@ -234,7 +220,10 @@ export default {
     },
 
     fetchArrears () {
-      this.API_POST({ url: 'Arrears/fetchById/' + this.annualId})
+      let formData = new FormData()
+      formData.append('membershipId', this.arrears.membership_id)
+      formData.append('years', this.arrears.year)
+      this.API_POST({ url: 'Arrears/fetchArrearsByYear', data: formData})
         .then(response => {
           let data = response.data
           this.setForm(data)
@@ -242,18 +231,27 @@ export default {
         .finally(this.loading = false)
     },
 
+    changeDate (index, date) {
+      this.form.map((items, key) => {
+        if (key !== index) return items.year.value = date
+      })
+    },
+
     setForm (data = {}) {
-      this.form.push({
-        membershipId: this.iRules(data.membership_id, true),
-        membership: this.iRules(data.name, true),
-        amount: this.iRules(data.amount, true),
-        description: this.iRules(data.description, false),
-        year: this.iRules(parseInt(data.year), true)
+      data.forEach(items => {
+        this.form.push({
+          id: this.iRules(items.id, true),
+          membershipId: this.iRules(items.membership_id, true),
+          membership: this.iRules(items.name, true),
+          amount: this.iRules(items.amount, true),
+          description: this.iRules('', false),
+          year: this.iRules(parseInt(items.year), true)
+        })
       })
     },
 
     confirmSubmit () {
-      let type = this.annualId ? 'Update' : 'Create'
+      let type = this.items ? 'Update' : 'Create'
       this.confirm.show = true
       this.confirm.msg = `Are you sure you want to ${type.toLowerCase()} these arrear(s)?`
       this.confirm.title = `${type} Arrear`
@@ -270,9 +268,9 @@ export default {
         formData.append('arrears[]', JSON.stringify(arrear))
       })
       let method = 'create'
-      if (this.annualId) {
+      if (this.arrears) {
         method = 'update'
-        formData.append('arrearId', this.annualId)
+        formData.append('arrearId', this.arrears)
       }
       this.API_POST({url: `Arrears/${method}`, data: formData})
         .then(response => {

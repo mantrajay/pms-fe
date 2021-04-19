@@ -55,6 +55,15 @@
                 :items-per-page="attendees.length"
                 :hide-default-footer="true"
                 :loading="loading">
+                <template v-slot:item.actions="{ item, index }">
+                  <v-btn
+                    class="float-left"
+                    @click="deleteMember(item.id, index)"
+                    color="error"
+                    v-if="!item.fullName">
+                    Remove - Member does not exist!
+                  </v-btn>
+                </template>
               </v-data-table>
             </v-col>
           </v-row>
@@ -78,10 +87,13 @@ export default {
       dialog: true,
       attendees: [],
       search: '',
+      loading: false,
+      loadingRemove: false,
       headers: [
         { text: 'Member Name', value: 'fullName' },
         { text: 'PRC Number', value: 'prc_no' },
         { text: 'PRC Expiration', value: 'prc_exp' },
+        { text: '', value: 'actions' },
       ],
     }
   },
@@ -96,14 +108,37 @@ export default {
       this.API_POST({ url: 'Activities/fetchAttendees/' + this.activityId})
         .then(response => {
           this.attendees = response.data.map(items => {
-            return {
-              prc_no: items.prc_no,
-              fullName: this.capitalizeChar(items),
-              prc_exp: this.getLocalDate(items.prc_exp)
+            if (items.memberInfo) {
+              return {
+                id: items.id,
+                prc_no: items.prcNo,
+                fullName: this.capitalizeChar(items.memberInfo),
+                prc_exp: this.getLocalDate(items.memberInfo.prc_exp)
+              }
+            } else {
+              return {
+                id: items.id,
+                prc_no: '',
+                fullName: '',
+                prc_exp: ''
+              }
             }
           })
         }).catch(error => {  })
         .finally(this.loading = false)
+    },
+
+    deleteMember(id, index) {
+      this.loadingRemove = true
+      this.API_POST({ url: 'Activities/deleteMember/' + id})
+        .then(response => {
+          this.attendees.splice(1, index)
+          this.SET_ALERT_SUCCESS(response.response)
+          console.log(response)
+        }).catch(error => {
+          this.SET_ALERT_ERROR(error.response)
+        })
+        .finally(this.loadingRemove = false)
     }
   }
 }

@@ -3,7 +3,7 @@
   <v-dialog
     v-model="dialog"
     persistent
-    max-width="70%">
+    max-width="80%">
     <v-card>
       <v-card-title>
         <v-row>
@@ -78,6 +78,7 @@
               class="mt-n3">
               <v-text-field
                 outlined
+                readonly
                 v-model="item.amount.value"
                 :class="{'text-input': item.amount.isEmpty}"
                 @blur="validationKey(item.amount, 'Arrear amount')"
@@ -148,7 +149,7 @@ export default {
   name: 'Create-Member-Transaction',
   props:{
     items: {
-      type: Array,
+      type: Object,
       default: null
     }
   },
@@ -174,7 +175,6 @@ export default {
       let enable = true
       this.form.forEach(items => {
         Object.keys(items).forEach(index => {
-          console.log(index)
           let value = items[index].value
           let required = items[index].required
           if (required) {
@@ -193,9 +193,13 @@ export default {
   methods: {
     getMembershipAmount () {
       this.loading = true
+      let yearList = []
+      this.items.yearArrear.map(items => {
+        if (items.year) yearList.push(items)
+      })
       let formData = new FormData()
       formData.append('membershipId', this.items.membershipId)
-      formData.append('years', JSON.stringify(this.items.years))
+      formData.append('years', JSON.stringify(yearList))
       this.API_POST({ url: 'Members/fetchMembershipAmount', data: formData })
       .then(response => {
         let data = response.data

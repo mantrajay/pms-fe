@@ -22,7 +22,7 @@
       <ActivityList :memberId="GET_AUTH.userId" />
     </v-col>
   </v-row>
-  <create-update-activity
+  <CreateUpdateActivity
     v-if="showDialog"
     :activityId="activityId"
     @close="showDialog = false"

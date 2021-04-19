@@ -194,6 +194,22 @@ export const Mixins = {
     },
 
     generateArrayOfYears() {
+      let max = new Date().getFullYear() + 2
+      let min = max - 5
+      for (let i = max; i >= min; i--) {
+        this.yearList.push(i)
+      }
+    },
+
+    yearListArrears() {
+      let max = new Date().getFullYear() + 2
+      let min = max - 5
+      for (let i = max; i >= min; i--) {
+        this.yearListStartArrear.push(i)
+      }
+    },
+
+    yearListRegistration() {
       let max = new Date().getFullYear() + 9
       let min = max - 70
       for (let i = max; i >= min; i--) {

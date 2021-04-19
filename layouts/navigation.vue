@@ -38,15 +38,12 @@
         sm="11"
         md="11"
         class="text-center">
-        <v-avatar
-          color="primary"
-          size="120">
+        <div class="user-logo-wrapper">
           <v-img
-            :lazy-src="require('@/assets/images/avatar.png')"
-            max-height="120"
-            max-width="140"
+            class="user-logo"
+            :lazy-src="require('@/assets/images/avatar.svg')"
             :src="GET_AUTH.photo" />
-        </v-avatar>
+        </div>
         <h4 class="mt-3">{{ GET_AUTH.accountName }}</h4>
         <div
           class="mt-2"
@@ -226,6 +223,13 @@ export default {
 }
 </script>
 <style scoped>
+.user-logo-wrapper {
+  width: 40%;
+  margin: auto;
+}
+.user-logo >>> .v-image__image--preload{
+  filter: blur(0px) !important;
+}
 .label {
   color: #595959;
 }

@@ -106,8 +106,9 @@
                     color="error"
                     small
                     v-for="(chip, index) in item.yearArrear"
-                    :key="index">
-                    {{ chip.years }}
+                    :key="index"
+                    v-show="chip.year">
+                    {{ chip.year }}
                   </v-chip>
                 </div>
                 <div v-else>
@@ -197,7 +198,7 @@ export default {
       pager: {
         pageNo: 1,
         totalPage: 1,
-        limit: 10
+        limit: 15
       },
       showActivity: false,
       showAnnualFees: false,
@@ -226,7 +227,7 @@ export default {
     })
   },
 
-  mounted () {
+  fetch () {
     this.fetchMembers()
   },
 
@@ -295,6 +296,10 @@ export default {
           data: this.searchParams(this.pager.pageNo)
         })
         this.members.data = response.data.map((items, index)  => {
+          let yearList = []
+          items.yearArrear.map(values => {
+            if (values.year) yearList.push(values)
+          })
           return {
             prcNo: items.prcNo,
             prcNumber: items.prcNumber,
@@ -305,7 +310,7 @@ export default {
             membershipName: items.membershipName,
             status: items.status,
             membershipId: items.membership_id,
-            yearArrear: items.yearArrear
+            yearArrear: yearList
           }
         })
         this.pager.totalPage = response.totalPage

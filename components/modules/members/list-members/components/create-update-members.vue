@@ -325,6 +325,24 @@
                   label="Select Year Registered *"
                 ></v-select>
               </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-select
+                  class="mt-n3"
+                  :items="yearListStartArrear"
+                  v-model="form.yearStartArrear.value"
+                  item-text="name"
+                  item-value="id"
+                  :disabled="setting === 'view'"
+                  :class="{'text-input': form.yearStartArrear.isEmpty, 'view-only': setting === 'view'}"
+                  @blur="validationKey(form.yearStartArrear)"
+                  dense
+                  outlined
+                  label="Year Start the Arrear *"
+                ></v-select>
+              </v-col>
             </v-row>
             <v-row class="mt-n7">
               <v-col
@@ -539,10 +557,12 @@ export default {
         chapter: this.iRules('', true),
         membership: this.iRules('', true),
         year: this.iRules(currentYear, true),
+        yearStartArrear: this.iRules(2018, true),
         email: this.iRules('', false),
         photo: this.iRules('', false)
       },
       yearList: [],
+      yearListStartArrear: [],
       genderList: [ 
         { value: 'Male', text: 'Male' },
         { value: 'Female', text: 'Female' },
@@ -591,7 +611,8 @@ export default {
   fetch () {
     if (this.memberId) this.fetchMember()
     this.fetchAttribute()
-    this.generateArrayOfYears()
+    this.yearListRegistration()
+    this.yearListArrears()
   },
 
   methods: {
@@ -640,6 +661,7 @@ export default {
       this.form.membership.value = data.membership_id
       this.form.photo.value = image
       this.form.year.value = parseInt(data.year)
+      this.form.yearStartArrear.value = parseInt(data.year_start_arrear)
     },
 
     fileImageHandler() {
@@ -675,13 +697,6 @@ export default {
 
     submit () {
       this.confirm.loading = true
-      let date = new Date()
-      let currentYear = parseInt(date.getFullYear())
-      let yearChoose = parseInt(this.form.year.value)
-      let yearArrears = []
-      for (let i = currentYear; i >= yearChoose; i--) {
-        yearArrears.push(i)
-      }
       let formData = this.formParams({
         user_id: this.GET_AUTH.userId,
         first_name: this.form.firstName.value,
@@ -707,7 +722,7 @@ export default {
         photo: this.selectedFile ? this.selectedFile : '',
         removeImage: this.removeImage,
         year: this.form.year.value,
-        yearArrears: JSON.stringify(yearArrears),
+        yearStartArrear: this.form.yearStartArrear.value,
         isUsernameUpdate: true
       })
       let method = 'create'
@@ -750,6 +765,7 @@ export default {
         chapter: this.iRules('', true),
         email: this.iRules('', true),
         membership: this.iRules('', true),
+        yearStartArrear: this.iRules('', true),
         photo: this.iRules('', false)
       }
     }

@@ -79,8 +79,10 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    v-bind="attrs"
+                    v-on="on"
                     elevation="0"
-                    @click="$emit('show', item.id)"
+                    @click="$emit('show', item)"
                     color="primary"
                     small>
                     <v-icon>mdi-brush</v-icon>
@@ -91,14 +93,16 @@
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    v-bind="attrs"
+                    v-on="on"
                     elevation="0"
-                    @click="showMembersAnnual(item)"
                     color="primary"
+                    @click="showMembersAnnual(item)"
                     small>
                     <v-icon>mdi-account-switch</v-icon>
                   </v-btn>
                 </template>
-                <span>Update</span>
+                <span>Member's Arrear</span>
               </v-tooltip>
             </template>
           </v-data-table>

@@ -12,8 +12,8 @@
           <v-row>
             <v-col
               cols="12"
-              sm="5"
-              md="5">
+              sm="4"
+              md="4">
               <v-text-field
                 v-debounce:300="search"
                 append-icon="mdi-magnify"
@@ -25,10 +25,25 @@
               ></v-text-field>
             </v-col>
             <v-col
+              cols="12"
+              sm="4"
+              md="4">
+              <v-select
+                :items="yearListStartArrear"
+                v-model="activities.year"
+                @change="fetchActivities(1)"
+                item-text="name"
+                item-value="id"
+                dense
+                outlined
+                label="Filter by year"
+              ></v-select>
+            </v-col>
+            <v-col
               v-if="GET_AUTH.roleId == 1"
               cols="12"
-              md="7"
-              sm="7"
+              md="4"
+              sm="4"
               class="text-right">
               <v-btn
                 elevation="0"
@@ -48,6 +63,7 @@
       class="mt-n3">
       <v-card elevation="0">
         <v-container fluid>
+          <h2>Total Points: {{ pager.totalPoints }}</h2>
           <v-data-table
             class="pa-3"
             :headers="tableHeader"
@@ -86,6 +102,9 @@
                   <span>Assign Members</span>
                 </v-tooltip>
               </div>
+            </template>
+            <template v-slot:item.name="{ item }">
+              <p>{{ stringLimit(item.name, 40) }}</p>
             </template>
             <template v-slot:item.points="{ item }">
               <v-tooltip top>
@@ -148,17 +167,20 @@ export default {
     return {
       activities: {
         data: [], 
+        year: '',
         keyword: '', 
         loading: false
       },
       pager: {
         pageNo: 1,
         totalPage: 1,
+        totalPoints: 0,
         limit: 5000
       },
       activityId: '',
       showAttendees: false,
-      showSerach: false
+      showSerach: false,
+      yearListStartArrear: []
     }
   },
 
@@ -166,21 +188,18 @@ export default {
     tableHeader () {
       if (this.GET_AUTH.roleId == 1) {
         return [
-          { text: 'Code', value: 'code' },
           { text: 'Name', value: 'name' },
           { text: 'Points', value: 'points' },
           { text: 'Attendees', value: 'countAttendees' },
-          { text: 'Start Time', value: 'start_time' },
-          { text: 'End Time', value: 'end_time' },
+          { text: 'Date', value: 'date' },
+          { text: 'Time', value: 'time' },
           { text: 'Action', value: 'actions'}
         ]
       } else {
         return [
-          { text: 'Code', value: 'code' },
           { text: 'Name', value: 'name' },
           { text: 'Points', value: 'points' },
-          { text: 'Start Time', value: 'start_time' },
-          { text: 'End Time', value: 'end_time' },
+          { text: 'Time', value: 'time' }
         ]
       }
     }
@@ -194,6 +213,7 @@ export default {
 
   fetch () {
     this.fetchActivities()
+    this.yearListArrears()
   },
 
   methods: {
@@ -205,12 +225,13 @@ export default {
     searchParams (pageNo) {
       return this.formParams({
         keyword: this.activities.keyword,
+        year: this.activities.year,
         currentPage: pageNo,
         limit: this.pager.limit
       })
     },
 
-    async fetchActivities (pageNo) {
+    async fetchActivities (pageNo = 0) {
       this.pager.pageNo = pageNo || this.pager.pageNo
       this.activities.loading = true
       try {
@@ -219,7 +240,22 @@ export default {
           data: this.searchParams(this.pager.pageNo)
         })
         this.activities.data = []
-        this.activities.data = response.data
+        this.activities.data = response.data.map(items => {
+          let date = items.start_time.split(' ')[0]
+          let startTime = new Date(items.start_time)
+          let endTime = new Date(items.end_time)
+          let time = startTime.toLocaleTimeString() + ' - ' + endTime.toLocaleTimeString()
+          return {
+            id: items.id,
+            code: items.code,
+            name: items.name,
+            points: items.points,
+            countAttendees: items.countAttendees,
+            date: this.getLocalDate(date),
+            time: time
+          }
+        })
+        this.pager.totalPoints = response.totalPoints
         this.pager.totalPage = response.totalPage
         this.$emit('event')
       } catch (error) {

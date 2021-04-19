@@ -25,7 +25,7 @@
   </v-row>
   <CreateUpdateAnnual
     v-if="showDialog"
-    :annualId="annualId"
+    :arrears="arrears"
     @close="showDialog = false"
     :setting="setting"
     @event="reFetch = true, showDialog = false"/>
@@ -46,7 +46,7 @@ export default {
     return {
       showDialog: false,
       reFetch: false,
-      annualId: '',
+      arrears: null,
       setting: 'create'
     }
   },
@@ -57,9 +57,9 @@ export default {
       this.setting = 'create'
     },
 
-    showUpdate (id) {
+    showUpdate (item) {
       this.showDialog = true
-      this.annualId = id
+      this.arrears = item
       this.setting = 'update'
     }
   }
