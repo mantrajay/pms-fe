@@ -11,8 +11,9 @@ export default {
     state.auth.isInfoUpdated = data.isInfoUpdated || false
   },
 
-  SET_AUTH_INFO: (state) => {
+  SET_AUTH_INFO: (state, photo) => {
     state.auth.isInfoUpdated = false
+    state.auth.photo = photo
   },
 
   /**

@@ -109,13 +109,13 @@
     @close="showProfile = false"
     :memberId="GET_AUTH.userId"
     :isPorfile="true"
-    v-if="showProfile"/>
+    v-if="showProfile || GET_AUTH.isInfoUpdated"/>
 </div>
 </template>
 <script>
+import UserInfo from './user-info'
 import ProfileButtons from './profile-buttons'
 import { mapGetters } from 'vuex'
-import UserInfo from '~/components/modules/activities/list-activities/components/user-info'
 export default {
   name: 'Navigation',
   components: {

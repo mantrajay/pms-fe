@@ -28,23 +28,18 @@
     @close="showDialog = false"
     :setting="setting"
     @event="reFetch = true, showDialog = false"/>
-  <UserInfo
-    :memberId="GET_AUTH.userId"
-    v-if="GET_AUTH.isInfoUpdated"/>
 </div>
 </template>
 <script>
 import TableData from './components/table-activities'
 import CreateUpdateActivity from './components/create-update-activity'
 import ActivityList from './components/member-activities'
-import UserInfo from './components/user-info'
 export default {
   name: 'Patient-List',
   components: {
     TableData,
     CreateUpdateActivity,
-    ActivityList,
-    UserInfo
+    ActivityList
   },
   data () {
     return {
@@ -52,7 +47,6 @@ export default {
       reFetch: false,
       activityId: '',
       setting: 'create',
-      isInfoUpdated: false,
       memberId: ''
     }
   },

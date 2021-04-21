@@ -7,7 +7,7 @@
       </v-main>
       <Alert />
       <Loading />
-   </client-only>
+    </client-only>
   </v-app>
 </template>
 <script>

@@ -804,8 +804,8 @@ export default {
       }
       this.API_POST({url: `Members/${method}`, data: formData})
         .then(response => {
-          this.SET_ALERT_SUCCESS(response.response)
-          this.SET_AUTH_INFO()
+          this.SET_ALERT_SUCCESS(response.response.message)
+          this.SET_AUTH_INFO(response.response.photo)
           this.$emit('close')
         })
         .catch(error => { this.SET_ALERT_ERROR(error.response) })
