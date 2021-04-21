@@ -14,6 +14,7 @@ export default {
   SET_AUTH_INFO: (state, photo) => {
     state.auth.isInfoUpdated = false
     state.auth.photo = photo
+    console.log(state.auth)
   },
 
   /**

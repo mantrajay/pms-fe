@@ -120,6 +120,7 @@ export default {
           data: formData
         })
         let data = response.data
+        console.log(parseInt(data.isInfoUpdated))
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,

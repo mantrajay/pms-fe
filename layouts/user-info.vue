@@ -17,7 +17,7 @@
             md="6"
             class="text-right">
             <v-btn
-              v-if="isPorfile"
+              v-if="!isPorfile"
               text
               elevation="0"
               @click="$emit('close')">

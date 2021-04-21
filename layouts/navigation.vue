@@ -41,6 +41,7 @@
         <div class="user-logo-wrapper">
           <v-img
             class="user-logo"
+            :aspect-ratio=".8"
             :lazy-src="require('@/assets/images/avatar.svg')"
             :src="GET_AUTH.photo" />
         </div>
@@ -108,7 +109,7 @@
   <UserInfo
     @close="showProfile = false"
     :memberId="GET_AUTH.userId"
-    :isPorfile="true"
+    :isPorfile="GET_AUTH.isInfoUpdated"
     v-if="showProfile || GET_AUTH.isInfoUpdated"/>
 </div>
 </template>
@@ -224,11 +225,14 @@ export default {
 </script>
 <style scoped>
 .user-logo-wrapper {
-  width: 40%;
+  width: 50%;
   margin: auto;
 }
 .user-logo >>> .v-image__image--preload{
   filter: blur(0px) !important;
+}
+.user-logo {
+  border: 2px solid #eeeeee;
 }
 .label {
   color: #595959;

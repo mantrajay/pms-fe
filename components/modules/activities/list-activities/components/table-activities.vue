@@ -15,6 +15,7 @@
               sm="4"
               md="4">
               <v-text-field
+                v-model="activities.keyword"
                 v-debounce:300="search"
                 append-icon="mdi-magnify"
                 label="Search"
@@ -26,8 +27,8 @@
             </v-col>
             <v-col
               cols="12"
-              sm="4"
-              md="4">
+              sm="3"
+              md="3">
               <v-select
                 :items="yearListStartArrear"
                 v-model="activities.year"
@@ -38,6 +39,16 @@
                 outlined
                 label="Filter by year"
               ></v-select>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="1"
+              md="1">
+              <v-btn
+                @click="reset"
+                color="primary">
+                Reset
+              </v-btn>
             </v-col>
             <v-col
               v-if="GET_AUTH.roleId == 1"
@@ -231,7 +242,13 @@ export default {
       })
     },
 
-    async fetchActivities (pageNo = 0) {
+    reset () {
+      this.activities.year = ''
+      this.activities.keyword = ''
+      this.fetchActivities(1)
+    },
+
+    async fetchActivities (pageNo = 1) {
       this.pager.pageNo = pageNo || this.pager.pageNo
       this.activities.loading = true
       try {
