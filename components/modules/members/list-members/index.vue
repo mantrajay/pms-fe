@@ -25,7 +25,6 @@
 <script>
 import TableData from './components/table-members'
 import CreateUpdateMembers from './components/create-update-members'
-import { mapGetters } from 'vuex'
 export default {
   name: 'Patient-List',
   components: {

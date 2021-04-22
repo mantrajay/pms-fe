@@ -7,6 +7,15 @@ export default {
   middleware: 'routerGuard',
   components: {
     Login
+  },
+
+  created () {
+    this.$store.dispatch('common/API_GET', {
+      url: 'Auth/checkToken'
+    })
+    .then(response => {
+      this.$router.push('/activities')
+    })
   }
 }
 </script>

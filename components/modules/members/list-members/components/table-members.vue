@@ -257,7 +257,7 @@ export default {
         return
       }
       if (list.id === 1) {
-        this.$emit('show', item.prcNo)
+        this.$emit('show', item.prcNo, 'update')
       }
     },
 

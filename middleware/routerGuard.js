@@ -1,11 +1,10 @@
 export default function ({app, store, redirect}) {
   store.dispatch('common/API_GET', {
-    url: '/Auth/checkToken'
+    url: 'Auth/checkToken'
   }).then(response => {
-    redirect()
+    return redirect()
   }).catch((error) => {
-    console.log(error)
-    store.commit('common/SET_AUTH')
-    redirect('/')
+    store.commit('common/SET_AUTH', {})
+    return redirect('/')
   })
 }

@@ -44,6 +44,92 @@
             cols="12"
             md="8"
             sm="8">
+            <v-row v-if="GET_AUTH.roleId == 1">
+              <v-col
+                cols="12"
+                sm="12"
+                md="12">
+                <h4>Authentication Information</h4>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+                class="mt-4">
+                <small class="error-text">Please  change your password for first use and every 30-90 days.</small>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+                class="mt-n14">
+                <v-switch
+                  v-model="isChangePassword"
+                  label="Change Password"
+                  color="primary"
+                  hide-details />
+              </v-col>
+              <!-- <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-text-field
+                  class="mt-n3"
+                  outlined
+                  :disabled="!isChangePassword"
+                  v-model="username.value"
+                  :class="{'text-input': username.isEmpty}"
+                  @blur="validationKey(username, 'Username')"
+                  dense
+                  label="Enter Username *" />
+              </v-col> -->
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-text-field
+                  class="mt-n3"
+                  outlined
+                  v-model="password.value"
+                  :class="{'text-input': password.isEmpty}"
+                  @blur="validationKey(password, 'Last Name')"
+                  :append-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="visiblePassword ? 'text' : 'password'"
+                  @click:append="visiblePassword = !visiblePassword"
+                  dense
+                  :disabled="!isChangePassword"
+                  label="Enter New Password *" />
+              </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <v-text-field
+                  class="mt-n3"
+                  outlined
+                  v-model="confirmPassword.value"
+                  :class="{'text-input': confirmPassword.isEmpty}"
+                  @blur="validationKey(confirmPassword, 'Last Name')"
+                  :append-icon="visibleConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="visibleConfirmPassword ? 'text' : 'password'"
+                  @click:append="visibleConfirmPassword = !visibleConfirmPassword"
+                  dense
+                  :disabled="!isChangePassword"
+                  label="Enter Confirm Password *" />
+              </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4"
+                class="mt-md-n2">
+                <v-btn
+                  @click="changePassword"
+                  :disabled="!isChangePassword"
+                  color="primary">
+                  Change Password
+                </v-btn>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col
                 cols="12"
@@ -147,7 +233,8 @@
               <v-col
                 cols="12"
                 sm="4"
-                md="4">
+                md="4"
+                v-if="!isProfile">
                 <v-select
                   class="mt-n7"
                   :loading="loadingRoles"
@@ -237,7 +324,8 @@
                 cols="12"
                 sm="12"
                 md="12"
-                class="mt-n6">
+                class="mt-n6"
+                v-if="!isProfile">
                 <p><b>Status *</b></p>
                 <v-radio-group
                   v-model="form.status.value"
@@ -352,6 +440,10 @@ export default {
     setting: {
       type: String,
       default: 'create'
+    },
+    isProfile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -376,6 +468,8 @@ export default {
         image: this.iRules(null, false),
         address: this.iRules('', true),
       },
+      password: this.iRules('', true),
+      confirmPassword: this.iRules('', true),
       genderList: [ 
         { value: 'M', text: 'Male' },
         { value: 'F', text: 'Female' },
@@ -395,7 +489,24 @@ export default {
       selectedFile: '',
       loading: false,
       loadingRoles: false,
-      removeImage: 'no'
+      removeImage: 'no',
+      isChangePassword: false,
+      loadingChangePw: false
+    }
+  },
+
+  watch: {
+    isChangePassword: {
+      immediate: true,
+      handler (val) {
+        if (!val) {
+          this.form.password = this.iRules('', false)
+          this.form.confirmPassword = this.iRules('', false)
+        } else {
+          this.form.password = this.iRules('', true)
+          this.form.confirmPassword = this.iRules('', true)
+        }
+      }
     }
   },
 
@@ -488,6 +599,45 @@ export default {
       this.confirm.msg = `Are you sure you want to ${this.type} this patient?` 
     },
 
+    changePassword () {
+      if (this.confirmPassword.value !== this.password.value) {
+        this.SET_ALERT_ERROR('Password and confirm password does not match.')
+        this.password.isEmpty = true
+        this.confirmPassword.isEmpty = true
+        return
+      }
+      let willProceed = true
+      if (!this.confirmPassword.value) {
+        willProceed = false
+        this.password.isEmpty = true
+      }
+      if (!this.password.value) {
+        willProceed = false
+        this.confirmPassword.isEmpty = true
+      }
+      if (!willProceed) {
+        this.SET_ALERT_ERROR('Please fill in required fields!')
+        return
+      }
+      this.password.isEmpty = false
+      this.confirmPassword.isEmpty = false
+      this.validateChangePassword()
+    },
+
+    validateChangePassword () {
+      let formData = this.formParams({ password: this.password.value })
+      this.loadingChangePw = true
+      this.API_POST({url: `Users/changePassword`, data: formData})
+        .then(response => {
+          this.resetForm()
+          this.SET_ALERT_SUCCESS(response.response)
+        })
+        .catch(error => { this.errorHandle(error) })
+        .finally(() => {
+          this.loadingChangePw = false
+        })
+    }, 
+
     submit () {
       this.confirm.loading = true
       let formData = this.formParams({
@@ -513,8 +663,8 @@ export default {
       this.API_POST({url: `Users/${method}`, data: formData})
         .then(response => {
           this.resetForm()
-          this.$emit('event')
-          this.SET_ALERT_SUCCESS(response.response)
+          this.$emit('event', response.response.data)
+          this.SET_ALERT_SUCCESS(response.response.message)
         })
         .catch(error => { this.errorHandle(error) })
         .finally(() => {

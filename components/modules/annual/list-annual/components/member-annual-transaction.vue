@@ -1,163 +1,53 @@
 <template>
-  <v-card elevation="0">
-    <v-container fluid>
-      <div v-if="loading">
-        <v-row>
-          <v-col class="text-center">
-            <v-progress-linear
-              :width="3"
-              large
-              color="primary"
-              indeterminate
-            />
-          </v-col>
-        </v-row>
-      </div>
-      <div
-        class="mt-n2"
-        v-else>
-        <v-row>
-          <v-col
-            cols="12"
-            md="12"
-            sm="12">
-            <v-row class="pa-2">
-              <v-col
-                cols="12"
-                md="2"
-                sm="2">
-                <h4>Membership</h4>
-              </v-col>
-              <v-col
-                cols="12"
-                md="1"
-                sm="1">
-                <h4>Year</h4>
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-                sm="2">
-                <h4>Annual Fee</h4>
-              </v-col>
-              <!-- <v-col
-                cols="12"
-                md="2"
-                sm="2">
-                <h4>Total Paid</h4>
-              </v-col> -->
-              <v-col
-                cols="12"
-                md="2"
-                sm="2">
-                <h4>Status</h4>
-              </v-col>
-              <v-col
-                cols="12"
-                md="3"
-                sm="3">
-                <h4>Description</h4>
-              </v-col>
-            </v-row>
-            <v-expansion-panels
-              v-model="panel"
-              multiple
-              class="mt-n3">
-              <v-expansion-panel
-                v-for="(item, i) in annualFees"
-                :key="i"
-              >
-                <v-expansion-panel-header>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      md="2"
-                      sm="2">
-                      <v-chip color="success">
-                        {{ item.name }}
-                      </v-chip>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="1"
-                      sm="1">
-                      {{ item.year }}
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="2"
-                      sm="2">
-                      ₱{{ formatMoney(item.amount) }}
-                    </v-col>
-                    <!-- <v-col
-                      cols="12"
-                      md="2"
-                      sm="2">
-                      ₱{{ totalPaid(item.annualfees) }}
-                    </v-col> -->
-                    <v-col
-                      cols="12"
-                      md="2"
-                      sm="2">
-                      <v-chip color="success">
-                      {{
-                        parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
-                        ? 'Partial'
-                        : !item.amount
-                          ? 'Unpaid'
-                          : 'Paid'
-                      }}
-                      </v-chip>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="3"
-                      sm="3">
-                      {{ item.description }}
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-row class="mt-n4">
-                    <v-col
-                      cols="12"
-                      md="3"
-                      sm="3">
-                      <h4>Amount</h4>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="3"
-                      sm="3">
-                      <h4>Date Paid</h4>
-                    </v-col>
-                  </v-row>
-                  <v-row
-                    class="mt-n2"
-                    v-for="(items, index) in item.annualfees"
-                    :key="index">
-                    <v-col
-                      cols="12"
-                      md="3"
-                      sm="3">
-                      ₱{{ formatMoney(items.amount) }}
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="9"
-                      sm="9">
-                      {{ getLocalDate(items.date_paid, true) }}
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-content>
-                <v-divider></v-divider>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-col>
-        </v-row>
-      </div>
-    </v-container>
-  </v-card>
+  <v-row>
+    <v-col
+      cols="12"
+      md="12"
+      sm="12"
+      v-if="loading">
+      <v-progress-linear
+        :width="3"
+        large
+        color="primary"
+        indeterminate />
+    </v-col>
+    <v-col
+      v-for="(item, i) in annualFees"
+      :key="i"
+      cols="12"
+      md="4"
+      sm="4">
+      <v-card
+        class="mx-auto"
+        max-width="344"
+        outlined>
+        <v-card-text>
+          <h3>{{ item.name }} - <span class="success--text">{{ item.year }}</span></h3>
+          <v-divider class="mt-2"></v-divider>
+          <div class="text--primary mt-3">
+            <b class="mr-1">Amount:</b>₱{{ formatMoney(item.annualfees[0].amount ) }}
+          </div>
+          <div class="text--primary">
+            <b class="mr-1">Date Paid:</b>{{ getLocalDate(item.annualfees[0].date_paid, true).split('-')[0] }}
+          </div>
+        </v-card-text>
+        <v-card-actions class="mt-n2">
+          <v-chip
+            label
+            outlined
+            color="success">
+            {{
+              parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
+              ? 'Partial'
+              : !item.amount
+                ? 'Unpaid'
+                : 'Paid'
+            }}
+          </v-chip>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script>
 export default {

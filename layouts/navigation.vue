@@ -3,21 +3,21 @@
   <v-app-bar
     app
     :clipped-left="$vuetify.breakpoint.lgAndUp"
-    color="primary"
+    color="#10946d"
     dark>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     <v-icon class="mr-2">mdi-stethoscope</v-icon>
     <h2>PMS</h2>
     <v-btn
-        class="mt-n1"
-        absolute
-        top
-        right
-        color="default"
-        outlined
-        @click="confirmLogout">
-        <v-icon>mdi-calendar-end</v-icon>
-        Logout
+      class="mt-n1"
+      absolute
+      top
+      right
+      color="default"
+      outlined
+      @click="confirmLogout">
+      <v-icon>mdi-calendar-end</v-icon>
+      Logout
     </v-btn>
   </v-app-bar>
   <v-navigation-drawer
@@ -37,37 +37,38 @@
         cols="11"
         sm="11"
         md="11"
-        class="text-center">
-        <div class="user-logo-wrapper">
-          <v-img
-            class="user-logo"
-            :aspect-ratio=".8"
-            :lazy-src="require('@/assets/images/avatar.svg')"
-            :src="GET_AUTH.photo" />
-        </div>
-        <h4 class="mt-3">{{ GET_AUTH.accountName }}</h4>
+        class="text-center mt-n2">
+        <img
+          class="profile-photo"
+          :src="GET_AUTH.photo" />
+        <h3 class="purple--text">{{ GET_AUTH.accountName }}</h3>
         <div
           class="mt-2"
           v-if="GET_AUTH.roleId != 1">
           <div
             v-if="GET_AUTH.membership"
             class="mt-1">
-            <v-chip color="success">
+            <v-chip
+              class="white--text"
+              color="purple">
               {{ GET_AUTH.membership }}
             </v-chip>
           </div>
           <div
             class="mt-1"
             v-if="GET_AUTH.chapter">
-            <v-chip color="success">
+            <v-chip
+              class="white--text"
+              color="purple">
               {{ GET_AUTH.chapter }}
             </v-chip>
           </div>
         </div>
         <v-btn
-          class="mt-2"
-          text
-          @click="showProfile = true">
+          class="mt-2 white--text"
+          color="purple"
+          outlined
+          @click="showProfileInfo">
           Update Profile
         </v-btn>
       </v-col>
@@ -80,11 +81,11 @@
         <v-list-item
           :key="item.text"
           link
-          :class="{'active': $route.name === item.text.toLowerCase()}"
+          :class="{'active': $route.name == item.name}"
           :to="item.to">
           <v-list-item-action>
             <v-icon
-              :color="$route.name === item.text.toLowerCase() ? 'primary' : '#595959'">
+              :color="$route.name == item.name ? 'purple' : '#595959'">
               {{ item.icon }}
             </v-icon>
           </v-list-item-action>
@@ -92,8 +93,8 @@
             <v-list-item-title>
               <span
                 class="label"
-                :class="{'label-active': $route.name === item.text.toLowerCase()}">
-                {{ item.text }}  
+                :class="{'label-active': $route.name == item.name}">
+                {{ item.text }}
               </span>
             </v-list-item-title>
           </v-list-item-content>
@@ -106,61 +107,78 @@
     :callBack="confirm"
     @close="confirm.show = false"
     @event="logout"/>
-  <UserInfo
-    @close="showProfile = false"
+  <MemberInfo
+    @close="closeModal"
     :memberId="GET_AUTH.userId"
-    :isPorfile="GET_AUTH.isInfoUpdated"
-    v-if="showProfile || GET_AUTH.isInfoUpdated"/>
+    v-if="showMemberProfile || GET_AUTH.isInfoUpdated"
+    :isPorfile="GET_AUTH.isInfoUpdated"/>
+  <UpdateAdminInfo
+    v-if="showAdminProfile"
+    :userId="GET_AUTH.userId"
+    setting="update"
+    :isProfile="true"
+    @close="showAdminProfile = false"
+    @event="updateAdmin"/>
 </div>
 </template>
 <script>
-import UserInfo from './user-info'
+import MemberInfo from './member-info'
 import ProfileButtons from './profile-buttons'
-import { mapGetters } from 'vuex'
+import UpdateAdminInfo from '~/components/modules/administrators/components/create-update'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Navigation',
   components: {
     ProfileButtons,
-    UserInfo
+    MemberInfo,
+    UpdateAdminInfo
   },
   data () {
     return {
       drawer: true,
-      showProfile: false,
+      showMemberProfile: false,
+      showAdminProfile: false,
       collapseOnScroll: true,
       items: [
         {
           text: 'Members',
+          name: 'members',
           icon: 'mdi-account-group',
           to: '/members'
         },
         {
           text: 'Activities',
+          name: 'activities',
           icon: 'mdi-book-marker-outline',
           to: '/activities'
         },
         {
           text: 'Annual Fee',
+          name: 'annual',
           icon: 'mdi-cards',
           to: '/annual'
         },
         {
           text: 'Other Fees',
+          name: 'other-fees',
           icon: 'mdi-account-switch',
           to: '/other-fees'
         },
         {
           text: 'Chapters',
+          name: 'chapters',
           icon: 'mdi-map-marker-radius',
           to: '/chapters',
         },
         {
           text: 'Membership',
+          name: 'memberships',
           icon: 'mdi-badge-account-outline',
           to: '/memberships',
         },
         {
           text: 'Administrators',
+          name: 'administrators',
           icon: 'mdi-account-supervisor-circle',
           to: '/administrators'
         }
@@ -187,29 +205,58 @@ export default {
         return [
           {
             text: 'Activities',
+            name: 'activities',
             icon: 'mdi-book-marker-outline',
             to: '/activities'
           },
           {
             text: 'Annual Fee',
+            name: 'annual',
             icon: 'mdi-cards',
             to: '/annual'
           },
           {
             text: 'Other Fees',
+            name: 'other-fees',
             icon: 'mdi-account-switch',
             to: '/other-fees'
           }
         ]
-        
       }
     }
   },
 
   methods: {
+    ...mapMutations({
+      SET_ADMIN_INFO: 'common/SET_ADMIN_INFO'
+    }),
+
     confirmLogout () {
       this.confirm.show = true
       this.confirm.msg = `Are you sure you want to logout your account?`
+    },
+
+    showProfileInfo (){
+      if (this.GET_AUTH.roleId == 2){
+        this.showMemberProfile = true
+        return
+      }
+      this.showAdminProfile = true
+    },
+
+    closeModal () {
+      if (this.GET_AUTH.roleId == 2){
+        this.showMemberProfile = false
+        return
+      }
+    },
+
+    updateAdmin (data = {}) {
+      this.showAdminProfile = false
+        this.SET_ADMIN_INFO({
+          accountName: data.accountName,
+          photo: data.photo
+        })
     },
 
     async logout () {
@@ -224,28 +271,23 @@ export default {
 }
 </script>
 <style scoped>
-.user-logo-wrapper {
-  width: 50%;
-  margin: auto;
-}
-.user-logo >>> .v-image__image--preload{
-  filter: blur(0px) !important;
-}
-.user-logo {
-  border: 2px solid #eeeeee;
+.profile-photo {
+  width: 20vh;
+  height: 20vh;
+  border: 1px solid #7777;
 }
 .label {
   color: #595959;
 }
 .active {
   background-color: #e0e0e054;
-  border-right: 3px solid #34a3f3;
+  border-right: 3px solid #9c27b0;
 }
 .active >>> .v-list-item--link:before{
-  background-color: #619fdd !important;
+  background-color: #9c27b0 !important;
 }
 .label-active {
-  color: #1976d2 !important;
+  color: #9c27b0 !important;
 }
 .v-list-item--dense, .v-list--dense .v-list-item {
   height: 42px;

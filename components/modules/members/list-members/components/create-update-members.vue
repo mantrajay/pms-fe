@@ -629,7 +629,10 @@ export default {
 
     fetchMember () {
       this.loading = true
-      this.API_POST({ url: 'Members/fetchById/' + this.memberId})
+      let formData = new FormData()
+      formData.append('id', this.memberId)
+      formData.append('type', 'member')
+      this.API_POST({ url: 'Members/fetchById', data: formData})
         .then(response => {
           let data = response.data
           let member = data.member
@@ -734,7 +737,7 @@ export default {
         .then(response => {
           this.resetForm()
           this.$emit('event')
-          this.SET_ALERT_SUCCESS(response.response)
+          this.SET_ALERT_SUCCESS(response.response.message)
         })
         .catch(error => { this.SET_ALERT_ERROR(error.response) })
         .finally(() => {

@@ -78,12 +78,10 @@ export default {
   UNSET_TOKEN: ({ commit }, { error, reject}) => {
     const errors = error.response.data
     const status = error.response.status
-    let router = $nuxt._router
-    let path = router.app._route.fullPath
-    if (status === 401 && path !== '/') {
+    let router = $nuxt.$router.app
+    if (status === 401) {
       commit('SET_AUTH')
-      $nuxt._router.push('/')
-      return
+      router._router.push('/')
     }
     reject(errors)
   }

@@ -318,7 +318,6 @@
                     type="date"
                     class="mt-n3"
                     v-model="form.prcExp.value"
-
                     :class="{'text-input': form.prcExp.isEmpty}"
                     @blur="validationKey(form.prcExp,  'PRC Expiration')"
                     outlined
@@ -339,6 +338,7 @@
                 sm="4"
                 md="4">
                 <v-select
+                  disabled
                   class="mt-n3"
                   :items="chapterList"
                   item-text="name"
@@ -356,6 +356,7 @@
                 sm="4"
                 md="4">
                 <v-select
+                  disabled
                   class="mt-n3"
                   :items="membershipList"
                   v-model="form.membership.value"
@@ -666,7 +667,7 @@ export default {
   created () {
     if (this.memberId) this.fetchMember()
     this.fetchAttribute()
-    this.generateArrayOfYears()
+    this.yearListRegistration()
   },
 
   methods: {
@@ -683,7 +684,10 @@ export default {
 
     fetchMember () {
       this.loading = true
-      this.API_POST({ url: 'Members/fetchById/' + this.memberId})
+      let formData = new FormData()
+      formData.append('id', this.memberId)
+      formData.append('type', 'member')
+      this.API_POST({ url: 'Members/fetchById', data: formData})
         .then(response => {
           let data = response.data
           let member = data.member
@@ -695,6 +699,7 @@ export default {
     },
 
     setForm (data = {}, userInfo = '', image = '') {
+      console.log(image)
       this.form.username.value = userInfo.username
       this.form.firstName.value = data.first_name
       this.form.middleName.value = data.middle_name
@@ -760,13 +765,6 @@ export default {
 
     submit () {
       this.confirm.loading = true
-      let date = new Date()
-      let currentYear = parseInt(date.getFullYear())
-      let yearChoose = parseInt(this.form.year.value)
-      let yearArrears = []
-      for (let i = currentYear; i >= yearChoose; i--) {
-        yearArrears.push(i)
-      }
       let formData = this.formParams({
         user_id: this.GET_AUTH.userId,
         password: this.form.password.value,
@@ -793,7 +791,6 @@ export default {
         photo: this.selectedFile ? this.selectedFile : '',
         removeImage: this.removeImage,
         year: this.form.year.value,
-        yearArrears: JSON.stringify(yearArrears),
         isChangePassword: this.isChangePassword ? 1 : 0,
         isUsernameUpdate: true
       })

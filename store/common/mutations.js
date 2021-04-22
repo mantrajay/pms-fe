@@ -14,7 +14,11 @@ export default {
   SET_AUTH_INFO: (state, photo) => {
     state.auth.isInfoUpdated = false
     state.auth.photo = photo
-    console.log(state.auth)
+  },
+
+  SET_ADMIN_INFO: (state, data) => {
+    state.auth.accountName = data.accountName
+    state.auth.photo = data.photo
   },
 
   /**

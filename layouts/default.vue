@@ -50,9 +50,33 @@ export default {
   color: red;
 }
 main {
-  background-color: #f5f5f5;
+  background-color: rgb(228 220 209 / 39%);
 }
 .container {
   color: #595959;
+}
+table tr td {
+  font-size: 12px !important;
+}
+.v-list-item__title span {
+  font-size: 12px !important;
+}
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(179, 178, 178);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(157, 156, 156);
 }
 </style>

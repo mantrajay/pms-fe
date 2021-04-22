@@ -210,8 +210,8 @@ export const Mixins = {
     },
 
     yearListRegistration() {
-      let max = new Date().getFullYear() + 9
-      let min = max - 70
+      let max = new Date().getFullYear() + 2
+      let min = max - 62
       for (let i = max; i >= min; i--) {
         this.yearList.push(i)
       }
