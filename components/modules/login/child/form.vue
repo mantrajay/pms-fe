@@ -99,8 +99,8 @@ export default {
       loading: false,
       visiblePassword: false,
       form: {
-        username: this.iRules('jay@gmail.com', true),
-        password: this.iRules('123456', true)
+        username: this.iRules('', true),
+        password: this.iRules('', true)
       }
     }
   },

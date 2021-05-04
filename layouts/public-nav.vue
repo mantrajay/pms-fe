@@ -32,6 +32,17 @@
         Login
       </v-btn>
     </div>
+    <v-btn
+      class="mt-n1"
+      absolute
+      top
+      right
+      outlined
+      color="#fff"
+      v-if="!$vuetify.breakpoint.lg"
+      @click="goTo('/login')">
+      Login
+    </v-btn>
   </v-app-bar>
   <v-navigation-drawer
     v-model="drawer"
