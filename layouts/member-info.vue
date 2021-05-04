@@ -298,7 +298,7 @@
                   v-model="form.prcNo.value"
                   @keypress="checkChar($event)"
                   :class="{'text-input': form.prcNo.isEmpty}"
-                  @blur="validationKey(form.prcNo, 'First Name')"
+                  @blur="validationKey(form.prcNo, 'Prc Number')"
                   dense
                   label="Enter PRC License No. *" />
               </v-col>
@@ -691,16 +691,13 @@ export default {
         .then(response => {
           let data = response.data
           let member = data.member
-          let userInfo = data.userInfo
           let image = data.image
-          this.setForm(member, userInfo, image)
+          this.setForm(member, image)
         }).catch(error => {  })
         .finally(this.loading = false)
     },
 
-    setForm (data = {}, userInfo = '', image = '') {
-      console.log(image)
-      this.form.username.value = userInfo.username
+    setForm (data = {}, image = '') {
       this.form.firstName.value = data.first_name
       this.form.middleName.value = data.middle_name
       this.form.lastName.value = data.last_name
@@ -791,18 +788,15 @@ export default {
         photo: this.selectedFile ? this.selectedFile : '',
         removeImage: this.removeImage,
         year: this.form.year.value,
-        isChangePassword: this.isChangePassword ? 1 : 0,
-        isUsernameUpdate: true
+        isChangePassword: this.isChangePassword ? 1 : 0
       })
-      let method = 'create'
-      if (this.memberId) {
-        method = 'update'
-        formData.append('memberId', this.memberId)
-      }
-      this.API_POST({url: `Members/${method}`, data: formData})
+      this.API_POST({url: `Members/updateMemberProfile/${this.memberId}`, data: formData})
         .then(response => {
           this.SET_ALERT_SUCCESS(response.response.message)
-          this.SET_AUTH_INFO(response.response.photo)
+          this.SET_AUTH_INFO({
+            accountName: `${this.form.firstName.value} ${this.form.lastName.value}`,
+            photo: response.response.photo
+          })
           this.$emit('close')
         })
         .catch(error => { this.SET_ALERT_ERROR(error.response) })

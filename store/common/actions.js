@@ -81,7 +81,7 @@ export default {
     let router = $nuxt.$router.app
     if (status === 401) {
       commit('SET_AUTH')
-      router._router.push('/')
+      router._router.push('/login')
     }
     reject(errors)
   }

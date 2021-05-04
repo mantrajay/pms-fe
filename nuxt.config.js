@@ -3,10 +3,10 @@ export default {
   // generate: {
   //   dir: '../production/fe'
   // },
+  ssr: false,
   head: {
     titleTemplate: '%s',
     title: 'Pangasinan Medical Society',
-    ssr: false,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -16,44 +16,24 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
-  // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [
-  ],
-
-  // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
+  css: [],
   plugins: [
     '@mixins',
     '@components/reusable',
     '@plugins/debounce',
     '@/plugins/vuex-persist'
   ],
-
-  // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
-
-  // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
-    // '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
-
-  // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
   ],
-
-  // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_API_DEV : process.env.VUE_APP_API_PROD
   },
-
-  // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     theme: {
       dark: false,
@@ -68,8 +48,6 @@ export default {
       }
     }
   },
-
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }
 }

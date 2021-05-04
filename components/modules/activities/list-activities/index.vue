@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="ACTIVITY LIST"
+    title="ACTIVITIES"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col

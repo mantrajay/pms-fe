@@ -70,8 +70,7 @@
                   <v-list-item
                     v-for="(list, index) in menus"
                     :key="index"
-                    @click="goTo(item, list)"
-                  >
+                    @click="goTo(item, list)">
                     <v-list-item-title>
                       <v-icon class="mr-2">{{ list.icon }}</v-icon>
                       {{ list.title }}
@@ -149,19 +148,25 @@
     :callBack="confirm"
     @close="confirm.show = false"
     @event="deleteSubmit"/>
+  <MemberDetail
+    v-if="showMemberDetail"
+    :memberId="memberId"
+    @close="showMemberDetail = false"/>
   </v-row>
 </template>
 <script>
 import Activities from './activities'
 import AnnualFees from './annualFees'
 import MemberTransaction from './member-transaction'
+import MemberDetail from './member-detail'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Members-List',
   components: {
     Activities,
     AnnualFees,
-    MemberTransaction
+    MemberTransaction,
+    MemberDetail
   },
   props: {
     reFetch: {
@@ -187,7 +192,7 @@ export default {
         { id: 1, icon: 'mdi-brush', title: 'Update' },
         { id: 2, icon: 'mdi-book-marker-outline', title: 'Show Activities' },
         { id: 3, icon: 'mdi-cards', title: 'Show Annual Fee / Arrears' },
-        { id: 4, icon: 'mdi-eraser', title: 'Remove Member' },
+        { id: 4, icon: 'mdi-eraser', title: 'Remove Member' }
       ],
       memberId: '',
       members: {
@@ -205,6 +210,8 @@ export default {
       memberDetail: {},
       memberArrears: {},
       showTransaction: false,
+      showMemberDetail: false,
+      memberDetails: {},
       confirm: {
         msg: '',
         show: false,
@@ -229,6 +236,9 @@ export default {
 
   fetch () {
     this.fetchMembers()
+    if (this.GET_AUTH.userId == 257) {
+      this.menus.push({ id: 5, icon: 'mdi-account-details-outline', title: 'Show Detail' })
+    }
   },
 
   methods: {
@@ -258,6 +268,10 @@ export default {
       }
       if (list.id === 1) {
         this.$emit('show', item.prcNo, 'update')
+      }
+      if (list.id === 5) {
+        this.showMemberDetail = true
+        this.memberId = item.prcNo
       }
     },
 

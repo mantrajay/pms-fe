@@ -5,6 +5,6 @@ export default function ({app, store, redirect}) {
     return redirect()
   }).catch((error) => {
     store.commit('common/SET_AUTH', {})
-    return redirect('/')
+    return redirect('/login')
   })
 }

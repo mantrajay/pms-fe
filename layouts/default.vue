@@ -50,7 +50,7 @@ export default {
   color: red;
 }
 main {
-  background-color: rgb(228 220 209 / 39%);
+  background-color: rgb(179 178 177 / 39%);
 }
 .container {
   color: #595959;

@@ -1,9 +1,10 @@
 <template>
-<v-row>
+<v-row :class="{'nav-small': $vuetify.breakpoint.lg}">
   <v-col
     cols="12"
     md="12"
-    sm="12">
+    sm="12"
+    class="mb-2">
     <h2>{{ title }}</h2>
   </v-col>
 </v-row>
@@ -29,7 +30,10 @@ export default {
 </script>
 <style scoped>
 h2 {
-  font-size: 15pt;
+  font-size: 18pt;
   color: #595959;
+}
+.nav-small {
+  margin-top: -80px;
 }
 </style>

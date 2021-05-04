@@ -1,23 +1,24 @@
 <template>
-<div>
+<div :class="{'nav': $vuetify.breakpoint.lg}">
   <v-app-bar
     app
     :clipped-left="$vuetify.breakpoint.lgAndUp"
     color="#10946d"
     dark>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon
+      v-if="!$vuetify.breakpoint.lg"
+      @click.stop="drawer = !drawer" />
     <v-icon class="mr-2">mdi-stethoscope</v-icon>
     <h2>PMS</h2>
     <v-btn
       class="mt-n1"
       absolute
       top
+      text
       right
       color="default"
-      outlined
       @click="confirmLogout">
       <v-icon>mdi-calendar-end</v-icon>
-      Logout
     </v-btn>
   </v-app-bar>
   <v-navigation-drawer
@@ -37,11 +38,12 @@
         cols="11"
         sm="11"
         md="11"
-        class="text-center mt-n2">
-        <img
-          class="profile-photo"
+        class="text-center mt-n5">
+        <v-img
+          :lazy-src="require('~/assets/images/avatar.png')"
+          class="profile-photo ma-auto"
           :src="GET_AUTH.photo" />
-        <h3 class="purple--text">{{ GET_AUTH.accountName }}</h3>
+        <h3 class="profile-name purple--text">{{ GET_AUTH.accountName }}</h3>
         <div
           class="mt-2"
           v-if="GET_AUTH.roleId != 1">
@@ -68,12 +70,13 @@
           class="mt-2 white--text"
           color="purple"
           outlined
+          small
           @click="showProfileInfo">
           Update Profile
         </v-btn>
       </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <v-divider class="mt-6"></v-divider>
     <v-list
       class="mt-1"
       dense>
@@ -110,12 +113,13 @@
   <MemberInfo
     @close="closeModal"
     :memberId="GET_AUTH.userId"
-    v-if="showMemberProfile || GET_AUTH.isInfoUpdated"
+    v-if="showMemberProfile || GET_AUTH.isInfoUpdated && GET_AUTH.roleId == 2"
     :isPorfile="GET_AUTH.isInfoUpdated"/>
   <UpdateAdminInfo
     v-if="showAdminProfile"
     :userId="GET_AUTH.userId"
     setting="update"
+    :isOwnProfile="true"
     :isProfile="true"
     @close="showAdminProfile = false"
     @event="updateAdmin"/>
@@ -141,10 +145,10 @@ export default {
       collapseOnScroll: true,
       items: [
         {
-          text: 'Members',
-          name: 'members',
-          icon: 'mdi-account-group',
-          to: '/members'
+          text: 'Arrears',
+          name: 'annual',
+          icon: 'mdi-cards',
+          to: '/annual'
         },
         {
           text: 'Activities',
@@ -153,16 +157,22 @@ export default {
           to: '/activities'
         },
         {
-          text: 'Annual Fee',
-          name: 'annual',
-          icon: 'mdi-cards',
-          to: '/annual'
-        },
-        {
           text: 'Other Fees',
           name: 'other-fees',
           icon: 'mdi-account-switch',
           to: '/other-fees'
+        },
+        {
+          text: 'Members',
+          name: 'members',
+          icon: 'mdi-account-group',
+          to: '/members'
+        },
+        {
+          text: 'Administrators',
+          name: 'administrators',
+          icon: 'mdi-account-supervisor-circle',
+          to: '/administrators'
         },
         {
           text: 'Chapters',
@@ -171,17 +181,11 @@ export default {
           to: '/chapters',
         },
         {
-          text: 'Membership',
+          text: 'Type of Membership',
           name: 'memberships',
           icon: 'mdi-badge-account-outline',
           to: '/memberships',
         },
-        {
-          text: 'Administrators',
-          name: 'administrators',
-          icon: 'mdi-account-supervisor-circle',
-          to: '/administrators'
-        }
 			],
       confirm: {
         msg: '',
@@ -204,16 +208,16 @@ export default {
       } else {
         return [
           {
+            text: 'Arrears',
+            name: 'annual',
+            icon: 'mdi-cards',  
+            to: '/annual'
+          },
+          {
             text: 'Activities',
             name: 'activities',
             icon: 'mdi-book-marker-outline',
             to: '/activities'
-          },
-          {
-            text: 'Annual Fee',
-            name: 'annual',
-            icon: 'mdi-cards',
-            to: '/annual'
           },
           {
             text: 'Other Fees',
@@ -271,17 +275,28 @@ export default {
 }
 </script>
 <style scoped>
+.nav >>> header {
+  width: 256px;
+}
 .profile-photo {
-  width: 20vh;
-  height: 20vh;
-  border: 1px solid #7777;
+  width: 7em;
+  height: 7em;
+  /* border: 1px solid #7777; */
+  border-radius: 4px;
+  margin-top: -10px;
+}
+.profile-photo >>> .v-image__image--preload {
+  filter: blur(0px) !important;
+}
+.profile-name {
+  font-family: system-ui;
 }
 .label {
   color: #595959;
 }
 .active {
   background-color: #e0e0e054;
-  border-right: 3px solid #9c27b0;
+  border-left: 3px solid #9c27b0;
 }
 .active >>> .v-list-item--link:before{
   background-color: #9c27b0 !important;

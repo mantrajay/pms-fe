@@ -2,19 +2,18 @@
 <v-row class="login-container">
   <v-col
     cols="12"
-    md="3"
-    sm="3"
-    class="mt-5">
-    <Form />
-  </v-col>
-  <v-col
-    class="d-none d-md-flex d-sm-none"
-    cols="12"
-    md="9"
-    sm="9">
-    <img
-      class="background-logo"
-      :src="loginLogo" />
+    md="12"
+    sm="12">
+    <div class="logo-wrapper">
+      <img
+        class="background-logo"
+        :src="loginLogo" />
+    </div>
+    <v-card
+      width="400px"
+      class="card-login">
+      <Form />
+    </v-card>
   </v-col>
   <!-- :style="{'background-image': `url(${loginLogo})`,
     'background-size': 'cover',
@@ -37,8 +36,18 @@ export default {
 }
 </script>
 <style scoped>
+.logo-wrapper {
+  background-color: #777;
+}
 .background-logo {
   width: 100%;
+  opacity: .6;
   height: 100vh;
+}
+.card-login {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 </style>

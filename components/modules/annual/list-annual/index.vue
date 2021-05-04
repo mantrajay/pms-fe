@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="ANNUAL LIST"
+    title="ARREARS"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col

@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="USER LIST"
+    title="ADMINISTRATORS"
     btnLabel="Create User"
     @show="showRegistration"/>
   <v-row class="mt-n3">

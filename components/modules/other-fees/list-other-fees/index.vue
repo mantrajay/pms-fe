@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="OTHER FEE LIST"
+    title="OTHER FEES"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col

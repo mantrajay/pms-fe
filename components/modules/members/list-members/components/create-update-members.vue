@@ -731,7 +731,7 @@ export default {
       let method = 'create'
       if (this.memberId) {
         method = 'update'
-        formData.append('memberId', this.memberId)
+        method = `update/${this.memberId}`
       }
       this.API_POST({url: `Members/${method}`, data: formData})
         .then(response => {

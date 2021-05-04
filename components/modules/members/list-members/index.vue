@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="MEMBER LIST"
+    title="MEMBERS"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col

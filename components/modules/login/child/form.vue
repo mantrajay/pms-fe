@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
   <!-- Logo -->
-  <Title />
+  <!-- <Title /> -->
   <v-row class="mt-4">
     <v-col class="text-left login-label">
       <h5>Hi, please enter your</h5>
@@ -99,8 +99,8 @@ export default {
       loading: false,
       visiblePassword: false,
       form: {
-        username: this.iRules('', true),
-        password: this.iRules('', true)
+        username: this.iRules('jay@gmail.com', true),
+        password: this.iRules('123456', true)
       }
     }
   },
@@ -120,7 +120,6 @@ export default {
           data: formData
         })
         let data = response.data
-        console.log(parseInt(data.isInfoUpdated))
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,
@@ -144,8 +143,9 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  width: 90%;
+  width: 80%;
   margin: auto;
+  height: 45vh;
 }
 .footer {
   position: absolute;
@@ -156,5 +156,8 @@ export default {
 }
 .copy-text {
   color: #1976d2;
+}
+h5 {
+  color: #595959;
 }
 </style>

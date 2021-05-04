@@ -44,7 +44,7 @@
             cols="12"
             md="8"
             sm="8">
-            <v-row v-if="GET_AUTH.roleId == 1">
+            <v-row v-if="isOwnProfile">
               <v-col
                 cols="12"
                 sm="12"
@@ -69,20 +69,6 @@
                   color="primary"
                   hide-details />
               </v-col>
-              <!-- <v-col
-                cols="12"
-                sm="4"
-                md="4">
-                <v-text-field
-                  class="mt-n3"
-                  outlined
-                  :disabled="!isChangePassword"
-                  v-model="username.value"
-                  :class="{'text-input': username.isEmpty}"
-                  @blur="validationKey(username, 'Username')"
-                  dense
-                  label="Enter Username *" />
-              </v-col> -->
               <v-col
                 cols="12"
                 sm="4"
@@ -116,18 +102,6 @@
                   dense
                   :disabled="!isChangePassword"
                   label="Enter Confirm Password *" />
-              </v-col>
-              <v-col
-                cols="12"
-                sm="4"
-                md="4"
-                class="mt-md-n2">
-                <v-btn
-                  @click="changePassword"
-                  :disabled="!isChangePassword"
-                  color="primary">
-                  Change Password
-                </v-btn>
               </v-col>
             </v-row>
             <v-row>
@@ -320,7 +294,7 @@
                   label="Enter Address *"
                 ></v-text-field>
               </v-col>
-              <v-col
+              <!-- <v-col
                 cols="12"
                 sm="12"
                 md="12"
@@ -344,7 +318,7 @@
                     </v-col>
                   </v-row>
                 </v-radio-group>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-col>
           <v-col
@@ -444,6 +418,10 @@ export default {
     isProfile: {
       type: Boolean,
       default: false
+    },
+    isOwnProfile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -459,7 +437,7 @@ export default {
         middleName: this.iRules('', true),
         lastName: this.iRules('', true),
         sex: this.iRules('M', true),
-        status: this.iRules('A', true),
+        // status: this.iRules('A', true),
         email: this.iRules('', true, true),
         roleId: this.iRules(null, true),
         mobile: this.iRules('', true),
@@ -491,7 +469,9 @@ export default {
       loadingRoles: false,
       removeImage: 'no',
       isChangePassword: false,
-      loadingChangePw: false
+      loadingChangePw: false,
+      visiblePassword: false,
+      visibleConfirmPassword: false
     }
   },
 
@@ -500,11 +480,11 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) {
-          this.form.password = this.iRules('', false)
-          this.form.confirmPassword = this.iRules('', false)
+          this.password = this.iRules('', false)
+          this.confirmPassword = this.iRules('', false)
         } else {
-          this.form.password = this.iRules('', true)
-          this.form.confirmPassword = this.iRules('', true)
+          this.password = this.iRules('', true)
+          this.confirmPassword = this.iRules('', true)
         }
       }
     }
@@ -546,7 +526,7 @@ export default {
         birthDate: this.iRules(data.birthDate || '', true),
         address: this.iRules(data.address || '', true),
         roleId: this.iRules(data.roleId || null, true),
-        status: this.iRules(data.status || null, true)
+        // status: this.iRules(data.status || null, true)
       }
     },
 
@@ -595,49 +575,33 @@ export default {
         this.SET_ALERT_ERROR(this.errMessage)
         return false
       }
-      this.confirm.show = true
-      this.confirm.msg = `Are you sure you want to ${this.type} this patient?` 
-    },
-
-    changePassword () {
-      if (this.confirmPassword.value !== this.password.value) {
-        this.SET_ALERT_ERROR('Password and confirm password does not match.')
-        this.password.isEmpty = true
-        this.confirmPassword.isEmpty = true
-        return
-      }
-      let willProceed = true
-      if (!this.confirmPassword.value) {
-        willProceed = false
-        this.password.isEmpty = true
-      }
-      if (!this.password.value) {
-        willProceed = false
-        this.confirmPassword.isEmpty = true
-      }
-      if (!willProceed) {
-        this.SET_ALERT_ERROR('Please fill in required fields!')
-        return
+      if (this.isChangePassword) {
+        if (this.confirmPassword.value !== this.password.value) {
+          this.SET_ALERT_ERROR('Password and confirm password does not match.')
+          this.password.isEmpty = true
+          this.confirmPassword.isEmpty = true
+          return
+        }
+        let willProceed = true
+        if (!this.confirmPassword.value) {
+          willProceed = false
+          this.password.isEmpty = true
+        }
+        if (!this.password.value) {
+          willProceed = false
+          this.confirmPassword.isEmpty = true
+        }
+        if (!willProceed) {
+          this.SET_ALERT_ERROR('Please fill in required fields!')
+          return
+        }
       }
       this.password.isEmpty = false
       this.confirmPassword.isEmpty = false
-      this.validateChangePassword()
+      this.confirm.show = true
+      this.confirm.msg = `Are you sure you want to ${this.type} this patient?` 
     },
-
-    validateChangePassword () {
-      let formData = this.formParams({ password: this.password.value })
-      this.loadingChangePw = true
-      this.API_POST({url: `Users/changePassword`, data: formData})
-        .then(response => {
-          this.resetForm()
-          this.SET_ALERT_SUCCESS(response.response)
-        })
-        .catch(error => { this.errorHandle(error) })
-        .finally(() => {
-          this.loadingChangePw = false
-        })
-    }, 
-
+  
     submit () {
       this.confirm.loading = true
       let formData = this.formParams({
@@ -652,9 +616,12 @@ export default {
         birthDate: this.form.birthDate.value,
         address: this.form.address.value,
         roleId: this.form.roleId.value,
-        status: this.form.status.value,
-        removeImage: this.removeImage
+        // status: this.form.status.value,
+        removeImage: this.removeImage,
       })
+      if (this.isChangePassword) {
+        formData.append('password', this.password.value)
+      }
       let method = 'create'
       if (this.userId) {
         method = 'edit'
@@ -664,7 +631,13 @@ export default {
         .then(response => {
           this.resetForm()
           this.$emit('event', response.response.data)
-          this.SET_ALERT_SUCCESS(response.response.message)
+          let message = response.response.message
+          if (this.isChangePassword) {
+            this.SET_AUTH({})
+            this.goTo('/login')
+            message = `Profile and password have updated successfully. <br/> Please relogin your account again!`
+          }
+          this.SET_ALERT_SUCCESS(message)
         })
         .catch(error => { this.errorHandle(error) })
         .finally(() => {
@@ -680,7 +653,7 @@ export default {
         middleName: this.iRules('', true),
         lastName: this.iRules('', true),
         sex: this.iRules('M', true),
-        status: this.iRules('A', true),
+        // status: this.iRules('A', true),
         email: this.iRules('', true, true),
         roleId: this.iRules(null, true),
         mobile: this.iRules('', true),

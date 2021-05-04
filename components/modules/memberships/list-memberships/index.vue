@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="ARREAR LIST"
+    title="TYPES OF MEMBERSHIP"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col

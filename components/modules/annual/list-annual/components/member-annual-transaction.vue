@@ -15,36 +15,47 @@
       v-for="(item, i) in annualFees"
       :key="i"
       cols="12"
-      md="4"
-      sm="4">
+      md="6"
+      sm="6">
       <v-card
         class="mx-auto"
-        max-width="344"
+        max-width="100%"
         outlined>
         <v-card-text>
-          <h3>{{ item.name }} - <span class="success--text">{{ item.year }}</span></h3>
+          <v-row>
+            <v-col
+              cols="9"
+              md="9"
+              sm="9">
+              <h1 class="success--text">{{ item.year }}</h1>
+            </v-col>
+            <v-col
+              cols="3"
+              md="3"
+              sm="3"
+              class="text-right mt-n1">
+              <v-chip
+                small
+                color="success">
+                {{
+                  parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
+                  ? 'Partial'
+                  : !item.amount
+                    ? 'Unpaid'
+                    : 'Paid'
+                }}
+              </v-chip>
+            </v-col>
+          </v-row>
           <v-divider class="mt-2"></v-divider>
           <div class="text--primary mt-3">
+            <h3 class="success--text">{{ item.name }}</h3>
             <b class="mr-1">Amount:</b>₱{{ formatMoney(item.annualfees[0].amount ) }}
           </div>
           <div class="text--primary">
             <b class="mr-1">Date Paid:</b>{{ getLocalDate(item.annualfees[0].date_paid, true).split('-')[0] }}
           </div>
         </v-card-text>
-        <v-card-actions class="mt-n2">
-          <v-chip
-            label
-            outlined
-            color="success">
-            {{
-              parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
-              ? 'Partial'
-              : !item.amount
-                ? 'Unpaid'
-                : 'Paid'
-            }}
-          </v-chip>
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>

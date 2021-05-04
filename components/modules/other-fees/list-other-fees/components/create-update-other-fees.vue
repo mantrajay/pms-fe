@@ -7,30 +7,30 @@
         <v-row>
           <v-col
             cols="12"
-            sm="6"
-            md="6">
-            <h4>{{ otherFeesId ? 'UPDATE' : 'CREATE'}} OTHER FEE</h4>
+            sm="4"
+            md="4">
+            <h4>{{ otherFeesId ? 'UPDATE' : 'CREATE'}}</h4>
           </v-col>
           <v-col
             cols="12"
-            sm="6"
-            md="6"
+            sm="8"
+            md="8"
             class="text-right">
-              <v-btn
-                color="primary"
-                text
-                @click="$emit('close')"
-                v-if="!confirm.loading">
-                Close
-              </v-btn>
-              <v-btn
-                color="primary"
-                elevation="0"
-                :loading="confirm.loading"
-                :disabled="confirm.loading"
-                @click="confirmSubmit">
-                {{ otherFeesId ? 'Update' : 'Create'}}
-              </v-btn>
+            <v-btn
+              color="primary"
+              text
+              @click="$emit('close')"
+              v-if="!confirm.loading">
+              Close
+            </v-btn>
+            <v-btn
+              color="primary"
+              elevation="0"
+              :loading="confirm.loading"
+              :disabled="confirm.loading"
+              @click="confirmSubmit">
+              {{ otherFeesId ? 'Update' : 'Create'}}
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-title>
@@ -101,7 +101,7 @@
               @blur="validationKey(form.memberId)"
               dense
               outlined
-              label="Select Civil Status *"
+              label="Select Member *"
             ></v-select>
           </v-col>
           <v-col
@@ -150,7 +150,7 @@ export default {
       paymentDate: false,
       form: {
         memberId: this.iRules('', true),
-        description: this.iRules('', true),
+        description: this.iRules('', false),
         date: this.iRules('', true),
         amount: this.iRules('', true)
       },

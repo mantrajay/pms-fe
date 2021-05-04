@@ -1,7 +1,7 @@
 <template>
 <div>
   <Header
-    title="ARREAR LIST"
+    title="CHAPTERS"
     @show="showCreate"/>
   <v-row class="mt-n5">
     <v-col
