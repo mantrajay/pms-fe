@@ -44,6 +44,11 @@
           class="profile-photo ma-auto"
           :src="GET_AUTH.photo" />
         <h3 class="profile-name purple--text">{{ GET_AUTH.accountName }}</h3>
+        <h4
+          v-if="GET_AUTH.prcNumber"
+          class="profile-name purple--text">
+          PRC #{{ GET_AUTH.prcNumber }}
+        </h4>
         <div
           class="mt-2"
           v-if="GET_AUTH.roleId != 1">
@@ -143,50 +148,6 @@ export default {
       showMemberProfile: false,
       showAdminProfile: false,
       collapseOnScroll: true,
-      items: [
-        {
-          text: 'Arrears',
-          name: 'annual',
-          icon: 'mdi-cards',
-          to: '/annual'
-        },
-        {
-          text: 'Activities',
-          name: 'activities',
-          icon: 'mdi-book-marker-outline',
-          to: '/activities'
-        },
-        {
-          text: 'Other Fees',
-          name: 'other-fees',
-          icon: 'mdi-account-switch',
-          to: '/other-fees'
-        },
-        {
-          text: 'Members',
-          name: 'members',
-          icon: 'mdi-account-group',
-          to: '/members'
-        },
-        {
-          text: 'Administrators',
-          name: 'administrators',
-          icon: 'mdi-account-supervisor-circle',
-          to: '/administrators'
-        },
-        {
-          text: 'Chapters',
-          name: 'chapters',
-          icon: 'mdi-map-marker-radius',
-          to: '/chapters',
-        },
-        {
-          text: 'Type of Membership',
-          name: 'memberships',
-          icon: 'mdi-badge-account-outline',
-          to: '/memberships',
-        },
-			],
       confirm: {
         msg: '',
         show: false,
@@ -204,7 +165,59 @@ export default {
 
     navItems () {
       if (this.GET_AUTH.roleId == 1) {
-        return this.items
+        let navList = [
+          {
+            text: 'Arrears',
+            name: 'annual',
+            icon: 'mdi-cards',
+            to: '/annual'
+          },
+          {
+            text: 'Activities',
+            name: 'activities',
+            icon: 'mdi-book-marker-outline',
+            to: '/activities'
+          },
+          {
+            text: 'Other Fees',
+            name: 'other-fees',
+            icon: 'mdi-account-switch',
+            to: '/other-fees'
+          },
+          {
+            text: 'Members',
+            name: 'members',
+            icon: 'mdi-account-group',
+            to: '/members'
+          },
+          {
+            text: 'Administrators',
+            name: 'administrators',
+            icon: 'mdi-account-supervisor-circle',
+            to: '/administrators'
+          },
+          {
+            text: 'Chapters',
+            name: 'chapters',
+            icon: 'mdi-map-marker-radius',
+            to: '/chapters',
+          },
+          {
+            text: 'Type of Membership',
+            name: 'memberships',
+            icon: 'mdi-badge-account-outline',
+            to: '/memberships',
+          }
+        ]
+        if (this.GET_AUTH.userId == 257) {
+          navList.push({
+            text: 'Logs',
+            name: 'Logs',
+            icon: 'mdi-format-align-justify',
+            to: '/logs',
+          })
+        }
+        return navList
       } else {
         return [
           {

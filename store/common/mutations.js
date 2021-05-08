@@ -2,6 +2,8 @@ export default {
   SET_AUTH: (state, data = {}) => {
     state.auth.token = data.token || ''
     state.auth.userId = data.userId || ''
+    state.auth.prcNumber = data.prcNumber || ''
+    state.auth.isDeceased = data.isDeceased || ''
     state.auth.roleId = data.roleId || ''
     state.auth.roleName = data.roleName || ''
     state.auth.accountName = data.accountName || ''

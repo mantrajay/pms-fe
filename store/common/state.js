@@ -2,6 +2,8 @@ export default () => ({
   auth: {
     token: '',
     userId: '',
+    prcNumber: '',
+    isDeceased: '',
     roleId: '',
     roleName: '',
     accountName: '',

@@ -2,7 +2,7 @@
 <div>
   <Header
     title="MEMBERS"
-    @show="showCreate"/>
+    @show="showCreate" />
   <v-row class="mt-n5">
     <v-col
       cols="12"

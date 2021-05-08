@@ -392,6 +392,7 @@
             </v-row>
           </v-col>
         </v-row>
+        <Creator :items="creator" />
       </v-container>
     </v-card-text>
     <AlertCallBack
@@ -471,7 +472,11 @@ export default {
       isChangePassword: false,
       loadingChangePw: false,
       visiblePassword: false,
-      visibleConfirmPassword: false
+      visibleConfirmPassword: false,
+      creator: {
+        createdBy: '',
+        createdAt: ''
+      }
     }
   },
 
@@ -507,6 +512,11 @@ export default {
         .then(response => {
           let data = response.data.data
           let image = response.data.image
+          let creator = response.data.creator
+          this.creator = {
+            createdBy: `${creator.creator.firstName} ${creator.creator.lastName}`,
+            createdAt: creator.createdAt
+          }
           this.setForm(data, image)
         })
         .catch(error => { this.errorHandle(error) })

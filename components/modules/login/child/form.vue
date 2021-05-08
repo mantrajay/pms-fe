@@ -120,9 +120,12 @@ export default {
           data: formData
         })
         let data = response.data
+        console.log(data)
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,
+          prcNumber: data.prcNumber,
+          isDeceased: data.isDeceased,
           isInfoUpdated: !parseInt(data.isInfoUpdated) ? true : false,
           roleId: data.roleId,
           roleName: data.roleName,

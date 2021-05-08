@@ -22,7 +22,11 @@ export const Mixins = {
         {key: 32, char: ' '},
         {key: 39, char: `'`}, 
       ],
-      queueLoading: false
+      queueLoading: false,
+      creator:{
+        createdBy: '',
+        createdAt: ''
+      }
     }
   },
 

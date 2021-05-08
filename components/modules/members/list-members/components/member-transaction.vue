@@ -1,9 +1,8 @@
 <template>
 <div>
-  <v-dialog
-    v-model="dialog"
+  <v-dialog v-model="dialog"
     persistent
-    max-width="80%">
+    :max-width="$vuetify.breakpoint.lg ? '60%' : '100%'">
     <v-card>
       <v-card-title>
         <v-row>
@@ -193,10 +192,7 @@ export default {
   methods: {
     getMembershipAmount () {
       this.loading = true
-      let yearList = []
-      this.items.yearArrear.map(items => {
-        if (items.year) yearList.push(items)
-      })
+      let yearList = this.items.yearArrear.filter((n) => {return n })
       let formData = new FormData()
       formData.append('membershipId', this.items.membershipId)
       formData.append('years', JSON.stringify(yearList))

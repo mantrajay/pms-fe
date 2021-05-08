@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog"
     persistent
-    max-width="70%">
+    :max-width="$vuetify.breakpoint.lg ? '60%' : '100%'">
     <v-card>
       <v-card-title>
         <v-row>
@@ -42,152 +42,51 @@
           </v-row>
         </div>
         <div v-else>
-          <v-row>
-            <v-col
+          <v-row class="mt-1">
+             <v-col
               cols="12"
               md="6"
               sm="6">
-              <p><b>PRC Number:</b> {{ memberDetail.prcNo }}</p>
-              <p class="mt-n2"><b>Member Name:</b>
-                {{ memberDetail.last_name }}, {{ memberDetail.first_name }} {{ memberDetail.middle_name }}
-              </p>
+              <div class="ml-2">
+                <p><b>PRC Number:</b> {{ memberDetail.prcNumber }}</p>
+                <p class="mt-n2"><b>Member Name:</b>
+                  {{ memberDetail.fullName }}
+                </p>
+              </div>
             </v-col>
             <v-col
               cols="12"
               md="6"
               sm="6">
-              <p class="mt-n2"><b>Chapter:</b> {{ memberDetail.chapterName }}</p>
-              <p class="mt-n2"><b>PRC Expiration:</b> {{ getLocalDate(memberDetail.prcExp) }}</p>
+              <div class="ml-2">
+                <p class="mt-n2"><b>Chapter:</b> {{ memberDetail.chapterName }}</p>
+                <p class="mt-n2"><b>PRC Expiration:</b> {{ memberDetail.prcExp }}</p>
+              </div>
             </v-col>
           </v-row>
-          <v-row class="mt-n8">
+          <v-row class="mt-1">
             <v-col
+              class="mt-n2"
               cols="12"
               md="12"
               sm="12">
-              <v-row class="pa-2">
-                <v-col
-                  cols="12"
-                  md="2"
-                  sm="2">
-                  <h4>Membership</h4>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="1"
-                  sm="1">
-                  <h4>Year</h4>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="2"
-                  sm="2">
-                  <h4>Annual Fee</h4>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="2"
-                  sm="2">
-                  <h4>Total Paid</h4>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="2"
-                  sm="2">
-                  <h4>Status</h4>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="3"
-                  sm="3">
-                  <h4>Description</h4>
-                </v-col>
-              </v-row>
-              <v-expansion-panels class="mt-n3">
-                <v-expansion-panel
-                  v-for="(item, i) in annualFees"
-                  :key="i"
-                >
-                  <v-expansion-panel-header>
-                    <v-row>
-                      <v-col
-                        cols="12"
-                        md="2"
-                        sm="2">
-                        {{ item.name }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="1"
-                        sm="1">
-                        {{ item.year }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="2"
-                        sm="2">
-                        ₱{{ formatMoney(item.amount) }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="2"
-                        sm="2">
-                        ₱{{ totalPaid(item.annualfees) }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="2"
-                        sm="2">
-                        {{
-                          parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
-                          ? 'Partial'
-                          : !item.amount
-                            ? 'Unpaid'
-                            : 'Paid' }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="3"
-                        sm="3">
-                        {{ item.description }}
-                      </v-col>
-                    </v-row>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-row class="mt-n4">
-                      <v-col
-                        cols="12"
-                        md="3"
-                        sm="3">
-                        <h4>Amount</h4>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="3"
-                        sm="3">
-                        <h4>Date Paid</h4>
-                      </v-col>
-                    </v-row>
-                    <v-row
-                      class="mt-n2"
-                      v-for="(items, index) in item.annualfees"
-                      :key="index">
-                      <v-col
-                        cols="12"
-                        md="3"
-                        sm="3">
-                        ₱{{ formatMoney(items.amount) }}
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        md="9"
-                        sm="9">
-                        {{ getLocalDate(items.date_paid, true) }}
-                      </v-col>
-                    </v-row>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
+              <v-data-table
+                :headers="headers"
+                :items="annualFees"
+                :items-per-page="15"
+                :loading="loading">
+                <template v-slot:item.status="{ item }">
+                  <v-chip color="success">
+                    {{ 
+                      parseInt(item.annualfees) < parseInt(item.amount) && !item.annualfees
+                        ? 'Partial'
+                        : !item.amount
+                          ? 'Unpaid'
+                          : 'Paid'
+                    }}
+                  </v-chip>
+                </template>
+              </v-data-table>
             </v-col>
           </v-row>
         </div>
@@ -217,12 +116,12 @@ export default {
       loading: false,
       annualFees: [],
       headers: [
-        { text: 'Code', value: 'code' },
         { text: 'Name', value: 'name' },
-        { text: 'Points', value: 'points' },
-        { text: 'Start Time', value: 'start_time' },
-        { text: 'End Time', value: 'end_time' }
-      ],
+        { text: 'Year', value: 'year' },
+        { text: 'Amount', value: 'amount' },
+        { text: 'Date', value: 'date' },
+        { text: 'Status', value: 'status' }
+      ]
     }
   },
 
@@ -235,7 +134,15 @@ export default {
       this.loading = true
       this.API_POST({ url: 'Members/fetchMemberAnnualFees/' + this.memberId})
         .then(response => {
-          this.annualFees = response.data
+            this.annualFees = response.data.membersAnnuals.map(item => {
+            return {
+              name: item.name,
+              amount: `₱ ${this.formatMoney(item.annualfees[0].amount )}`,
+              status: item.status,
+              year: item.year,
+              date: this.getLocalDate(item.annualfees[0].date_paid, true).split('-')[0]
+            }
+          })
         }).catch(error => {  })
         .finally(this.loading = false)
     },

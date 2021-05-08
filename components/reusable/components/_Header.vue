@@ -2,8 +2,8 @@
 <v-row :class="{'nav-small': $vuetify.breakpoint.lg}">
   <v-col
     cols="12"
-    md="12"
-    sm="12"
+    md="6"
+    sm="6"
     class="mb-2">
     <h2>{{ title }}</h2>
   </v-col>
@@ -16,14 +16,6 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    btnLabel: {
-      type: String,
-      default: ''
-    },
-    showBtn: {
-      type: Boolean,
-      default: false
     }
   }
 }

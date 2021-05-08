@@ -4,7 +4,13 @@
     max-width="100%">
     <v-card>
       <v-card-title>
-        <v-row>
+        <v-progress-linear
+          v-if="loading"
+          color="primary"
+          indeterminate
+          rounded
+          height="8" />
+        <v-row v-if="!loading">
           <v-col
             cols="12"
             sm="6"
@@ -35,7 +41,9 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-text class="mt-n5">
+      <v-card-text
+        v-if="!loading"
+        class="mt-n5">
        <v-container
         class="dotted mt-4"
         fluid>
@@ -343,6 +351,25 @@
                   label="Year Start the Arrear *"
                 ></v-select>
               </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+                md="4">
+                <div class="d-flex">
+                <p>Is Deceased?</p>
+                <v-radio-group
+                  class="mt-n2 ml-3"
+                  row
+                  v-model="form.isDeceased.value">
+                  <v-radio
+                    v-for="item in ['Yes', 'No']"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></v-radio>
+                </v-radio-group>
+                </div>
+              </v-col>
             </v-row>
             <v-row class="mt-n7">
               <v-col
@@ -505,6 +532,7 @@
             </v-row>
           </v-col>
         </v-row>
+        <Creator :items="creator" />
       </v-container>
     </v-card-text>
     <AlertCallBack
@@ -559,7 +587,8 @@ export default {
         year: this.iRules(currentYear, true),
         yearStartArrear: this.iRules(2018, true),
         email: this.iRules('', false),
-        photo: this.iRules('', false)
+        photo: this.iRules('', false),
+        isDeceased: this.iRules('No', false),
       },
       yearList: [],
       yearListStartArrear: [],
@@ -624,7 +653,7 @@ export default {
           this.chapterList = data.chapters
           this.membershipList = data.memberships
         }).catch(error => {  })
-        .finally(this.loading = false)
+        .finally(() => { this.loading = false })
     },
 
     fetchMember () {
@@ -637,9 +666,14 @@ export default {
           let data = response.data
           let member = data.member
           let image = data.image
+          let creator = data.creator
+          this.creator = {
+            createdBy: `${creator.creator.firstName} ${creator.creator.lastName}`,
+            createdAt: creator.createdAt
+          }
           this.setForm(member, image)
         }).catch(error => {  })
-        .finally(this.loading = false)
+        .finally(() => { this.loading = false })
     },
 
     setForm (data = {}, image = '') {
@@ -662,6 +696,7 @@ export default {
       this.form.chapter.value = data.chapter_id
       this.form.email.value = data.email
       this.form.membership.value = data.membership_id
+      this.form.isDeceased.value = parseInt(data.is_deceased) ? 'Yes' : 'No'
       this.form.photo.value = image
       this.form.year.value = parseInt(data.year)
       this.form.yearStartArrear.value = parseInt(data.year_start_arrear)
@@ -688,6 +723,12 @@ export default {
     },
 
     confirmSubmit () {
+      let date = new Date();
+      let year = date.getFullYear()
+      if (parseInt(this.form.yearStartArrear.value) > parseInt(year)) {
+        this.SET_ALERT_ERROR('Year start the arrear must not be greater than current year!')
+        return
+      }
       if (!this.validateForm(this.form)) {
         this.SET_ALERT_ERROR(this.errMessage)
         return false
@@ -726,6 +767,7 @@ export default {
         removeImage: this.removeImage,
         year: this.form.year.value,
         yearStartArrear: this.form.yearStartArrear.value,
+        is_deceased: this.form.isDeceased.value,
         isUsernameUpdate: true
       })
       let method = 'create'

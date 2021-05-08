@@ -51,7 +51,9 @@
             :headers="headers"
             :items="users.data"
             :loading="users.loading">
-            <template v-slot:item.actions="{ item }">
+            <template
+              v-if="GET_AUTH.userId == 257"
+              v-slot:item.actions="{ item }">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -100,8 +102,7 @@ export default {
         { text: 'Complete Name', value: 'fullName' },
         { text: 'Mobile No.', value: 'mobile' },
         { text: 'Sex', value: 'sex' },
-        { text: 'Email', value: 'email' },
-        { text: 'Action', value: 'actions'}
+        { text: 'Email', value: 'email' }
       ],
       users: {
         data: [], 
@@ -124,6 +125,9 @@ export default {
 
   fetch () {
     this.fetchUsers()
+    if (this.GET_AUTH.userId == 257) {
+      this.headers.push({ text: 'Actions', value: 'actions' })
+    }
   },
 
   methods: {

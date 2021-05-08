@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog"
     persistent
-    max-width="70%">
+    :max-width="$vuetify.breakpoint.lg ? '70%' : '100%'">
     <v-card>
       <v-card-title>
         <v-row>

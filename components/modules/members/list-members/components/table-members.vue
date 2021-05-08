@@ -24,10 +24,17 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-col cols="12"
+            <v-col
+              cols="12"
               md="7"
               sm="7"
               class="text-right">
+              <v-btn
+                @click="$router.push('/members/print-report')"
+                color="secondary">
+                <v-icon>mdi-printer</v-icon>
+                <span>View Report</span>
+              </v-btn>
               <v-btn
                 elevation="0"
                 color="primary"
@@ -90,6 +97,13 @@
             <template v-slot:item.status="{ item }">
               <v-chip
                 small
+                v-if="item.isDeceased == 1"
+                color="error">
+                Deceased
+              </v-chip>
+              <v-chip
+                v-else
+                small
                 :color="item.yearArrear.length >= 3 ? 'default' : 'success'">
                 {{ item.yearArrear.length >= 3 ? 'Inactive' : 'Active' }}
               </v-chip>
@@ -104,10 +118,10 @@
                     class="ma-1 unsettled"
                     color="error"
                     small
-                    v-for="(chip, index) in item.yearArrear"
+                    v-for="(year, index) in item.yearArrear"
                     :key="index"
-                    v-show="chip.year">
-                    {{ chip.year }}
+                    v-show="year">
+                    {{ year }}
                   </v-chip>
                 </div>
                 <div v-else>
@@ -310,21 +324,18 @@ export default {
           data: this.searchParams(this.pager.pageNo)
         })
         this.members.data = response.data.map((items, index)  => {
-          let yearList = []
-          items.yearArrear.map(values => {
-            if (values.year) yearList.push(values)
-          })
           return {
             prcNo: items.prcNo,
             prcNumber: items.prcNumber,
             pmaNo: items.pmaNo,
             fullName: this.capitalizeName(items),
-            prcExp: items.prcExp,
+            prcExp: this.getLocalDate(items.prcExp),
             chapterName: items.chapterName,
             membershipName: items.membershipName,
             status: items.status,
             membershipId: items.membership_id,
-            yearArrear: yearList
+            isDeceased: items.isDeceased,
+            yearArrear: items.yearArrear
           }
         })
         this.pager.totalPage = response.totalPage

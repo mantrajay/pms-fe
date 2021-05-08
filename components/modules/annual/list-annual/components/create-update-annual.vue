@@ -117,6 +117,7 @@
               </v-btn>
             </v-col>
           </v-row>
+          <Creator :items="creator"/>
         </v-container>
       </v-card-text>
     </v-card>
@@ -225,8 +226,13 @@ export default {
       formData.append('years', this.arrears.year)
       this.API_POST({ url: 'Arrears/fetchArrearsByYear', data: formData})
         .then(response => {
-          let data = response.data
+          let data = response.data.arrears
           this.setForm(data)
+          let creator = response.data.creator
+          this.creator = {
+            createdBy: `${creator.creator.firstName} ${creator.creator.lastName}`,
+            createdAt: creator.createdAt
+          }
         }).catch(error => {  })
         .finally(this.loading = false)
     },

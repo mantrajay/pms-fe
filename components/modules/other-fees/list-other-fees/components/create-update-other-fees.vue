@@ -120,6 +120,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <Creator :items="creator" />
       </v-container>
     </v-card-text>
     <AlertCallBack
@@ -176,7 +177,12 @@ export default {
       this.loading = true
       this.API_POST({ url: 'Other_Fees/fetchById/' + this.otherFeesId})
         .then(response => {
-          this.setForm(response.data)
+          let creator = response.data.creator
+          this.creator = {
+            createdBy: `${creator.creator.firstName} ${creator.creator.lastName}`,
+            createdAt: creator.createdAt
+          }
+          this.setForm(response.data.otherFees)
         }).catch(error => {  })
         .finally(this.loading = false)
     },

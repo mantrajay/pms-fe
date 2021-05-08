@@ -291,6 +291,7 @@
               </v-row>
             </v-col>
           </v-row>
+          <Creator :items="creator"/>
         </v-container>
     </v-card-text>
     <AlertCallBack
@@ -371,6 +372,10 @@ export default {
         .then(response => {
           let activity = response.data.activity
           let members = response.data.members
+          this.creator = {
+            createdBy: `${activity.firstName} ${activity.lastName}`,
+            createdAt: activity.createdAt
+          }
           this.setForm(activity, members)
         }).catch(error => {  })
         .finally(this.loading = false)

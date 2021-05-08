@@ -86,7 +86,7 @@ export default {
       loading: false,
       members: [],
       headers: [
-        { text: 'PRC Number', value: 'prc_no' },
+        { text: 'PRC Number', value: 'prcNo' },
         { text: 'Full Name', value: 'fullName' },
         { text: 'Chapter', value: 'chapter_name' },
         { text: 'Membership', value: 'membership_name' },
@@ -130,6 +130,7 @@ export default {
           this.members = response.data.map(items => {
             return {
               prc_no: items.prc_no,
+              prcNo: items.prcNo,
               fullName: this.capitalizeChar(items),
               chapter_name: items.chapter_name,
               membership_name: items.membership_name,

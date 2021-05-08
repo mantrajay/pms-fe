@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog"
     persistent
-    max-width="60%">
+    :max-width="$vuetify.breakpoint.lg ? '60%' : '100%'">
     <v-card>
       <v-card-title>
         <v-row>
@@ -33,17 +33,24 @@
           <v-col
             cols="12"
             md="12"
-            sm="12">
+            sm="12"
+            class="mt-3">
             <h2>Total Points:
               <span class="points">{{ totalPoints }}</span>
             </h2>
+          </v-col>
+          <v-col
+            cols="12"
+            md="12"
+            sm="12"
+            class="mt-n2">
             <v-data-table
               class="mt-5"
               :headers="headers"
               :items="activities"
               :items-per-page="15"
               :loading="loading">
-          </v-data-table>
+            </v-data-table>
           </v-col>
         </v-row>
       </v-container>
