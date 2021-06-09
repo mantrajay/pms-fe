@@ -24,7 +24,6 @@
   </v-row>
 </template>
 <script>
-import MemberDetail from '~/components/modules/members/list-members/components/member-detail'
 export default {
   name: 'Logs-List',
   data () {
@@ -54,7 +53,6 @@ export default {
 
   methods: {
     showDetail (item) {
-      console.log(item)
       this.memberId = item.prc_no
       this.showMemberDetail = true
     },

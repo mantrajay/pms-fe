@@ -13,6 +13,12 @@
       width="400px"
       class="card-login">
       <Form />
+      <p class="copy-right ml-5">
+        &copy; Copyright {{ currentYear }}
+        <span class="copy-text">
+          <b>Pangasinan Medical Society</b>
+        </span>
+      </p>
     </v-card>
   </v-col>
   <!-- :style="{'background-image': `url(${loginLogo})`,
@@ -30,7 +36,14 @@ export default {
   },
   data () {
     return {
-      loginLogo: require('@/assets/images/logo.jpg')
+      loginLogo: require('@/assets/images/logo.jpg'),
+    }
+  },
+
+  computed: {
+    currentYear () {
+      let date = new Date()
+      return date.getFullYear()
     }
   }
 }
@@ -49,5 +62,11 @@ export default {
   left: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
+}
+.copy-right {
+  font-size: 11px;
+}
+.copy-text {
+  color: #1976d2;
 }
 </style>

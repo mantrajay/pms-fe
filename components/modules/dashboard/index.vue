@@ -1,18 +1,21 @@
 <template>
 <div>
-  <Header
-    class="mt-n4"
-    title="PATIENT CHART"
-    @show="showRegistration"/>
-  <Charts class="mt-n3"/>
+  <Header title="Dashboard"/>
+  <IncomingActivities />
+  <MemberArrearBalance v-if="GET_AUTH.roleId == 2" />
+
 </div>
 </template>
 <script>
 import Charts from './chart'
+import IncomingActivities from './child/incoming-activities'
+import MemberArrearBalance from './child/arrear'
 export default {
   name: 'Dashboard',
   components: {
-    Charts
+    Charts,
+    IncomingActivities,
+    MemberArrearBalance
   }
 }
 </script>

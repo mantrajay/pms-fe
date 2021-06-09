@@ -12,7 +12,8 @@
     <v-col
       sm="12"
       cols="12"
-      md="12">
+      md="12"
+      class="mt-2">
       <v-text-field
         :disabled="loading"
         outlined
@@ -20,7 +21,7 @@
         :class="{'text-input': form.username.isEmpty}"
         @input="validationKey(form.username,  'Username')"
         dense
-        label="Enter username"
+        label="PRC Number"
       ></v-text-field>
       <span class="error-text">{{ form.username.msg }}</span>
     </v-col>
@@ -38,7 +39,7 @@
         :class="{'text-input': form.password.isEmpty}"
         @input="validationKey(form.password,  'Password')"
         dense
-        label="Enter password"
+        label="Password"
         @click:append="visiblePassword = !visiblePassword"
       ></v-text-field>
       <span class="error-text">{{ form.password.msg }}</span>
@@ -50,54 +51,46 @@
       class="mt-n8">
       <v-btn color="primary"
         block
+        :disabled="isSubmitBtn"
         @click="login"
         :loading="loading">
         Sign In
       </v-btn>
     </v-col>
-  </v-row>
-  <v-row class="footer">
     <v-col
+      sm="12"
       cols="12"
       md="12"
-      sm="12"
-      class="text-center">
-      <p class="copy-right">
-        &copy; Copyright 2021
-        <span class="copy-text">
-          <b>Pangasinan Medical Society</b>
-        </span>
-      </p>
+      class="text-right">
+      <v-btn
+        text
+        @click="showForgotPassword = true"
+        color="secondary">
+        Forgot Password
+      </v-btn>
     </v-col>
   </v-row>
+  <ForgotPassword
+    v-if="showForgotPassword"
+    @close="showForgotPassword = false"/>
 </div>
 </template>
 <script>
 import { mapMutations } from 'vuex'
 import Title from './app-title'
+import ForgotPassword from './forgot-password'
 export default {
   name: 'Form',
   components: {
-    Title
-  },
-
-  computed: {
-    isSubmitBtn () {
-      let disabled = false
-      Object.keys(this.form).forEach(index => {
-        let item = this.form[index]
-        if (item.required && !item.value) {
-          disabled = true
-        }
-      })
-      return disabled
-    }
+    Title,
+    ForgotPassword
   },
 
   data () {
     return {
       loading: false,
       visiblePassword: false,
+      showForgotPassword: false,
       form: {
         username: this.iRules('', true),
         password: this.iRules('', true)
@@ -120,7 +113,6 @@ export default {
           data: formData
         })
         let data = response.data
-        console.log(data)
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,
@@ -134,7 +126,7 @@ export default {
           membership: data.membershipName,
           photo: data.photo
         })
-        let route = data.roleId == 1 ? 'members' : 'activities'
+        let route = data.roleId == 1 ? 'members' : 'dashboard'
         this.goTo(route)
         this.SET_ALERT_SUCCESS(response.totalPage)
       } catch (error) {
@@ -149,18 +141,5 @@ export default {
   width: 80%;
   margin: auto;
   height: 45vh;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-}
-.copy-right {
-  font-size: 10px;
-}
-.copy-text {
-  color: #1976d2;
-}
-h5 {
-  color: #595959;
 }
 </style>

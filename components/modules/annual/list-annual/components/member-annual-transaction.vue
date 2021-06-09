@@ -66,6 +66,7 @@ export default {
     return {
       loading: false,
       annualFees: [],
+      memberArrearsNotPaid: [],
       headers: [
         { text: 'Name', value: 'name' },
         { text: 'Year', value: 'year' },

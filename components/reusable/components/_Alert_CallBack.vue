@@ -21,14 +21,14 @@
           :color="callBack.variant"
           text
           @click="$emit('close')">
-          <b>Cancel</b>
+          <b>{{ closeBtn }}</b>
         </v-btn>
         <v-btn
           :color="callBack.variant"
           elevation="0"
           :loading="callBack.loading"
           @click="$emit('event')">
-          <b>Yes</b>
+          <b>{{ okBtn }}</b>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -41,7 +41,17 @@ export default {
     callBack: {
       type: Object,
       default: null
-    }
+    },
+
+    closeBtn: {
+      type: String,
+      default: 'Cancel'
+    },
+
+    okBtn: {
+      type: String,
+      default: 'Yes'
+    }    
   },
 
   data () {

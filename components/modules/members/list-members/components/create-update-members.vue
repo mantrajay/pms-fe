@@ -677,6 +677,7 @@ export default {
     },
 
     setForm (data = {}, image = '') {
+      console.log(data)
       this.form.firstName.value = data.first_name
       this.form.middleName.value = data.middle_name
       this.form.lastName.value = data.last_name

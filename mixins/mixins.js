@@ -43,6 +43,25 @@ export const Mixins = {
         limit: { value: this.TABLE.limit }
       })
     },
+
+    isSubmitBtn () {
+      let disabled = false
+      Object.keys(this.form).forEach(index => {
+        let item = this.form[index]
+        if (item.required && !item.value) {
+          disabled = true
+        }
+        let minMax = item.lenMax
+        if (item.required && minMax.length) {
+          let valLen = item.value.length
+          if (valLen < minMax[0]) disabled = true
+        }
+        if (item.required && item.value && item.email) {
+          if (!this.isEmail(item.value)) disabled = true
+        }
+      })
+      return disabled
+    }
   },
 
   methods: {

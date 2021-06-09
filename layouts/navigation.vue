@@ -167,6 +167,12 @@ export default {
       if (this.GET_AUTH.roleId == 1) {
         let navList = [
           {
+            text: 'Dashboard',
+            name: 'dashboard',
+            icon: 'mdi-gauge',
+            to: '/dashboard'
+          },
+          {
             text: 'Arrears',
             name: 'annual',
             icon: 'mdi-cards',
@@ -215,11 +221,23 @@ export default {
             name: 'Logs',
             icon: 'mdi-format-align-justify',
             to: '/logs',
+          },
+          {
+            text: 'Reset Password Request',
+            name: 'Reset Password',
+            icon: 'mdi-pin',
+            to: '/reset-password',
           })
         }
         return navList
       } else {
         return [
+          {
+            text: 'Dashboard',
+            name: 'dashboard',
+            icon: 'mdi-gauge',
+            to: '/dashboard'
+          },
           {
             text: 'Arrears',
             name: 'annual',

@@ -78,6 +78,12 @@
                   sm="12"
                   md="12"
                   class="mt-n8">
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="12"
+                  md="12"
+                  class="mt-n8">
                   <v-text-field
                     outlined
                     v-model="form.name.value"
