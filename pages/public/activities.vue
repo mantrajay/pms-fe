@@ -1,12 +1,12 @@
 <template>
-  <Home />
+  <Activities />
 </template>
 <script>
-import Home from '@/components/public/home'
+import Activities from '@/components/public/activities'
 export default {
   layout: 'public',
   components: {
-    Home
+    Activities
   }
 }
 </script>

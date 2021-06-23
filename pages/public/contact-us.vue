@@ -1,12 +1,12 @@
 <template>
-  <Home />
+  <ContactUs />
 </template>
 <script>
-import Home from '@/components/public/home'
+import ContactUs from '@/components/public/contact-us'
 export default {
   layout: 'public',
   components: {
-    Home
+    ContactUs
   }
 }
 </script>

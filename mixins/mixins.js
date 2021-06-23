@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import moment from 'moment'
 export const Mixins = {
   data () {
     return {
@@ -339,6 +340,10 @@ export const Mixins = {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       if (!pattern.test(value)) return false
       return true
+    },
+
+    dateFormat (date, format = 'MMM D, YYYY HH:mm:ss A') {
+      return moment(date).format(format)
     },
 
     getLocalDate(date, time = false) {

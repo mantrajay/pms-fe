@@ -3,7 +3,6 @@
   <Header title="Dashboard"/>
   <IncomingActivities />
   <MemberArrearBalance v-if="GET_AUTH.roleId == 2" />
-
 </div>
 </template>
 <script>

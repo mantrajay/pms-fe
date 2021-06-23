@@ -8,10 +8,12 @@
     <v-app-bar-nav-icon
       v-if="!$vuetify.breakpoint.lg"
       @click.stop="drawer = !drawer" />
-    <v-icon>
-      mdi-stethoscope
-    </v-icon>
-    <h2>PMS</h2>
+    <img
+      class="logo"
+      :src="require('~/assets/logo.png')"/>
+    <img
+      class="sub-logo"
+      :src="require('~/assets/sub-logo.png')"/>
     <div
       class="ml-7"
       v-if="$vuetify.breakpoint.lg">
@@ -24,6 +26,31 @@
         :class="{'active-nav': $route.name == nav.name}">
         {{ nav.text }}
       </v-btn>
+      <v-menu
+        open-on-hover
+        offset-y
+        bottom
+        origin="center center"
+        transition="scale-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            small
+            text
+            v-bind="attrs"
+            v-on="on">
+            About us
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in aboutMenu"
+            :key="i"
+            link
+            @click="goTo(item.route)">
+            <v-list-item-title>{{ item.label }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn
         class="ml-4"
         @click="goTo('/login')"
@@ -91,10 +118,10 @@ export default {
       collapseOnScroll: true,
       navigation: [
         {
-          text: 'Gallery',
-          name: 'public-gallery',
+          text: 'Home',
+          name: 'index',
           icon: 'mdi-account-group',
-          to: '/public/gallery'
+          to: '/'
         },
         {
           text: 'Activities',
@@ -103,18 +130,17 @@ export default {
           to: '/public/activities'
         },
         {
-          text: 'About Us',
-          name: 'public-about-us',
-          icon: 'mdi-cards',
-          to: '/public/about-us'
-        },
-        {
           text: 'Contact Us',
           name: 'public-contact-us',
           icon: 'mdi-account-switch',
           to: '/public/contact-us'
         }
 			],
+      aboutMenu: [
+        { route: '/public/officers', label: 'Officers'},
+        { route: '/public/hymn', label: 'PMA Hymn'},
+        { route: '/public/past-presidents', label: 'Past Presidents'}
+      ],
       confirm: {
         msg: '',
         show: false,
@@ -176,6 +202,18 @@ export default {
 }
 </script>
 <style scoped>
+.logo {
+  width: 95px;
+  height: 90px;
+  position: relative;
+  top: 17px;
+}
+.sub-logo {
+  width: 65px;
+  height: 60px;
+  position: relative;
+  top: 0px;
+}
 .active-nav {
   border-bottom: 1.3px solid #fff;
 }
