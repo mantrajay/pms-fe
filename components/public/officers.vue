@@ -5,8 +5,12 @@
     md="6"
     sm="6">
     <v-card>
-      <v-img
-        height="140vh"
+      <v-card-text class="text-center">
+        <h1>Pangasinan Medical Society</h1>
+        <h2 class="mt-3">Component Officers 2020</h2>
+      </v-card-text>
+      <img
+        class="image"
         :src="require(`@/assets/slide-show/zero.png`)" />
     </v-card>
   </v-col>
@@ -17,19 +21,17 @@
     <v-row>
       <v-col
         cols="12"
-        md="12"
-        sm="12"
+        md="6"
+        sm="6"
         v-for="(item, index) in items"
         :key="index">
         <v-card class="mx-auto">
-          <v-img
-            class="white--text align-end"
-            height="350px"
-            :src="require(`@/assets/slide-show/${item.image}`)" />
-          </v-img>
           <v-card-text class="text-center">
-            <h2>{{ stringLimit(item.label, 50) }}</h2>
+            <h3>{{ stringLimit(item.label, 50) }}</h3>
           </v-card-text>
+          <img
+            class="image"
+            :src="require(`@/assets/slide-show/${item.image}`)" />
         </v-card>
       </v-col>
     </v-row>
@@ -74,12 +76,12 @@ export default {
 }
 </script>
 <style scoped>
-img {
-  width: 50%;
-}
 .active {
   position: absolute;
   top: -15px;
   right: 6px;
+}
+.image {
+  width: 100%;
 }
 </style>

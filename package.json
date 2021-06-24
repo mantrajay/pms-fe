@@ -19,7 +19,6 @@
     "nuxt": "^2.14.5",
     "vue-chartjs": "^3.5.1",
     "vue-debounce": "^2.5.7",
-    "vue-pdf": "^4.3.0",
     "vue-print-nb": "^1.6.0",
     "vuetify-datetime-picker": "^2.1.1",
     "vuex-persist": "^3.1.3"

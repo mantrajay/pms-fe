@@ -2,9 +2,8 @@
 <v-row>
   <v-col
     cols="12"
-    offset="2"
-    md="8"
-    sm="8">
+    md="12"
+    sm="12">
     <v-card>
       <div class="pa-10 text-center">
         <img

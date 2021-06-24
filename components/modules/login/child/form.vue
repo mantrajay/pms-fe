@@ -4,8 +4,8 @@
   <!-- <Title /> -->
   <v-row class="mt-4">
     <v-col class="text-left login-label">
-      <h5>Hi, please enter your</h5>
-      <h5>credentials below. </h5>
+      <p>Hi, please enter your</p>
+      <p>credentials below. </p>
     </v-col>
   </v-row>
   <v-row class="mt-n2">
@@ -23,7 +23,7 @@
         dense
         label="PRC Number"
       ></v-text-field>
-      <span class="error-text">{{ form.username.msg }}</span>
+      <!-- <span class="error-text">{{ form.username.msg }}</span> -->
     </v-col>
     <v-col
       sm="12"
@@ -42,16 +42,17 @@
         label="Password"
         @click:append="visiblePassword = !visiblePassword"
       ></v-text-field>
-      <span class="error-text">{{ form.password.msg }}</span>
+      <!-- <span class="error-text">{{ form.password.msg }}</span> -->
     </v-col>
     <v-col
       sm="12"
       cols="12"
       md="12"
       class="mt-n8">
-      <v-btn color="primary"
+      <v-btn
+        color="#10946d"
+        class="white--text"
         block
-        :disabled="isSubmitBtn"
         @click="login"
         :loading="loading">
         Sign In
@@ -65,7 +66,7 @@
       <v-btn
         text
         @click="showForgotPassword = true"
-        color="secondary">
+        color="error">
         Forgot Password
       </v-btn>
     </v-col>
@@ -141,5 +142,8 @@ export default {
   width: 80%;
   margin: auto;
   height: 45vh;
+}
+p {
+  margin: auto;
 }
 </style>

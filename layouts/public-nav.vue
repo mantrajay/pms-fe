@@ -23,7 +23,7 @@
         v-for="(nav, index) in navigation"
         :key="index"
         @click="goTo(nav.to)"
-        :class="{'active-nav': $route.name == nav.name}">
+        :class="{'active': $route.name == nav.name}">
         {{ nav.text }}
       </v-btn>
       <v-menu
@@ -37,7 +37,16 @@
             small
             text
             v-bind="attrs"
-            v-on="on">
+            v-on="on"
+            :class="
+              $route.name == 'public-officers'
+                ? 'active'
+                : $route.name == 'public-hymn'
+                 ? 'active'
+                 : $route.name == 'public-past-presidents'
+                  ? 'active'
+                  : ''
+              ">
             About us
           </v-btn>
         </template>
@@ -47,25 +56,23 @@
             :key="i"
             link
             @click="goTo(item.route)">
-            <v-list-item-title>{{ item.label }}</v-list-item-title>
+            <v-list-item-title :class="{'active-nav': $route.name === item.name}">{{ item.label }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
       <v-btn
         class="ml-4"
         @click="goTo('/login')"
-        small
-        outlined>
+        color="purple">
         Login
       </v-btn>
     </div>
     <v-btn
       class="mt-n1"
+      color="purple"
       absolute
       top
       right
-      outlined
-      color="#fff"
       v-if="!$vuetify.breakpoint.lg"
       @click="goTo('/login')">
       Login
@@ -76,33 +83,60 @@
     :clipped="$vuetify.breakpoint.lgAndUp"
     app
     :class="{'navigation': $vuetify.breakpoint.lg}">
-    <v-list
-      class="mt-1"
-      dense>
-      <template v-for="item in navigation">
-        <v-list-item
-          :key="item.text"
-          link
-          :class="{'active': $route.name == item.name}"
-          :to="item.to">
-          <v-list-item-action>
-            <!-- <v-icon
-              :color="$route.name == item.name ? 'purple' : '#595959'">
-              {{ item.icon }}
-            </v-icon> -->
-          </v-list-item-action>
-          <v-list-item-content class="ml-n4">
-            <v-list-item-title>
-              <span
-                class="label"
-                :class="{'label-active': $route.name == item.name}">
-                {{ item.text }}
-              </span>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-list>
+    <v-row no-gutters>
+      <v-col
+        cols="12"
+        v-for="(item, index) in navigation"
+        :key="index"
+        class="pa-1">
+        <v-btn
+          small
+          text
+          block
+          @click="goTo(item.to)"
+          :color="$route.name == item.name ? '#10946d' : ''">
+          <span :class="{'active-nav': $route.name === item.name}">{{ item.text }}</span>
+        </v-btn>
+      </v-col>
+      <v-col
+        cols="12">
+        <v-menu
+          open-on-hover
+          offset-y
+          bottom
+          origin="center center"
+          transition="scale-transition">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              text
+              :color="
+              $route.name == 'public-officers'
+                ? '#10946d'
+                : $route.name == 'public-hymn'
+                 ? '#10946d'
+                 : $route.name == 'public-past-presidents'
+                  ? '#10946d'
+                  : ''
+              "
+              small
+              block
+              v-bind="attrs"
+              v-on="on">
+              About Us
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, i) in aboutMenu"
+              :key="i"
+              link
+              @click="goTo(item.route)">
+              <v-list-item-title :class="{'active-nav': $route.name === item.name}">{{ item.label }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+    </v-row>
   </v-navigation-drawer>
 </div>
 </template>
@@ -137,9 +171,9 @@ export default {
         }
 			],
       aboutMenu: [
-        { route: '/public/officers', label: 'Officers'},
-        { route: '/public/hymn', label: 'PMA Hymn'},
-        { route: '/public/past-presidents', label: 'Past Presidents'}
+        { route: '/public/officers', name: 'public-officers', label: 'Officers'},
+        { route: '/public/hymn', name: 'public-hymn', label: 'PMA Hymn'},
+        { route: '/public/past-presidents', name: 'public-past-presidents', label: 'Past Presidents'}
       ],
       confirm: {
         msg: '',
@@ -215,7 +249,8 @@ export default {
   top: 0px;
 }
 .active-nav {
-  border-bottom: 1.3px solid #fff;
+  color: #10946d !important;
+  font-weight: bold;
 }
 .navigation {
   display: none;
@@ -229,8 +264,10 @@ export default {
   color: #595959;
 }
 .active {
-  background-color: #e0e0e054;
-  border-right: 3px solid #9c27b0;
+  background-color: #f5f5f5;
+  border-right: 3px solid white;
+  color: #10946d;
+  font-weight: bold;
 }
 .active >>> .v-list-item--link:before{
   background-color: #9c27b0 !important;
