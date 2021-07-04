@@ -12,7 +12,7 @@
           cols="10"
           md="10"
           sm="10">
-          <h2 :class="{'rezise-text': !this.$vuetify.breakpoint.lg}">{{ fileDetails.title }}</h2>
+          <h2 :class="{'rezise-text': !$vuetify.breakpoint.lg}">{{ fileDetails.title }}</h2>
         </v-col>
         <v-col
           cols="2"
@@ -36,7 +36,7 @@
         <v-overlay
           class="overlay"
           :absolute="absolute"
-          :value="overlay">
+          :value="$vuetify.breakpoint.lg ? true : false">
         </v-overlay>
       </v-row>
     </v-card>

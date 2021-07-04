@@ -2,17 +2,20 @@
 <v-row>
   <v-col
     cols="12"
-    md="12"
-    sm="12">
-    <v-card>
+    md="3"
+    sm="3">
+  </v-col>
+  <v-col
+    cols="12"
+    md="6"
+    sm="6">
+    <v-card outlined>
       <div class="pa-10 text-center">
-        <img
-          class="logo"
-          :src="require('~/assets/logo.png')"/>
-        <img
-          class="logo"
-          :src="require('~/assets/sub-logo.png')"/>
-        <h2 class="mt-2">PANGASINAN MEDICAL SOCIETY HYMN</h2>
+        <v-img
+          class="ma-auto"
+          max-width="100"
+          max-height="100"
+          :src="require('~/assets/images/hymn.jpg')"/>
         <h3 class="mt-5">“Ang Tala Ng Pangasinan”</h3>
         <p class="mt-3"><b>MUSIC:</b> PROF. ROMEO MACABENTO</p>
         <p class="mt-n4"><b>LYRICIST:</b>AURORA HERNANDEZ-MARAMBA</p>
@@ -46,6 +49,11 @@
         ANDIN BALOT NALINGWANAN
       </pre>
     </v-card>
+  </v-col>
+  <v-col
+    cols="12"
+    md="3"
+    sm="3">
   </v-col>
 </v-row>
 </template>

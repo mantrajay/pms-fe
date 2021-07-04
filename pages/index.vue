@@ -1,15 +1,5 @@
 <template>
-<div>
-  <v-breadcrumbs :items="items">
-    <template v-slot:item="{ item }">
-      <v-breadcrumbs-item
-        :href="item.href"
-        :disabled="item.disabled"
-      >
-        {{ item.text.toUpperCase() }}
-      </v-breadcrumbs-item>
-    </template>
-  </v-breadcrumbs>
+<div class="mt-12">
   <Home />
 </div>
 </template>

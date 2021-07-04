@@ -1,19 +1,28 @@
 <template>
-<v-row no-gutters>
+<v-row>
   <v-col
     cols="12"
-    md="3"
-    sm="3"
-    class="white">
-    <v-btn
+    md="4"
+    sm="4">
+  </v-col>
+  <v-col
+    cols="12"
+    md="4"
+    sm="4"
+    class="mt-5">
+    <!-- <v-btn
       @click="goTo('/')"
       text
       color="primary">
       <v-icon>mdi-chevron-double-left</v-icon>
       Go to PMS website
-    </v-btn>
-    <Form />
-    <div class="copy-right">
+    </v-btn> -->
+    <v-card
+      class="pl-8 pr-8 pb-8"
+      outlined>
+      <Form />
+    </v-card>
+    <!-- <div class="copy-right">
       <p>
         &copy; Copyright {{ currentYear }}
         <span class="copy-text">
@@ -26,10 +35,14 @@
           <b>Mantra Jay</b>
         </span>
       </p>
-    </div>
-
+    </div> -->
   </v-col>
   <v-col
+    cols="12"
+    md="4"
+    sm="4">
+  </v-col>
+  <!-- <v-col
     cols="12"
     md="9"
     sm="9">
@@ -38,7 +51,7 @@
         :aspect-ratio="1.2"
         :src="loginLogo" />
     </v-card>
-  </v-col>
+  </v-col> -->
   <!-- :style="{'background-image': `url(${loginLogo})`,
     'background-size': 'cover',
     'min-height': '100vh' }" -->

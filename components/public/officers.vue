@@ -2,39 +2,14 @@
 <v-row>
   <v-col
     cols="12"
-    md="6"
-    sm="6">
+    md="4"
+    sm="4"
+    v-for="(items, index) in officers"
+    :key="index">
     <v-card>
-      <v-card-text class="text-center">
-        <h1>Pangasinan Medical Society</h1>
-        <h2 class="mt-3">Component Officers 2020</h2>
-      </v-card-text>
-      <img
-        class="image"
-        :src="require(`@/assets/slide-show/zero.png`)" />
+      <v-img
+        :src="items.image" />
     </v-card>
-  </v-col>
-  <v-col
-    cols="12"
-    md="6"
-    sm="6">
-    <v-row>
-      <v-col
-        cols="12"
-        md="6"
-        sm="6"
-        v-for="(item, index) in items"
-        :key="index">
-        <v-card class="mx-auto">
-          <v-card-text class="text-center">
-            <h3>{{ stringLimit(item.label, 50) }}</h3>
-          </v-card-text>
-          <img
-            class="image"
-            :src="require(`@/assets/slide-show/${item.image}`)" />
-        </v-card>
-      </v-col>
-    </v-row>
   </v-col>
 </v-row>
 </template>
@@ -43,34 +18,11 @@ export default {
   name: 'Home',
   data () {
     return {
-      items: [
-        {
-          label: 'Eastern Pangasinan Chapter',
-          image: '1.png'
-        },
-        {
-          label: 'Western Pangasinan Chapter',
-          image: '2.png'
-        },
-        {
-          label: 'North Central Pangasinan Chapter',
-          image: '3.png'
-        },
-        {
-          label: 'South Central Pangasinan Chapter',
-          image: '4.png'
-        },
-        {
-          label: 'West Central Pangasinan Chapter',
-          image: '5.png'
-        },
-      ],
-    }
-  },
-
-  methods: {
-    openPdf () {
-      window.open('src/assets/94th.pdf', '_blank')
+      officers: [
+        { year: 2020, image: require('@/assets/images/officers-2020.jpg') },
+        { year: 2019, image: require('@/assets/images/officers-2019.jpg') },
+        { year: 2018, image: require('@/assets/images/officers-2018.jpg') }
+      ]
     }
   }
 }

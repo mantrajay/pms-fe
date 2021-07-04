@@ -1,5 +1,5 @@
 <template>
-<div class="wrapper">
+<div>
   <!-- Logo -->
   <!-- <Title /> -->
   <v-row class="mt-4">
@@ -23,7 +23,7 @@
         dense
         label="PRC Number"
       ></v-text-field>
-      <!-- <span class="error-text">{{ form.username.msg }}</span> -->
+      <span class="error-text">{{ form.username.msg }}</span>
     </v-col>
     <v-col
       sm="12"
@@ -42,7 +42,7 @@
         label="Password"
         @click:append="visiblePassword = !visiblePassword"
       ></v-text-field>
-      <!-- <span class="error-text">{{ form.password.msg }}</span> -->
+      <span class="error-text">{{ form.password.msg }}</span>
     </v-col>
     <v-col
       sm="12"
@@ -138,11 +138,6 @@ export default {
 }
 </script>
 <style scoped>
-.wrapper {
-  width: 80%;
-  margin: auto;
-  height: 45vh;
-}
 p {
   margin: auto;
 }

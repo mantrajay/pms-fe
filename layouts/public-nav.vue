@@ -4,16 +4,17 @@
     app
     :clipped-left="$vuetify.breakpoint.lgAndUp"
     color="#10946d"
+    :elevation="0"
     dark>
     <v-app-bar-nav-icon
       v-if="!$vuetify.breakpoint.lg"
       @click.stop="drawer = !drawer" />
     <img
       class="logo"
-      :src="require('~/assets/logo.png')"/>
-    <img
+      :src="require('~/assets/nav-logo.png')"/>
+    <!-- <img
       class="sub-logo"
-      :src="require('~/assets/sub-logo.png')"/>
+      :src="require('~/assets/sub-logo.png')"/> -->
     <div
       class="ml-7"
       v-if="$vuetify.breakpoint.lg">

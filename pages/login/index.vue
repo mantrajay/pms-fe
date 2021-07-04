@@ -4,6 +4,7 @@
 <script>
 import Login from '@/components/modules/login'
 export default {
+  layout: 'public',
   middleware: 'routerGuard',
   components: {
     Login
