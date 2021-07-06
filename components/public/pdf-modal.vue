@@ -7,7 +7,7 @@
       color="#10946d"
       dark
       elevation="0">
-      <p :class="{'rezise-text': !$vuetify.breakpoint.lg}">{{ stringLimit(fileDetails.title, 65) }}</p>
+      <p>{{ stringLimit(fileDetails.title, 65) }}</p>
       <v-spacer></v-spacer>
       <v-btn
         text
@@ -106,13 +106,13 @@ export default {
   width: 100%;
   margin: 2px;
 }
-.rezise-text {
-  margin-top: 15px;
-}
 .loading {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+p {
+  margin: auto;
 }
 </style>
