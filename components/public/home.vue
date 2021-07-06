@@ -1,41 +1,37 @@
 <template>
 <div :class="{'adjust-margin': !$vuetify.breakpoint.lg}">
-  <v-row> 
+  <SkeletonLoading
+    :cols="6"
+    v-if="loading"/>
+  <v-row v-else> 
     <v-col
       cols="12"
-      md="6"
-      sm="6"
+      md="3"
+      sm="3"
       v-for="(item, index) in anniversaries"
       :key="index">
       <v-card outlined>
-        <v-row>
-          <v-col
-            cols="12"
-            md="6"
-            sm="6">
-            <v-img
-              :lazy-src="require(`@/assets/loading/loading.gif`)"
-              :src="require(`@/assets/images/${item.image}`)" />
-          </v-col>
-          <v-col
-            cols="12"
-            md="6"
-            sm="6"
-            class="pa-2">
-            <v-card-title
-              class="text-h4 pa-8"
-              v-text="item.title" />
-            <v-card-subtitle
-              class="mt-1 pl-8 pr-8"
-              v-text="item.description" />
-            <v-btn
-              :disabled="item.isFile"
-              color="primary"
-              class="mt-2 ml-8 mb-10">
-              Learn More
-            </v-btn>
-          </v-col>
-        </v-row>
+        <v-img
+          min-height="300"
+          max-width="100%"
+          :lazy-src="require(`@/assets/loading/loading.gif`)"
+          :src="require(`@/assets/images/${item.image}`)" />
+        <!-- <v-card-title
+          class="text-h6 pa-4"
+          v-text="stringLimit(item.title, 55)" />
+        <v-card-subtitle
+          class="pl-4 pr-4 mt-1"
+          v-text="item.description" /> -->
+        <div class="pa-1">
+          <v-btn
+            block
+            :disabled="!parseInt(item.isFile)"
+            color="#10946d"
+            @click="showPdf(item)"
+            class="mb-1 white--text">
+            Learn More
+          </v-btn>
+        </div>
       </v-card>
     </v-col>
   </v-row>
@@ -54,6 +50,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       anniversaries: [],
       showPdfModal: false,
       fileDetails: null
@@ -76,8 +73,8 @@ export default {
     },
     
     showPdf (item) {
-      // if (!this.$vuetify.breakpoint.lg) {
-      //   window.open(`/${item.source}#toolbar=0`, '_blank')
+      // if (this.$vuetify.breakpoint.lg) {
+      //   window.open(`/${item.file}#toolbar=0`, '_blank')
       //   return
       // }
       this.showPdfModal = true

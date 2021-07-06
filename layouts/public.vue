@@ -2,7 +2,7 @@
 <v-app id="inspire">
   <v-main>
     <!-- <Navigation /> -->
-    <SubNav />
+    <Navigation />
     <v-container
       class="content"
       fluid>
@@ -14,13 +14,11 @@
 </template>
 <script>
 import Navigation from './public-nav'
-import SubNav from './sub-nav'
 import Footer from './footer'
 export default {
   name: 'Application',
   components: {
     Navigation,
-    SubNav,
     Footer
   }
 }

@@ -70,6 +70,7 @@ export default {
           let data = response.data
           this.presidents = data.map((items, index) => {
             return {
+              id: items.id,
               name: items.name,
               year: items.year,
               status: !index ? 'Current' : 'Finished'
