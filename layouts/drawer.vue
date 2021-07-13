@@ -2,25 +2,21 @@
 <div>
   <div class="d-flex">
     <v-app-bar-nav-icon
-      class="mt-2 nav-icon"
+      class="nav-icon ml-n4 mt-3"
       color="#10946d"
       @click="drawer = !drawer"/>
     <v-img
-      max-width="60"
-      max-height="60"
-      class="mt-n1 ml-2"
-      :src="require('~/assets/logo.png')"/>
-    <v-img
-      max-width="50"
-      max-height="50"
-      class="mt-1 ml-1"
-      :src="require('~/assets/sub-logo.png')"/>
-    <h1 class="ml-2 mt-3 header">PMS</h1>
+      class="ml-1"
+      max-width="120"
+      max-height="100"
+      :src="require('~/assets/nav-logo.png')"/>
+    <h2 class="ml-2 mt-4 header">PMS</h2>
     <v-spacer></v-spacer>
     <v-btn
       absolute
       right
-      class="white--text mt-2"
+      class="login-mobile"
+      elevation="0"
       color="#10946d"
       @click="goTo('/login')">
       Login
@@ -94,6 +90,12 @@ export default {
           name: 'public-past-presidents',
           title: 'All Presidents',
           to: '/public/past-presidents'
+        },
+        {
+          label: 'Constitution and By-Laws',
+          name: 'public-by-laws',
+          title: 'CONSTITUTION and BY-LAWS AMENDMENTS',
+          to: '/public/by-laws'
         }
 			]
     }
@@ -127,6 +129,10 @@ export default {
   color: #10946d;
 }
 .nav-icon >>> .mdi:before{
-  font-size: 40px !important;
+  font-size: 35px !important;
+}
+.login-mobile {
+  color: white;
+  top: 30px !important;
 }
 </style>

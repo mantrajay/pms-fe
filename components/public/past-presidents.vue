@@ -5,8 +5,10 @@
       cols="12"
       md="7"
       sm="7">
-      <v-card>
-        <v-img :src="require('@/assets/images/former-pres.jpg')" />
+      <v-card outlined>
+        <v-img
+          :lazy-src="require(`@/assets/loading/loading.gif`)"
+          :src="require('@/assets/images/former-pres.jpg')" />
       </v-card>
     </v-col>
     <v-col
@@ -53,8 +55,7 @@ export default {
         { text: 'Year(s) of Service', value: 'year' },
         { text: 'Status', value: 'status' },
       ],
-      presidents: [],
-      selectedItem: 0
+      presidents: []
     }
   },
 

@@ -4,4 +4,5 @@ export default {
   GET_ALERT: state => state.alert,
   GET_PAGE_LOADING: state => state.pageLoading,
   IMAGE_EXT: state => state.imageExtension,
+  LIKE_HEART: state => state.likeHeart,
 }

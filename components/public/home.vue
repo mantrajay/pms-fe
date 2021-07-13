@@ -1,7 +1,7 @@
 <template>
 <div :class="{'adjust-margin': !$vuetify.breakpoint.lg}">
   <SkeletonLoading
-    :cols="6"
+    :cols="3"
     v-if="loading"/>
   <v-row v-else> 
     <v-col

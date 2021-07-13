@@ -79,5 +79,13 @@ export default {
 
   SET_PAGE_LOADING_CLOSE: (state) => {
     state.pageLoading.toggle = false
+  },
+
+  SET_HEART: (state, type = '') => {
+    state.likeHeart.heart = type
+  },
+
+  SET_LIKE: (state, like = '') => {
+    state.likeHeart.like = like
   }
 }

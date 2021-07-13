@@ -8,6 +8,7 @@
     :key="index">
     <v-card>
       <v-img
+        :lazy-src="require(`@/assets/loading/loading.gif`)"
         :src="items.image" />
     </v-card>
   </v-col>

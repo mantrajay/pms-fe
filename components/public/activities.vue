@@ -1,97 +1,63 @@
 <template>
 <div>
   <SkeletonLoading v-if="loading"/>
-  <v-timeline
-    v-else
-    :reverse="reverse"
-    :dense="$vuetify.breakpoint.smAndDown">
-    <v-timeline-item
+  <v-row v-else>
+    <v-col
       v-for="(item, index) in activities"
       :key="index"
-      :color="
-        Date.parse(item.start_time) > Date.parse(new Date())
-          ? '#10946d'
-          : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-            ? '#e39500'
-            : '#10946d'
-          "
-      icon="mdi-calendar"
-      fill-dot>
-      <v-chip
-        :color="
-          Date.parse(item.start_time) > Date.parse(new Date())
-            ? '#10946d'
-            : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-              ? '#e39500'
-              : '#10946d'
-            "
-        class="white--text"
-        slot="opposite">
-        <b>{{ 
-          Date.parse(item.start_time) > Date.parse(new Date())
-            ? 'Upcomming'
-            : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-              ? 'Ongoing'
-              : 'Finished'
-        }}</b>
-      </v-chip>
-      <v-card-title class="text-h6 white--text"
-        :class="
-        Date.parse(item.start_time) > Date.parse(new Date())
-          ? 'upcomming'
-          : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-            ? 'ongoing'
-            : 'past'
-          ">
-        <b>{{ item.name }}</b>
-      </v-card-title>
+      cols="12"
+      md="4"
+      sm="4">
       <v-card
-        outlined
-        class="elevation-2">
+        class="activity-card"
+        outlined>
         <v-card-text>
-          <p><b>Sponsor:</b> {{ item.sponsor }}</p>
+          <b class="title-activity">{{ stringLimit(item.name, 30) }}</b>
+          <p class="mt-3"><b>Sponsor:</b> {{ item.sponsor }}</p>
           <p><b>Speaker:</b> {{ item.speaker_name }}</p>
           <p><b>Venue:</b> {{ item.venue }}</p>
-          <p><b>Start Time:</b> {{ dateFormat(item.start_time) }}</p>
-          <p><b>End Time:</b> {{ dateFormat(item.end_time) }}</p>
-          <v-chip
-            v-if="!$vuetify.breakpoint.lg"
-            :color="
-              Date.parse(item.start_time) > Date.parse(new Date())
-                ? '#10946d'
-                : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-                  ? '#e39500'
-                  : '#10946d'
-                "
-            class="white--text"
-            slot="opposite">
-            <b>{{ 
-              Date.parse(item.start_time) > Date.parse(new Date())
-                ? 'Upcomming'
-                : Date.parse(dateFormat(item.start_time, 'MMM D, YYYY')) === dateNow
-                  ? 'Ongoing'
-                  : 'Finished'
-            }}</b>
-          </v-chip>
+          <p><b>Start:</b> {{ dateFormat(item.start_time) }}</p>
+          <p><b>End:</b> {{ dateFormat(item.end_time) }}</p>
         </v-card-text>
+        <v-card-actions class="mt-n3">
+          <v-alert
+            outlined
+            :type="
+            dateNow > Date.parse(item.end_time)
+                ? '#10946d'
+                : Date.parse(item.end_time) === dateNow
+                 ? 'Ongoing'
+                 : '#ffb463' 
+                 "
+            prominent
+            border="right">
+            {{
+              dateNow > Date.parse(item.end_time)
+                ? 'Done'
+                : Date.parse(item.end_time) === dateNow
+                 ? 'Ongoing'
+                 : 'Upcoming' 
+            }}
+          </v-alert>
+        </v-card-actions>
       </v-card>
-    </v-timeline-item>
-  </v-timeline>
+    </v-col>
+  </v-row>
 </div>
 </template>
 <script>
   export default {
+    name: 'Activities',
     data: () => ({
-      reverse: true,
       loading: false,
       activities: [],
-      dateNow: ''
+      dateNow: null
     }),
 
     created () {
+      this.fethcActivities()
       let date = new Date().toDateString()
       this.dateNow = Date.parse(date)
-      this.fethcActivities()
     },
 
     methods: {
@@ -108,6 +74,9 @@
   }
 </script>
 <style scoped>
+.title-activity {
+  font-size: 17px;
+}
 .upcomming {
   background-color: #10946d;
 }
@@ -129,5 +98,11 @@
 }
 .past {
   background-color: #10946d;
+}
+p {
+  margin: 3px auto;
+}
+.activity-card {
+  border-top: 2px solid #10946d;
 }
 </style>

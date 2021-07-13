@@ -7,13 +7,13 @@
       color="#10946d"
       dark
       elevation="0">
-      <p>{{ stringLimit(fileDetails.title, 65) }}</p>
-      <v-spacer></v-spacer>
       <v-btn
+        absolute
+        right
         text
         color="white"
         @click="$emit('close')">
-        <v-icon>mdi-close</v-icon>
+        Close
       </v-btn>
     </v-toolbar>
    <v-row>
@@ -25,7 +25,7 @@
       cols="12"
       md="8"
       sm="8"
-      class="text-center pa-3">
+      class="text-center">
       <div
         class="loading"
         v-if="show && fileDetails.file">
@@ -40,7 +40,12 @@
         </v-progress-circular>
         <h3 class="mt-3">Loading PDF</h3>
       </div>
-      <h4 class="mt-5">{{ fileDetails.description }}</h4>
+      <div
+        class="pl-2 pr-2"
+        :class="{'mt-5': $vuetify.breakpoint.lg}">
+        <h2>{{ stringLimit(fileDetails.title, 65) }}</h2>
+        <h4 class="mt-2">{{ fileDetails.description }}</h4>
+      </div>
       <pdf
         v-show="!show"
         class="pdf"

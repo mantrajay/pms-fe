@@ -30,5 +30,9 @@ export default () => ({
     boilerplate: false,
     toggle: false,
     type: 'article, article, article'
+  },
+  likeHeart: {
+    like: '',
+    heart: ''
   }
 })
