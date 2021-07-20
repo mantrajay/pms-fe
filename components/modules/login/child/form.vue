@@ -1,80 +1,89 @@
 <template>
-<div>
-  <!-- Logo -->
-  <!-- <Title /> -->
-  <v-row class="mt-4">
-    <v-col class="text-left login-label">
-      <p>Hi, please enter your</p>
-      <p>credentials below. </p>
-    </v-col>
-  </v-row>
-  <v-row class="mt-n2">
-    <v-col
-      sm="12"
-      cols="12"
-      md="12"
-      class="mt-2">
-      <v-text-field
-        :disabled="loading"
-        outlined
-        v-model="form.username.value"
-        :class="{'text-input': form.username.isEmpty}"
-        @input="validationKey(form.username,  'Username')"
-        dense
-        label="PRC Number"
-      ></v-text-field>
-      <span class="error-text">{{ form.username.msg }}</span>
-    </v-col>
-    <v-col
-      sm="12"
-      cols="12"
-      md="12"
-      class="mt-n8">
-      <v-text-field
-        :disabled="loading"
-        :append-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'"
-        :type="visiblePassword ? 'text' : 'password'"
-        outlined
-        v-model="form.password.value"
-        :class="{'text-input': form.password.isEmpty}"
-        @input="validationKey(form.password,  'Password')"
-        dense
-        label="Password"
-        @click:append="visiblePassword = !visiblePassword"
-      ></v-text-field>
-      <span class="error-text">{{ form.password.msg }}</span>
-    </v-col>
-    <v-col
-      sm="12"
-      cols="12"
-      md="12"
-      class="mt-n8">
-      <v-btn
-        color="#10946d"
-        class="white--text"
-        block
-        @click="login"
-        :loading="loading">
-        Sign In
-      </v-btn>
-    </v-col>
-    <v-col
-      sm="12"
-      cols="12"
-      md="12"
-      class="text-right">
-      <v-btn
-        text
-        @click="showForgotPassword = true"
-        color="error">
-        Forgot Password
-      </v-btn>
-    </v-col>
-  </v-row>
-  <ForgotPassword
-    v-if="showForgotPassword"
-    @close="showForgotPassword = false"/>
-</div>
+  <div>
+    <!-- Logo -->
+    <!-- <Title /> -->
+    <v-row class="mt-4">
+      <v-col class="text-left login-label">
+        <h2>Welcome Back!</h2>
+        <p>Hello, please enter your credentials below.</p>
+      </v-col>
+    </v-row>
+    <v-row class="mt-n2">
+      <v-col
+        sm="12"
+        cols="12"
+        md="12"
+        class="mt-2">
+        <v-text-field
+          :disabled="loading"
+          outlined
+          v-model="form.username.value"
+          :class="{'text-input': form.username.isEmpty}"
+          @input="validationKey(form.username,  'Username')"
+          dense
+          label="PRC Number"
+        ></v-text-field>
+        <span class="error-text">{{ form.username.msg }}</span>
+      </v-col>
+      <v-col
+        sm="12"
+        cols="12"
+        md="12"
+        class="mt-n8">
+        <v-text-field
+          :disabled="loading"
+          :append-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="visiblePassword ? 'text' : 'password'"
+          outlined
+          v-model="form.password.value"
+          :class="{'text-input': form.password.isEmpty}"
+          @input="validationKey(form.password,  'Password')"
+          dense
+          label="Password"
+          @click:append="visiblePassword = !visiblePassword"
+        ></v-text-field>
+        <span class="error-text">{{ form.password.msg }}</span>
+      </v-col>
+      <v-col
+        sm="12"
+        cols="12"
+        md="12"
+        class="mt-n8">
+        <v-btn
+          color="#10946d"
+          class="white--text"
+          block
+          @click="login"
+          :loading="loading">
+          Sign In
+        </v-btn>
+        <v-alert
+          class="mt-2"
+          v-if="errorMessage"
+          dense
+          text
+          type="error"
+        >
+          {{ errorMessage }}
+        </v-alert>
+      </v-col>
+      <v-col
+        sm="12"
+        cols="12"
+        md="12"
+        class="text-right">
+        <v-btn
+          text
+          @click="showForgotPassword = true"
+          color="error">
+          Forgot Password
+        </v-btn>
+      </v-col>
+    </v-row>
+    <ForgotPassword
+      v-if="showForgotPassword"
+      @close="showForgotPassword = false"/>
+  </div>
 </template>
 <script>
 import { mapMutations } from 'vuex'
@@ -90,6 +99,7 @@ export default {
   data () {
     return {
       loading: false,
+      errorMessage: '',
       visiblePassword: false,
       showForgotPassword: false,
       form: {
@@ -105,15 +115,15 @@ export default {
     }),
 
     async login () {
-      if (!this.validateForm(this.form))  return
+      if (!this.validateForm(this.form)) return
       this.loading = true
       try {
-        let formData = this.jsonToForm(this.form)
-        let response = await this.API_POST({
+        const formData = this.jsonToForm(this.form)
+        const response = await this.API_POST({
           url: 'Auth/validateAuth',
           data: formData
         })
-        let data = response.data
+        const data = response.data
         this.SET_AUTH({
           token: data.token,
           userId: data.userId,
@@ -127,11 +137,10 @@ export default {
           membership: data.membershipName,
           photo: data.photo
         })
-        let route = data.roleId == 1 ? 'members' : 'dashboard'
-        this.goTo(route)
+        this.goTo('dashboard')
         this.SET_ALERT_SUCCESS(response.totalPage)
       } catch (error) {
-        this.SET_ALERT_ERROR(error.response)
+        this.errorMessage = error.response
       } finally { this.loading = false }
     }
   }

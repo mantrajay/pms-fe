@@ -64,14 +64,26 @@ export default {
         { 
           label: 'Activities',
           name: 'public-activities' ,
-          title: 'List of Activities',
+          title: 'Activities',
           to: '/public/activities'
         },
         {
-          label: 'Contact Us',
-          name: 'public-contact-us' ,
-          title: 'Contact Us',
-          to: '/public/contact-us'
+          label: 'Presidents',
+          name: 'public-past-presidents',
+          title: 'All Presidents',
+          to: '/public/past-presidents'
+        },
+        {
+          label: 'Board of Resolutions',
+          name: 'public-board-of-resolution',
+          title: 'Board of Resolutions',
+          to: '/public/board-of-resolution'
+        },
+        {
+          label: 'Constitution and By-Laws',
+          name: 'public-by-laws',
+          title: 'CONSTITUTION and BY-LAWS AMENDMENTS',
+          to: '/public/by-laws'
         },
         {
           label: 'Officers',
@@ -86,16 +98,10 @@ export default {
           to: '/public/hymn'
         },
         {
-          label: 'Presidents',
-          name: 'public-past-presidents',
-          title: 'All Presidents',
-          to: '/public/past-presidents'
-        },
-        {
-          label: 'Constitution and By-Laws',
-          name: 'public-by-laws',
-          title: 'CONSTITUTION and BY-LAWS AMENDMENTS',
-          to: '/public/by-laws'
+          label: 'Contact Us',
+          name: 'public-contact-us' ,
+          title: 'Contact Us',
+          to: '/public/contact-us'
         }
 			]
     }

@@ -75,7 +75,7 @@
             max-width="52"
             max-height="52"
             :src="require('~/assets/logo.png')"/>
-          <div v-if="scrolled > 125 && $vuetify.breakpoint.lg">
+          <div v-if="$vuetify.breakpoint.lg">
             <v-btn
               small
               color="#10946d"
@@ -184,10 +184,22 @@ export default {
           to: '/public/activities'
         },
         {
-          label: 'Contact Us',
-          name: 'public-contact-us' ,
-          title: 'Contact Us',
-          to: '/public/contact-us'
+          label: 'Presidents',
+          name: 'public-past-presidents',
+          title: 'All Presidents',
+          to: '/public/past-presidents'
+        },
+        {
+          label: 'Board of Resolutions',
+          name: 'public-board-of-resolution',
+          title: 'Board of Resolutions',
+          to: '/public/board-of-resolution'
+        },
+        {
+          label: 'Constitution and By-Laws',
+          name: 'public-by-laws',
+          title: 'CONSTITUTION and BY-LAWS AMENDMENTS',
+          to: '/public/by-laws'
         },
         {
           label: 'Officers',
@@ -202,16 +214,10 @@ export default {
           to: '/public/hymn'
         },
         {
-          label: 'Presidents',
-          name: 'public-past-presidents',
-          title: 'All Presidents',
-          to: '/public/past-presidents'
-        },
-        {
-          label: 'Constitution and By-Laws',
-          name: 'public-by-laws',
-          title: 'CONSTITUTION and BY-LAWS AMENDMENTS',
-          to: '/public/by-laws'
+          label: 'Contact Us',
+          name: 'public-contact-us' ,
+          title: 'Contact Us',
+          to: '/public/contact-us'
         }
 			]
     }

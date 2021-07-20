@@ -1,5 +1,5 @@
 <template>
-<div :class="{'adjust-margin': !$vuetify.breakpoint.lg}">
+<div>
   <SkeletonLoading
     :cols="3"
     v-if="loading"/>
@@ -7,7 +7,7 @@
     <v-col
       cols="12"
       md="3"
-      sm="3"
+      sm="6"
       v-for="(item, index) in anniversaries"
       :key="index">
       <v-card outlined>

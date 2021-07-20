@@ -1,41 +1,45 @@
 <template>
-<div>
-  <Header
-    title="ACTIVITIES"
-    @show="showCreate"/>
-  <v-row class="mt-n5">
-    <v-col
-      v-if="GET_AUTH.roleId == 1"
-      cols="12"
-      sm="12"
-      md="12">
-      <TableData
-        @show="showUpdate"
-        @event="reFetch = false"
-        :reFetch="reFetch"/>
-    </v-col>
-    <v-col
-      v-else
-      cols="12"
-      sm="12"
-      md="12">
-      <ActivityList :memberId="GET_AUTH.userId" />
-    </v-col>
-  </v-row>
-  <CreateUpdateActivity
-    v-if="showDialog"
-    :activityId="activityId"
-    @close="showDialog = false"
-    :setting="setting"
-    @event="reFetch = true, showDialog = false"/>
-</div>
+  <div>
+    <Header
+      title="ACTIVITIES"
+      @show="showCreate"
+    />
+    <v-row class="mt-n5">
+      <v-col
+        v-if="GET_AUTH.roleId == 1"
+        cols="12"
+        sm="12"
+        md="12"
+      >
+        <TableData
+          :reFetch="reFetch"
+          @show="showUpdate"
+          @event="reFetch = false"
+        />
+      </v-col>
+      <v-col
+        v-else
+        cols="12"
+        sm="12"
+        md="12">
+        <ActivityList :memberId="GET_AUTH.userId" />
+      </v-col>
+    </v-row>
+    <CreateUpdateActivity
+      v-if="showDialog"
+      :activityId="activityId"
+      :setting="setting"
+      @close="showDialog = false"
+      @event="reFetch = true, showDialog = false"
+    />
+  </div>
 </template>
 <script>
 import TableData from './components/table-activities'
 import CreateUpdateActivity from './components/create-update-activity'
 import ActivityList from './components/member-activities'
 export default {
-  name: 'Patient-List',
+  name: 'PatientList',
   components: {
     TableData,
     CreateUpdateActivity,
@@ -65,4 +69,3 @@ export default {
   }
 }
 </script>
-     

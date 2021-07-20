@@ -1,22 +1,30 @@
 <template>
-<div>
-  <Header title="Logs" />
-  <v-row class="mt-n5">
-    <v-col
-      cols="12"
-      sm="12"
-      md="12">
-      <TableData />
-    </v-col>
-  </v-row>
-</div>
+  <div>
+    <Header title="Logs" />
+    <v-row class="mt-n5">
+      <v-col
+        cols="12"
+        sm="6"
+        md="6">
+        <TableMemberHistory />
+      </v-col>
+      <v-col
+        cols="12"
+        sm="6"
+        md="6">
+        <TableAdminHistory />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 <script>
-import TableData from './components/table-chapters'
+import TableMemberHistory from './components/member-history'
+import TableAdminHistory from './components/admin-history'
 export default {
   name: 'Logs-List',
   components: {
-    TableData
+    TableMemberHistory,
+    TableAdminHistory
   }
 }
 </script>
