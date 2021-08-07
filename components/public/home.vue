@@ -10,43 +10,50 @@
       sm="6"
       v-for="(item, index) in anniversaries"
       :key="index">
-      <v-card outlined>
-        <v-img
-          min-height="300"
-          max-width="100%"
-          :lazy-src="require(`@/assets/loading/loading.gif`)"
-          :src="require(`@/assets/images/${item.image}`)" />
-        <!-- <v-card-title
-          class="text-h6 pa-4"
-          v-text="stringLimit(item.title, 55)" />
-        <v-card-subtitle
-          class="pl-4 pr-4 mt-1"
-          v-text="item.description" /> -->
-        <div class="pa-1">
-          <v-btn
-            block
-            :disabled="!parseInt(item.isFile)"
-            color="#10946d"
-            @click="showPdf(item)"
-            class="mb-1 white--text">
-            Learn More
-          </v-btn>
-        </div>
-      </v-card>
+      <v-hover v-slot="{ hover }">
+        <v-card
+          class="hover"
+          outlined>
+          <v-img
+            min-height="400"
+            max-height="400"
+            max-width="100%"
+            :lazy-src="require(`@/assets/loading/loading.gif`)"
+            :src="require(`@/assets/images/${item.image}`)">
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="transition-fast-in-fast-out hover-content"
+                @click="showDetails(item)">
+              <div class="hover-label">
+                <div v-if="item.imageCount > 0">
+                  <v-icon size="50" color="#fff">mdi-book-information-variant</v-icon>
+                  <h5>Learn More</h5>
+                </div>
+                <div v-else>
+                  <v-icon size="50" color="#fff">mdi-block-helper</v-icon>
+                  <h5>No Available Information</h5>
+                </div>
+              </div>
+              </div>
+            </v-expand-transition>
+          </v-img>
+        </v-card>
+      </v-hover>
     </v-col>
   </v-row>
-  <PDFModal
+  <AniversaryAssets
     @close="showPdfModal = false"
     v-if="showPdfModal"
     :fileDetails="fileDetails" />
 </div>
 </template>
 <script>
-import PDFModal from './pdf-modal'
+import AniversaryAssets from './aniversary-assets'
 export default {
   name: 'Home',
   components: {
-    PDFModal
+    AniversaryAssets
   },
   data () {
     return {
@@ -71,6 +78,11 @@ export default {
         }).catch(error => {  })
         .finally(() => { this.loading = false })
     },
+
+    showDetails (item) {
+      if (item.imageCount <= 0) return
+      this.goTo(`/public/aniversary-assets/${item.id}`)
+    },
     
     showPdf (item) {
       // if (this.$vuetify.breakpoint.lg) {
@@ -94,5 +106,20 @@ img {
 }
 .adjust-margin {
   margin-top: 100px !important;
+}
+.hover-content {
+  height: 100%;
+  background-color: #10946de6;
+  width: 100%;
+  text-align: center;
+}
+.hover-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 27px;
 }
 </style>

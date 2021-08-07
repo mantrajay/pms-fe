@@ -9,11 +9,18 @@
       md="4"
       sm="4">
       <v-card
-        class="activity-card"
+        class="hover"
         outlined>
-        <v-card-text>
-          <b class="title-activity">{{ stringLimit(item.name, 30) }}</b>
-          <p class="mt-3"><b>Sponsor:</b> {{ item.sponsor }}</p>
+        <v-toolbar
+          elevation="0"
+          color="primary"
+          outlined>
+          <b class="title-activity">
+            {{ stringLimit(item.name, 30) }}
+          </b>
+        </v-toolbar>
+        <v-card-text class="mt-n2">
+          <p><b>Sponsor:</b> {{ item.sponsor }}</p>
           <p><b>Speaker:</b> {{ item.speaker_name }}</p>
           <p><b>Venue:</b> {{ item.venue }}</p>
           <p><b>Start:</b> {{ dateFormat(item.start_time) }}</p>
@@ -33,7 +40,7 @@
             border="right">
             {{
               dateNow > Date.parse(item.end_time)
-                ? 'Done'
+                ? 'Finished'
                 : Date.parse(item.end_time) === dateNow
                  ? 'Ongoing'
                  : 'Upcoming' 
@@ -104,5 +111,10 @@ p {
 }
 .activity-card {
   border-top: 2px solid #10946d;
+}
+.v-application .primary {
+  background-color: #10946d !important;
+  border-color: #10946d !important;
+  color: white;
 }
 </style>

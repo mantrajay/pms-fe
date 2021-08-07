@@ -6,7 +6,7 @@
     sm="4"
     v-for="(items, index) in officers"
     :key="index">
-    <v-card>
+    <v-card class="hover">
       <v-img
         :lazy-src="require(`@/assets/loading/loading.gif`)"
         :src="items.image" />

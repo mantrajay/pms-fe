@@ -6,8 +6,15 @@
       sm="12"
       v-for="(items, index) in officers"
       :key="index">
-      <v-card>
+      <v-card
+        outlined>
         <v-container>
+          <v-row>
+            <v-col>
+              <v-card-title class="headline"><b>{{ items.title }}</b></v-card-title>
+              <v-card-title class="mt-n5">{{ items.subTitle }}</v-card-title>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col
               cols="12"
@@ -22,8 +29,6 @@
               cols="12"
               md="5"
               sm="5">
-              <v-card-title class="headline"><b>{{ items.title }}</b></v-card-title>
-              <v-card-title class="mt-n5">{{ items.subTitle }}</v-card-title>
               <v-card-section>
                 <v-row>
                   <v-col
@@ -34,6 +39,7 @@
                     :key="keys"
                     @click="showImageModal(image)">
                     <v-img
+                      class="hover"
                       :lazy-src="require(`@/assets/loading/loading.gif`)"
                       :src="image" />
                   </v-col>
@@ -44,41 +50,10 @@
         </v-container>
       </v-card>
     </v-col>
-    <v-dialog
-      v-model="dialog"
-      persistent
-      fullscreen
-      max-width="290"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Open Dialog
-        </v-btn>
-      </template>
-      <v-card
-        class="pa-10"
-        outlined>
-        <v-toolbar elevation="0">
-          <v-row>
-            <v-col class="text-center">
-              <v-btn
-                color="#10946d"
-                @click="dialog = false">
-                <v-icon color="white">mdi-close</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-toolbar>
-        <v-img
-          :lazy-src="require(`@/assets/loading/loading.gif`)"
-          :src="dialogImage" />
-      </v-card>
-    </v-dialog>
+    <ImageZoom
+      v-if="dialog"
+      @close="dialog = false"
+      :src="dialogImage"/>
   </v-row>
 </template>
 <script>

@@ -93,4 +93,14 @@ body {
 .content {
   margin-top: 210px;
 }
+.hover {
+  cursor: pointer;
+}
+.hover {
+  transition: transform 250ms;
+}
+
+.hover:hover {
+  transform: translateY(-10px);
+}
 </style>
