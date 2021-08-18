@@ -3,7 +3,7 @@
     persistent
     :max-width="$vuetify.breakpoint.lg ? '40%' : '100%'">
     <v-card>
-      <v-card-title>
+      <v-card-title v-if="!message">
         <v-row>
           <v-col
             cols="12"
@@ -21,7 +21,8 @@
           <v-col
             cols="12"
             md="12"
-            sm="12">
+            sm="12"
+            v-if="!message">
             <v-text-field
               :disabled="loading"
               outlined
@@ -37,7 +38,8 @@
             cols="12"
             md="12"
             sm="12"
-            class="mt-n8">
+            class="mt-n8"
+            v-if="!message">
             <v-text-field
               :disabled="loading"
               outlined
@@ -52,16 +54,30 @@
           <v-col
             cols="12"
             md="12"
+            sm="12">
+            <v-alert
+              v-if="message"
+              dense
+              text
+              type="success"
+            >
+              {{ message }}
+            </v-alert>
+          </v-col>
+          <v-col
+            cols="12"
+            md="12"
             sm="12"
             class="mt-n5 text-right">
             <v-btn
               @click="$emit('close')"
               text
-              color="error"
-              :loading="loading">
-              Cancel
+              v-if="!loading"
+              :color="!message ? 'error' : 'success'">
+              {{ !message ? 'Cancel' : 'Close' }}
             </v-btn>
             <v-btn
+               v-if="!message"
               color="primary"
               :disabled="isSubmitBtn"
               @click="forgotPassword"
@@ -85,7 +101,8 @@ export default {
       form: {
         email: this.iRules('', true, true),
         prcNo: this.iRules('', true),
-      }
+      },
+      message: ''
     }
   },
 
@@ -99,14 +116,15 @@ export default {
       let formData = new FormData()
       formData.append('email', this.form.email.value)
       formData.append('prcNo', this.form.prcNo.value)
-      this.API_POST({ url: 'Public_Controller/forgotPassword', data: formData })
+      this.API_POST({ url: 'Email/forgotPassword', data: formData })
         .then(response => {
-          this.SET_ALERT_SUCCESS(response.response)
-          this.$emit('close')
+          this.message = response.response
         }).catch(error => {
           this.SET_ALERT_ERROR(error.response)
         })
-        .finally(this.loading = false)
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

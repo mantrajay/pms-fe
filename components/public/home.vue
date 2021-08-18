@@ -13,7 +13,8 @@
       <v-hover v-slot="{ hover }">
         <v-card
           class="hover"
-          outlined>
+          outlined
+          @click="showDetails(item)">
           <v-img
             min-height="400"
             max-height="400"
@@ -22,9 +23,9 @@
             :src="require(`@/assets/images/${item.image}`)">
             <v-expand-transition>
               <div
-                v-if="hover"
+                v-if="hover && $vuetify.breakpoint.lg"
                 class="transition-fast-in-fast-out hover-content"
-                @click="showDetails(item)">
+                @click="showDetails(item, 'hover')">
               <div class="hover-label">
                 <div v-if="item.imageCount > 0">
                   <v-icon size="50" color="#fff">mdi-book-information-variant</v-icon>
