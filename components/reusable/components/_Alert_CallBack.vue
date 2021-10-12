@@ -1,6 +1,8 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    v-model="dialog"
     persistent
+    transition="dialog-bottom-transition"
     max-width="450">
     <v-card :id="callBack.variant">
       <v-card-title>

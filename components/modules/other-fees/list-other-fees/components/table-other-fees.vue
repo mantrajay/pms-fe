@@ -159,7 +159,7 @@ export default {
             name: `${items.last_name}, ${items.first_name} ${items.middle_name}`,
             description: items.description,
             date: this.getLocalDate(items.payment_date),
-            amount: `₱${this.formatMoney(items.amount)}`
+            amount: this.formatMoney(items.amount)
           }
         })
         this.pager.totalPage = response.totalPage

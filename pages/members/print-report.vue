@@ -15,10 +15,13 @@
         <template v-slot:default>
           <thead>
             <tr>
+              <th style="text-align: left;">No.</th>
               <th style="text-align: left;">Member Name</th>
               <th style="text-align: left;">PRC Number</th>
               <th style="text-align: left;">PMA Number</th>
               <!-- <th style="text-align: left;">PRC Expiration</th> -->
+              <th style="text-align: left;">Contact No.</th>
+              <th style="text-align: left;">Email</th>
               <th style="text-align: left;">Chapter</th>
               <th style="text-align: left;">Membership</th>
               <!-- <th style="text-align: left;">Status</th>
@@ -28,12 +31,15 @@
           </thead>
           <tbody>
             <tr
-              v-for="item in members"
-              :key="item.name">
+              v-for="(item, index) in members"
+              :key="index">
+              <td>{{ index + 1 }}.</td>
               <td>{{ item.fullName }}</td>
               <td>{{ item.prcNumber }}</td>
               <td>{{ item.pmaNo }}</td>
               <!-- <td>{{ item.prcExp }}</td> -->
+              <td>{{ item.mobile }}</td>
+              <td>{{ item.email }}</td>
               <td>{{ item.chapterName }}</td>
               <td>{{ item.membershipName }}</td>
               <!-- <td>{{ item.status }}</td>
@@ -78,6 +84,8 @@ export default {
             fullName: this.capitalizeChar(items),
             prcExp: items.prcExp,
             chapterName: items.chapter_name,
+            email: items.email,
+            mobile: items.mobile,
             membershipName: items.membership_name
           }
         })

@@ -1,5 +1,7 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     max-width="100%">
     <v-card>
@@ -9,7 +11,8 @@
             cols="12"
             sm="6"
             md="6">
-             <h4>{{ userId ? 'UPDATE' : 'CREATE'}} USER</h4>
+             <h4 v-if="!isProfile">{{ userId ? 'UPDATE' : 'CREATE'}} ADMINISTRATOR</h4>
+             <h4 v-else>Update Profile</h4>
           </v-col>
           <v-col
             cols="12"
@@ -214,10 +217,10 @@
                   :loading="loadingRoles"
                   :items="userRoles"
                   v-model="form.roleId.value"
-                  :disabled="setting === 'view'"
+                  disabled
+                  dense
                   :class="{'text-input': form.roleId.isEmpty, 'view-only': setting === 'view'}"
                   @blur="validationKey(form.roleId)"
-                  dense
                   outlined
                   label="Select Role"
                 ></v-select>
@@ -547,10 +550,13 @@ export default {
           let data = response.data
           this.userRoles = []
           data.forEach((item, index) => {
-            this.userRoles.push({
-              value: item.id,
-              text: item.name
-            })
+            if(!index) {
+              this.form.roleId.value = item.id
+              this.userRoles.push({
+                value: item.id,
+                text: item.name
+              })
+            }
           })
         })
         .catch(error => { this.errorHandle(error) })
@@ -609,7 +615,11 @@ export default {
       this.password.isEmpty = false
       this.confirmPassword.isEmpty = false
       this.confirm.show = true
-      this.confirm.msg = `Are you sure you want to ${this.type} this patient?` 
+      if(this.isProfile) {
+        this.confirm.msg = `Are you sure you want to edit your profile?` 
+        return
+      }
+      this.confirm.msg = `Are you sure you want to ${this.userId ? 'edit' : 'create'} this administrator?` 
     },
   
     submit () {
@@ -640,13 +650,10 @@ export default {
       this.API_POST({url: `Users/${method}`, data: formData})
         .then(response => {
           this.resetForm()
+          let message = ''
+          if(method === 'create') message = response.response
+          else message = response.response.message
           this.$emit('event', response.response.data)
-          let message = response.response.message
-          if (this.isChangePassword) {
-            this.SET_AUTH({})
-            this.goTo('/login')
-            message = `Profile and password have updated successfully. <br/> Please relogin your account again!`
-          }
           this.SET_ALERT_SUCCESS(message)
         })
         .catch(error => { this.errorHandle(error) })

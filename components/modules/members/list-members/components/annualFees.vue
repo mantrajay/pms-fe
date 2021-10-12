@@ -1,5 +1,7 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     :max-width="$vuetify.breakpoint.lg ? '60%' : '100%'">
     <v-card>
@@ -137,7 +139,7 @@ export default {
             this.annualFees = response.data.membersAnnuals.map(item => {
             return {
               name: item.name,
-              amount: `₱ ${this.formatMoney(item.annualfees[0].amount )}`,
+              amount: this.formatMoney(item.annualfees[0].amount ),
               status: item.status,
               year: item.year,
               date: this.getLocalDate(item.annualfees[0].date_paid, true).split('-')[0]

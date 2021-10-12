@@ -1,5 +1,7 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     :max-width="$vuetify.breakpoint.lg ? '40%' : '100%'">
     <v-card>
@@ -63,6 +65,15 @@
             >
               {{ message }}
             </v-alert>
+            <v-alert
+              v-if="errorMessage"
+              dense
+              text
+              type="error"
+              class="mt-n12"
+            >
+              {{ errorMessage }}
+            </v-alert>
           </v-col>
           <v-col
             cols="12"
@@ -71,15 +82,13 @@
             class="mt-n5 text-right">
             <v-btn
               @click="$emit('close')"
-              text
               v-if="!loading"
               :color="!message ? 'error' : 'success'">
               {{ !message ? 'Cancel' : 'Close' }}
             </v-btn>
             <v-btn
-               v-if="!message"
+              v-if="!message"
               color="primary"
-              :disabled="isSubmitBtn"
               @click="forgotPassword"
               :loading="loading">
               Submit
@@ -102,7 +111,8 @@ export default {
         email: this.iRules('', true, true),
         prcNo: this.iRules('', true),
       },
-      message: ''
+      message: '',
+      errorMessage: ''
     }
   },
 
@@ -120,7 +130,7 @@ export default {
         .then(response => {
           this.message = response.response
         }).catch(error => {
-          this.SET_ALERT_ERROR(error.response)
+          this.errorMessage = error.response
         })
         .finally(() => {
           this.loading = false

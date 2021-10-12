@@ -1,6 +1,8 @@
 <template>
 <div>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     max-width="80%">
     <v-card>
@@ -47,7 +49,7 @@
                   sm="6"
                   md="6">
                   <p><b>Membership:</b> {{ arrears.membership }}</p>
-                  <p class="mt-n4"><b>Amount:</b> ₱{{ formatMoney(arrears.amount) }}</p>
+                  <p class="mt-n4"><b>Amount:</b>{{ formatMoney(arrears.amount) }}</p>
                   <p class="mt-n4"><b>Year:</b> {{ arrears.year }}</p>
                 </v-col>
                 <v-col

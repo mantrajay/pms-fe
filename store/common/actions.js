@@ -6,10 +6,9 @@ export default {
   API_GET ({ dispatch, getters }, { url }) {
     return new Promise(async (resolve, reject) => {
       try {
-        let headers = getters.GET_AUTH.token
-          ? { headers: { Authorization: getters.GET_AUTH.token } }
-          : ''
-        let response = await this.$axios.$get(url, headers)
+        let response = getters.GET_AUTH.token
+         ? await this.$axios.$get(url, { headers: { Authorization: getters.GET_AUTH.token } })
+         : await this.$axios.$get(url)
         resolve(response)
       } catch (error) {
         dispatch('UNSET_TOKEN', { error, reject})
@@ -25,10 +24,9 @@ export default {
     return new Promise(async (resolve, reject) => {
       try {
         data = data || {}
-        let headers = getters.GET_AUTH.token
-          ? { headers: { Authorization: getters.GET_AUTH.token } }
-          : ''
-        let response = await this.$axios.$post(url, data, headers)
+        let response = getters.GET_AUTH.token
+         ? await this.$axios.$post(url, data, { headers: { Authorization: getters.GET_AUTH.token } })
+         : await this.$axios.$post(url, data)
         resolve(response)
       } catch (error) {
         console.log(error)
@@ -44,10 +42,9 @@ export default {
   API_DELETE ({ dispatch, getters }, { url }) {
     return new Promise(async (resolve, reject) => {
       try {
-        let headers = getters.GET_AUTH.token
-          ? { headers: { Authorization: getters.GET_AUTH.token } }
-          : ''
-        let response = await this.$axios.$delete(url, headers)
+        let response = getters.GET_AUTH.token
+         ? await this.$axios.$delete(url, { headers: { Authorization: getters.GET_AUTH.token } })
+         : await this.$axios.$delete(url)
         resolve(response)
       } catch (error) {
         dispatch('UNSET_TOKEN', { error, reject})
@@ -64,10 +61,9 @@ export default {
     return new Promise(async (resolve, reject) => {
       try {
         data = data || {}
-        let headers = getters.GET_AUTH.token
-          ? { headers: { Authorization: getters.GET_AUTH.token } }
-          : ''
-        let response = await this.$axios.$put(url, data, headers)
+          let response = getters.GET_AUTH.token
+          ? await this.$axios.$put(url, data, { headers: { Authorization: getters.GET_AUTH.token } })
+          : await this.$axios.$put(url, data)
         resolve(response)
       } catch (error) {
         dispatch('UNSET_TOKEN', { error, reject })

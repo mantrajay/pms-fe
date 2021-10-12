@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    transition="dialog-bottom-transition"
     v-model="dialog"
     persistent
     max-width="60%">

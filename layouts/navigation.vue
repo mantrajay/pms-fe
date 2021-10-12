@@ -8,7 +8,7 @@
     <v-app-bar-nav-icon
       v-if="!$vuetify.breakpoint.lg"
       @click.stop="drawer = !drawer" />
-    <v-icon class="mr-2">mdi-stethoscope</v-icon>
+    <!-- <v-icon class="mr-2">mdi-stethoscope</v-icon> -->
     <h2>PMS</h2>
     <v-btn
       class="mt-n1"
@@ -43,10 +43,10 @@
           :lazy-src="require('~/assets/images/avatar.png')"
           class="profile-photo ma-auto"
           :src="GET_AUTH.photo" />
-        <h3 class="profile-name purple--text">{{ GET_AUTH.accountName }}</h3>
+        <h3 class="profile-name mt-2">{{ GET_AUTH.accountName }}</h3>
         <h4
           v-if="GET_AUTH.prcNumber"
-          class="profile-name purple--text">
+          class="profile-name">
           PRC #{{ GET_AUTH.prcNumber }}
         </h4>
         <div
@@ -55,25 +55,21 @@
           <div
             v-if="GET_AUTH.membership"
             class="mt-1">
-            <v-chip
-              class="white--text"
-              color="purple">
+            <v-chip>
               {{ GET_AUTH.membership }}
             </v-chip>
           </div>
           <div
             class="mt-1"
             v-if="GET_AUTH.chapter">
-            <v-chip
-              class="white--text"
-              color="purple">
+            <v-chip>
               {{ GET_AUTH.chapter }}
             </v-chip>
           </div>
         </div>
         <v-btn
-          class="mt-2 white--text"
-          color="purple"
+          class="mt-2"
+          color="primary"
           outlined
           small
           @click="showProfileInfo">
@@ -93,7 +89,7 @@
           :to="item.to">
           <v-list-item-action>
             <v-icon
-              :color="$route.name == item.name ? 'purple' : '#595959'">
+              :color="$route.name == item.name ? '#1976d2' : '#595959'">
               {{ item.icon }}
             </v-icon>
           </v-list-item-action>
@@ -327,13 +323,13 @@ export default {
 }
 .active {
   background-color: #e0e0e054;
-  border-left: 3px solid #9c27b0;
+  border-right: 3px solid #1976d2;
 }
 .active >>> .v-list-item--link:before{
-  background-color: #9c27b0 !important;
+  background-color: #1976d2 !important;
 }
 .label-active {
-  color: #9c27b0 !important;
+  color: #1976d2 !important;
 }
 .v-list-item--dense, .v-list--dense .v-list-item {
   height: 42px;

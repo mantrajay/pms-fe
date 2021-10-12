@@ -4,8 +4,8 @@
     <!-- <Title /> -->
     <v-row class="mt-4">
       <v-col class="text-left login-label">
-        <h2>Welcome Back!</h2>
-        <p>Hello, please enter your credentials below.</p>
+        <h2>Welcome back again!</h2>
+        <p class="mt-7">Hi, please enter your credentials below.</p>
       </v-col>
     </v-row>
     <v-row class="mt-n2">
@@ -73,9 +73,9 @@
         md="12"
         class="text-right">
         <v-btn
-          text
           @click="showForgotPassword = true"
-          color="error">
+          small
+          color="primary">
           Forgot Password
         </v-btn>
       </v-col>

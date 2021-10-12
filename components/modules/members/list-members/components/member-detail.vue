@@ -1,5 +1,7 @@
 <template>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     :max-width="$vuetify.breakpoint.lg ? '70%' : '100%'">
     <v-card>

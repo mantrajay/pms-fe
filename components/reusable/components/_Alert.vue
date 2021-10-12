@@ -1,5 +1,7 @@
 <template>
-  <v-dialog v-model="GET_ALERT.toggle"
+  <v-dialog
+    transition="dialog-top-transition"
+    v-model="GET_ALERT.toggle"
     persistent
     max-width="450">
     <v-card :id="GET_ALERT.variant">

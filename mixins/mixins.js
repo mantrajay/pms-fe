@@ -137,8 +137,7 @@ export const Mixins = {
         style: 'currency',
         currency: 'PHP'
       })
-      let total = formatter.format(amount)
-      return total.split('PHP')[1]
+      return formatter.format(amount)
     },
 
     /**

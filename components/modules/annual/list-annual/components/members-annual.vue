@@ -1,6 +1,8 @@
 <template>
 <div>
-  <v-dialog v-model="dialog"
+  <v-dialog
+    transition="dialog-bottom-transition"
+    v-model="dialog"
     persistent
     max-width="80%">
     <v-card>
@@ -48,7 +50,7 @@
               <p class="mt-4"><b>Membership:</b><span> {{ annualsMember.membership }}</span></p>
               <p class="mt-n2"><b>Year:</b><span> {{ annualsMember.year }}</span></p>
               <p class="mt-n2"><b>Amount:</b>
-                <span>₱{{ formatMoney(annualsMember.amount) }}</span>
+                <span>{{ formatMoney(annualsMember.amount) }}</span>
               </p>
               <p class="mt-n2"><b>Total Members:</b>
                 <v-chip
@@ -65,13 +67,13 @@
               sm="3"
               class="mt-3">
               <p><b>Total Collection:</b>
-                <span>₱{{ formatMoney(members.length * annualsMember.amount) }}</span>
+                <span>{{ formatMoney(members.length * annualsMember.amount) }}</span>
               </p>
               <p class="mt-n2"><b>Total Members Paid: </b>
-                <span>₱{{ formatMoney(totalPaid) }}</span>
+                <span>{{ formatMoney(totalPaid) }}</span>
               </p>
               <p class="mt-n2"><b>Total Balance: </b>
-                <span>₱{{ totalBalance }}</span>
+                <span>{{ totalBalance }}</span>
               </p>
             </v-col>
             <v-col
