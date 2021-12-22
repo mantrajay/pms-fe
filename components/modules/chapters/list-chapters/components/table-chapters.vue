@@ -51,7 +51,8 @@
             :headers="headers"
             :items="chapters.data"
             :items-per-page="15"
-            :loading="chapters.loading">
+            :loading="chapters.loading"
+            @click:row="chapterMembers">
             <template v-slot:item.actions="{ item }">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -59,6 +60,7 @@
                     elevation="0"
                     v-bind="attrs"
                     v-on="on"
+                    @click.stop
                     @click="$emit('show', item.id)"
                     color="primary"
                     small>
@@ -73,6 +75,7 @@
                     elevation="0"
                     v-bind="attrs"
                     v-on="on"
+                    @click.stop
                     @click="deleteConfirm(item.id)"
                     color="error"
                     small>
@@ -91,11 +94,18 @@
       :callBack="confirm"
       @close="confirm.show = false"
       @event="deleteSubmit"/>
+    <ChapterMembers
+      @close="showMembers = false"
+      :chapterId="chapterId"
+      :chapter="chapter"
+      v-if="showMembers"/>
   </v-row>
 </template>
 <script>
+import ChapterMembers from '@/components/modules/chapters/members'
 export default {
   name: 'Activity-List',
+  components: { ChapterMembers },
   props: {
     reFetch: {
       type: Boolean,
@@ -105,6 +115,7 @@ export default {
 
   data () {
     return {
+      showMembers: false,
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Name', value: 'name' },
@@ -127,7 +138,8 @@ export default {
         title: 'Delete Chapter',
         variant: 'error'
       },
-      chapterId: ''
+      chapterId: '',
+      chapter: ''
     }
   },
 
@@ -170,6 +182,12 @@ export default {
       } catch (error) {
         this.errorHandle(error)
       } finally {this.chapters.loading = false }
+    },
+
+    chapterMembers (args) {
+      this.showMembers = true
+      this.chapterId = args.id
+      this.chapter = args.name
     },
 
     deleteSubmit () {

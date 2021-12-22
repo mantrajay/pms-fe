@@ -104,7 +104,8 @@
               <v-chip
                 v-else
                 small
-                :color="item.yearArrear.length >= 3 ? 'default' : 'success'">
+                class="white--text"
+                :color="item.yearArrear.length >= 3 ? 'secondary' : '#10946d'">
                 {{ item.yearArrear.length >= 3 ? 'Inactive' : 'Active' }}
               </v-chip>
             </template>
@@ -126,8 +127,8 @@
                 </div>
                 <div v-else>
                   <v-chip
-                    class="mt-1"
-                    color="success"
+                    class="mt-1 white--text"
+                    color="#10946d"
                     small>
                     Updated
                   </v-chip>
@@ -166,6 +167,10 @@
     v-if="showMemberDetail"
     :memberId="memberId"
     @close="showMemberDetail = false"/>
+  <UploadMemberFiles
+    v-if="showUpload"
+    :memberId="memberId"
+    @close="showUpload = false"/>
   </v-row>
 </template>
 <script>
@@ -173,6 +178,7 @@ import Activities from './activities'
 import AnnualFees from './annualFees'
 import MemberTransaction from './member-transaction'
 import MemberDetail from './member-detail'
+import UploadMemberFiles from './upload-files'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Members-List',
@@ -180,7 +186,8 @@ export default {
     Activities,
     AnnualFees,
     MemberTransaction,
-    MemberDetail
+    MemberDetail,
+    UploadMemberFiles
   },
   props: {
     reFetch: {
@@ -203,6 +210,7 @@ export default {
         { text: 'Action', value: 'actions'}
       ],
       menus: [
+        { id: 6, icon: 'mdi-upload', title: 'Upload Files' },
         { id: 1, icon: 'mdi-brush', title: 'Update' },
         { id: 2, icon: 'mdi-book-marker-outline', title: 'Show Activities' },
         { id: 3, icon: 'mdi-cards', title: 'Show Annual Fee / Arrears' },
@@ -225,6 +233,7 @@ export default {
       memberArrears: {},
       showTransaction: false,
       showMemberDetail: false,
+      showUpload: false,
       memberDetails: {},
       confirm: {
         msg: '',
@@ -285,6 +294,10 @@ export default {
       }
       if (list.id === 5) {
         this.showMemberDetail = true
+        this.memberId = item.prcNo
+      }
+      if (list.id === 6) {
+        this.showUpload = true
         this.memberId = item.prcNo
       }
     },

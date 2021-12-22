@@ -51,7 +51,8 @@
             :headers="headers"
             :items="memberships.data"
             :items-per-page="15"
-            :loading="memberships.loading">
+            :loading="memberships.loading"
+            @click:row="showMembershipMembers">
             <template v-slot:item.actions="{ item }">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -59,6 +60,7 @@
                     elevation="0"
                     v-bind="attrs"
                     v-on="on"
+                    @click.stop
                     @click="$emit('show', item.id)"
                     color="primary"
                     small>
@@ -73,6 +75,7 @@
                     elevation="0"
                     v-bind="attrs"
                     v-on="on"
+                    @click.stop
                     @click="deleteConfirm(item.id)"
                     color="error"
                     small>
@@ -91,11 +94,18 @@
       :callBack="confirm"
       @close="confirm.show = false"
       @event="deleteSubmit"/>
+    <MembershipMembers
+      @close="showMembers = false"
+      :membershipId="membershipId"
+      :membership="membership"
+      v-if="showMembers"/>
   </v-row>
 </template>
 <script>
+import MembershipMembers from '@/components/modules/memberships/members'
 export default {
   name: 'Membership-List',
+  components: { MembershipMembers },
   props: {
     reFetch: {
       type: Boolean,
@@ -105,6 +115,7 @@ export default {
 
   data () {
     return {
+      showMembers: false,
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Name', value: 'name' },
@@ -127,7 +138,8 @@ export default {
         title: 'Delete Membership',
         variant: 'error'
       },
-      membershipId: ''
+      membershipId: '',
+      membership: ''
     }
   },
 
@@ -170,6 +182,12 @@ export default {
       } catch (error) {
         this.errorHandle(error)
       } finally {this.memberships.loading = false }
+    },
+
+    showMembershipMembers (args) {
+      this.showMembers = true
+      this.membershipId = args.id
+      this.membership = args.name
     },
 
     deleteSubmit () {
