@@ -61,6 +61,7 @@
               v-if="message"
               dense
               text
+              shaped
               type="success"
             >
               {{ message }}
@@ -68,6 +69,7 @@
             <v-alert
               v-if="errorMessage"
               dense
+              shaped
               text
               type="error"
               class="mt-n12"
@@ -129,6 +131,7 @@ export default {
       this.API_POST({ url: 'Email/forgotPassword', data: formData })
         .then(response => {
           this.message = response.response
+          this.errorMessage = ''
         }).catch(error => {
           this.errorMessage = error.response
         })

@@ -218,6 +218,12 @@ export default {
           name: 'public-contact-us' ,
           title: 'Contact Us',
           to: '/public/contact-us'
+        },
+        {
+          label: 'Postgraduate Registration',
+          name: 'public-post-graduate-course' ,
+          title: '4th Pangasinan Medical Society Postgraduate Course 2022',
+          to: '/public/post-graduate-course'
         }
 			]
     }

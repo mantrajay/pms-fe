@@ -64,8 +64,8 @@
       :callBack="confirm"
       @close="confirm.show = false"
       @event="submit"/>
-  </v-card>
-</v-dialog>
+    </v-card>
+  </v-dialog>
 </template>
 <script>
 export default {

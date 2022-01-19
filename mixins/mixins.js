@@ -5,6 +5,7 @@ export const Mixins = {
   data () {
     return {
       errMessage: 'Please fix the form error(s)!',
+      errorRequired: 'Please fill in the required!',
       imageToAccept: [
         { type: 'image/jpeg' },
         { type: 'image/png' }
@@ -391,6 +392,14 @@ export const Mixins = {
         return string.slice(0, charLimit) + ' ..'
       }
       return string
+    },
+
+    currency (amount) {
+      var formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "PHP"
+      });
+      return formatter.format(amount)
     },
 
     b64toBlob (b64Data, contentType, sliceSize) {

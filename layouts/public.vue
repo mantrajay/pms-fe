@@ -1,6 +1,7 @@
 <template>
 <v-app id="inspire">
   <v-main>
+    <Alert />
     <Navigation :scrolled="scrolled"/>
     <v-container
       class="content"

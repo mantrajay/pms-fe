@@ -26,16 +26,16 @@
                 v-if="hover && $vuetify.breakpoint.lg"
                 class="transition-fast-in-fast-out hover-content"
                 @click="showDetails(item, 'hover')">
-              <div class="hover-label">
-                <div v-if="item.imageCount > 0">
-                  <v-icon size="50" color="#fff">mdi-book-information-variant</v-icon>
-                  <h5>Learn More</h5>
+                <div class="hover-label">
+                  <div v-if="item.imageCount > 0">
+                    <v-icon size="50" color="#fff">mdi-book-information-variant</v-icon>
+                    <h5>Learn More</h5>
+                  </div>
+                  <div v-else>
+                    <v-icon size="50" color="#fff">mdi-block-helper</v-icon>
+                    <h5>No Available Information</h5>
+                  </div>
                 </div>
-                <div v-else>
-                  <v-icon size="50" color="#fff">mdi-block-helper</v-icon>
-                  <h5>No Available Information</h5>
-                </div>
-              </div>
               </div>
             </v-expand-transition>
           </v-img>
@@ -47,26 +47,35 @@
     @close="showPdfModal = false"
     v-if="showPdfModal"
     :fileDetails="fileDetails" />
+  <HomeBanner
+    @close="showBanner = false"
+    v-if="showBanner"/>
 </div>
 </template>
 <script>
 import AniversaryAssets from './aniversary-assets'
+import HomeBanner from './components/home-banner'
 export default {
   name: 'Home',
   components: {
-    AniversaryAssets
+    AniversaryAssets,
+    HomeBanner
   },
   data () {
     return {
       loading: false,
       anniversaries: [],
       showPdfModal: false,
-      fileDetails: null
+      fileDetails: null,
+      showBanner: false
     }
   },
 
   created () {
     this.fetchAllAnniversaries()
+    setTimeout(() => {
+      this.showBanner = true
+    }, 600)
   },
 
   methods: {

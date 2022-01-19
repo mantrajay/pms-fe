@@ -89,7 +89,7 @@
           :to="item.to">
           <v-list-item-action>
             <v-icon
-              :color="$route.name == item.name ? '#1976d2' : '#595959'">
+              :color="$route.name == item.name ? 'rgb(16, 148, 109)' : '#595959'">
               {{ item.icon }}
             </v-icon>
           </v-list-item-action>
@@ -197,6 +197,12 @@ export default {
             name: 'administrators',
             icon: 'mdi-account-supervisor-circle',
             to: '/administrators'
+          },
+          {
+            text: 'Postgraduate Registration',
+            name: 'postgraduate-registration',
+            icon: 'mdi-pencil-circle',
+            to: '/postgraduate-registration'
           },
           {
             text: 'Chapters',
@@ -323,13 +329,13 @@ export default {
 }
 .active {
   background-color: #e0e0e054;
-  border-right: 3px solid #1976d2;
+  border-right: 3px solid rgb(16, 148, 109);
 }
 .active >>> .v-list-item--link:before{
   background-color: #1976d2 !important;
 }
 .label-active {
-  color: #1976d2 !important;
+  color: rgb(16, 148, 109) !important;
 }
 .v-list-item--dense, .v-list--dense .v-list-item {
   height: 42px;

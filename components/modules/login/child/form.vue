@@ -61,6 +61,7 @@
           class="mt-2"
           v-if="errorMessage"
           dense
+          shaped
           text
           type="error"
         >
