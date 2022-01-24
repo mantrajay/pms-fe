@@ -15,7 +15,7 @@
               sm="5"
               md="5">
               <v-text-field
-                v-debounce:300="search"
+                v-model="search"
                 append-icon="mdi-magnify"
                 label="Search"
                 dense
@@ -37,9 +37,11 @@
           <v-data-table
             class="pa-3"
             :headers="headers"
-            :items="chapters.data"
+            :search="search"
+            :items="data"
             :items-per-page="15"
-            :loading="chapters.loading">
+            :loading="loading"
+            @click:row="goToDetails">
             <template v-slot:item.stats="{ item }">
               <v-chip
                 class="white--text"
@@ -104,16 +106,9 @@ export default {
         { text: 'Status.', value: 'stats' },
         // { text: 'Action', value: 'actions'}
       ],
-      chapters: {
-        data: [], 
-        keyword: '', 
-        loading: false
-      },
-      pager: {
-        pageNo: 1,
-        totalPage: 1,
-        limit: 5000
-      },
+      search: '',
+      data: [],
+      loading: false,
       confirm: {
         msg: '',
         show: false,
@@ -129,39 +124,24 @@ export default {
   },
 
   methods: {
-    search (search) {
-      this.chapters.keyword = search
-      this.fetchRegistration(1)
+    goToDetails(args) {
+      this.$router.push(`/postgraduate-registration/details/${args.id}`)
     },
 
-    searchParams (pageNo) {
-      return this.formParams({
-        keyword: this.chapters.keyword,
-        currentPage: pageNo,
-        limit: this.pager.limit
-      })
-    },
-
-    async fetchRegistration (pageNo) {
-      this.pager.pageNo = pageNo || this.pager.pageNo
-      this.chapters.loading = true
+    async fetchRegistration () {
       try {
-        let response = await this.API_POST({
-          url: '/Registration',
-          data: this.searchParams(this.pager.pageNo)
-        })
-        this.chapters.data = []
-        this.chapters.data = response.data.map(item => {
+        this.loading = true
+        let response = await this.API_POST({ url: '/Registration' })
+        this.data = response.data.map(item => {
           return {
             name: `${item.lastName}, ${item.firstName} ${item.middleName}`,
-            stats: !parseInt(item.status) ? 'In-progress' : 'Registered',
+            stats: !parseInt(item.status) ? 'For Review' : 'Registered',
             ...item
           }
         })
-        this.$emit('event')
       } catch (error) {
         this.errorHandle(error)
-      } finally {this.chapters.loading = false }
+      } finally {this.loading = false }
     }
   }
 }

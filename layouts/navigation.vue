@@ -199,12 +199,6 @@ export default {
             to: '/administrators'
           },
           {
-            text: 'Postgraduate Registration',
-            name: 'postgraduate-registration',
-            icon: 'mdi-pencil-circle',
-            to: '/postgraduate-registration'
-          },
-          {
             text: 'Chapters',
             name: 'chapters',
             icon: 'mdi-map-marker-radius',
@@ -215,7 +209,13 @@ export default {
             name: 'memberships',
             icon: 'mdi-badge-account-outline',
             to: '/memberships',
-          }
+          },
+          {
+            text: 'Postgraduate Registration',
+            name: 'postgraduate-registration',
+            icon: 'mdi-pencil-circle',
+            to: '/postgraduate-registration'
+          },
         ]
         if (this.GET_AUTH.userId == 257) {
           navList.push({

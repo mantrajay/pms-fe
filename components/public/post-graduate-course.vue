@@ -97,6 +97,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 class="mt-n3"
+                readonly
                 v-model="form.expiryDate.value"
                 :class="{'text-input': form.expiryDate.isEmpty}"
                 @blur="validationKey(form.expiryDate,  'Expiry Date')"
@@ -143,6 +144,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 class="mt-n3"
+                readonly
                 v-model="form.dateOfBirth.value"
                 @blur="validationKey(form.dateOfBirth,  'Expiry Date')"
                 :class="{'text-input': form.dateOfBirth.isEmpty}"
@@ -494,19 +496,19 @@ export default {
       expireDate: false,
       birthDate: false,
       form: {
-        firstName: this.iRules('Juanito', true),
-        middleName: this.iRules('Ballacer', true),
-        lastName: this.iRules('Ocumen', true),
-        pmaNo: this.iRules('283923', false),
-        prcNo: this.iRules('82839233', true),
-        dateOfBirth: this.iRules('1984-01-19', true),
-        expiryDate: this.iRules('2022-01-19', true),
-        cpNo: this.iRules('82839233', true),
-        telNo: this.iRules('82839233', false),
+        firstName: this.iRules('asas', true),
+        middleName: this.iRules('asas', true),
+        lastName: this.iRules('asas', true),
+        pmaNo: this.iRules('asas', false),
+        prcNo: this.iRules('3434', true),
+        dateOfBirth: this.iRules('2022-01-26', true),
+        expiryDate: this.iRules('2022-01-26', true),
+        cpNo: this.iRules('2323', true),
+        telNo: this.iRules('2323', false),
         email: this.iRules('jayocumen@gmail.com', true),
-        address: this.iRules('Urdaneta', true),
-        clinicAddress: this.iRules('San Vicente, Urdaneta', false),
-        affiliation: this.iRules('Sacred Heart', false),
+        address: this.iRules('asdsad', true),
+        clinicAddress: this.iRules('asdsad', false),
+        affiliation: this.iRules('asdasd', false),
         pricing: this.iRules('', true),
         modeOfPayment: this.iRules('cash', true),
         chapterId: this.iRules('9', false),
@@ -612,7 +614,9 @@ export default {
         this.resetForm()
         this.$router.push(`/public/congrats/${response.response.code}`)
       })
-      .catch(error => { this.SET_ALERT_ERROR(error.response) })
+      .catch(error => { 
+        this.SET_ALERT_ERROR(error.response)
+       })
       .finally(() => {
         this.confirm.show = false
         this.confirm.loading = false

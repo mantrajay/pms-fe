@@ -20,7 +20,7 @@
         </v-card-text>
         <v-card-text class="pl-10 pr-10 pb-10">
           <h3>Registration Code: {{ $route.params.id }}</h3>
-          <div class="mt-2">Thank you very much for registering 4TH PANGASINAN MEDICAL SOCIETY POSTGRADUATE COURSE 2022.</div>
+          <div class="mt-2">Thank you very much for registering in 4TH PANGASINAN MEDICAL SOCIETY POSTGRADUATE COURSE 2022.</div>
           <div class="mt-2">We have sent you an email for this transaction.</div>
         </v-card-text>
       </div>
