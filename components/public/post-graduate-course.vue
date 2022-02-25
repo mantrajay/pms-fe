@@ -363,13 +363,14 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row :class="{'input-file-error mt-5': form.modeOfPayment.isEmpty}">
           <v-col
             cols="12"
             sm="12"
             md="12">
             <h3>Mode of Payment</h3>
             <v-radio-group
+              @change="validationKey(form.modeOfPayment,  'Mode of Payment')"
               v-model="form.modeOfPayment.value"
               column>
               <v-row>
@@ -496,22 +497,22 @@ export default {
       expireDate: false,
       birthDate: false,
       form: {
-        firstName: this.iRules('asas', true),
-        middleName: this.iRules('asas', true),
-        lastName: this.iRules('asas', true),
-        pmaNo: this.iRules('asas', false),
-        prcNo: this.iRules('3434', true),
-        dateOfBirth: this.iRules('2022-01-26', true),
-        expiryDate: this.iRules('2022-01-26', true),
-        cpNo: this.iRules('2323', true),
-        telNo: this.iRules('2323', false),
-        email: this.iRules('jayocumen@gmail.com', true),
-        address: this.iRules('asdsad', true),
-        clinicAddress: this.iRules('asdsad', false),
-        affiliation: this.iRules('asdasd', false),
+        firstName: this.iRules('', true),
+        middleName: this.iRules('', true),
+        lastName: this.iRules('', true),
+        pmaNo: this.iRules('', false),
+        prcNo: this.iRules('', true),
+        dateOfBirth: this.iRules('', true),
+        expiryDate: this.iRules('', true),
+        cpNo: this.iRules('', true),
+        telNo: this.iRules('', false),
+        email: this.iRules('', true),
+        address: this.iRules('', true),
+        clinicAddress: this.iRules('', false),
+        affiliation: this.iRules('', false),
         pricing: this.iRules('', true),
-        modeOfPayment: this.iRules('cash', true),
-        chapterId: this.iRules('9', false),
+        modeOfPayment: this.iRules('', true),
+        chapterId: this.iRules('', false),
         occupation: this.iRules('Others', true),
         occupationOthers: this.iRules('', true),
       },

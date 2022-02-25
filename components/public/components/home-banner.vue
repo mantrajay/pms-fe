@@ -3,7 +3,11 @@
     transition="dialog-bottom-transition"
     v-model="dialog"
     persistent
-    :max-width="$vuetify.breakpoint.lg ? '25%' : '35%'">
+    :max-width="$vuetify.breakpoint.lg
+      ? '25%'
+      : $vuetify.breakpoint.md
+       ? '50%'
+       : '100%'">
     <v-card :class="!$vuetify.breakpoint.lg ? 'card-banner-mobile' : 'card-banner'">
       <v-card-title>
         <v-row>
