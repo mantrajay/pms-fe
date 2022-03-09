@@ -7,6 +7,7 @@ export default () => ({
     roleId: '',
     roleName: '',
     accountName: '',
+    chapterId: '',
     chapter: '',
     membership: '',
     photo: '',

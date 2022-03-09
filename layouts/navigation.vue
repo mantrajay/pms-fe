@@ -160,32 +160,40 @@ export default {
     }),
 
     navItems () {
+      let navList = [
+        {
+          text: 'Dashboard',
+          name: 'dashboard',
+          icon: 'mdi-gauge',
+          to: '/dashboard'
+        },
+        {
+          text: 'Election',
+          name: 'election',
+          icon: 'mdi-account-cog-outline',
+          to: '/election'
+        },
+        {
+          text: 'Arrears',
+          name: 'annual',
+          icon: 'mdi-cards',  
+          to: '/annual'
+        },
+        {
+          text: 'Activities',
+          name: 'activities',
+          icon: 'mdi-book-marker-outline',
+          to: '/activities'
+        },
+        {
+          text: 'Other Fees',
+          name: 'other-fees',
+          icon: 'mdi-account-switch',
+          to: '/other-fees'
+        }
+      ]
       if (this.GET_AUTH.roleId == 1) {
-        let navList = [
-          {
-            text: 'Dashboard',
-            name: 'dashboard',
-            icon: 'mdi-gauge',
-            to: '/dashboard'
-          },
-          {
-            text: 'Arrears',
-            name: 'annual',
-            icon: 'mdi-cards',
-            to: '/annual'
-          },
-          {
-            text: 'Activities',
-            name: 'activities',
-            icon: 'mdi-book-marker-outline',
-            to: '/activities'
-          },
-          {
-            text: 'Other Fees',
-            name: 'other-fees',
-            icon: 'mdi-account-switch',
-            to: '/other-fees'
-          },
+        navList.push(
           {
             text: 'Members',
             name: 'members',
@@ -215,8 +223,8 @@ export default {
             name: 'postgraduate-registration',
             icon: 'mdi-pencil-circle',
             to: '/postgraduate-registration'
-          },
-        ]
+          }
+        )
         if (this.GET_AUTH.userId == 257) {
           navList.push({
             text: 'Logs',
@@ -231,35 +239,8 @@ export default {
             to: '/reset-password',
           })
         }
-        return navList
-      } else {
-        return [
-          {
-            text: 'Dashboard',
-            name: 'dashboard',
-            icon: 'mdi-gauge',
-            to: '/dashboard'
-          },
-          {
-            text: 'Arrears',
-            name: 'annual',
-            icon: 'mdi-cards',  
-            to: '/annual'
-          },
-          {
-            text: 'Activities',
-            name: 'activities',
-            icon: 'mdi-book-marker-outline',
-            to: '/activities'
-          },
-          {
-            text: 'Other Fees',
-            name: 'other-fees',
-            icon: 'mdi-account-switch',
-            to: '/other-fees'
-          }
-        ]
       }
+      return navList
     }
   },
 

@@ -79,4 +79,7 @@ table tr td {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(157, 156, 156);
 }
+.dotted {
+  border-top: 2px #7777 dotted !important;
+}
 </style>

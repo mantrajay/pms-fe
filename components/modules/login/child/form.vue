@@ -53,6 +53,7 @@
           color="#10946d"
           class="white--text"
           block
+          @keydown.enter="login"
           @click="login"
           :loading="loading">
           Sign In
@@ -134,6 +135,7 @@ export default {
           roleId: data.roleId,
           roleName: data.roleName,
           accountName: data.accountName,
+          chapterId: data.chapterId,
           chapter: data.chapterName,
           membership: data.membershipName,
           photo: data.photo

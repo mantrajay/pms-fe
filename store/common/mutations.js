@@ -7,6 +7,7 @@ export default {
     state.auth.roleId = data.roleId || ''
     state.auth.roleName = data.roleName || ''
     state.auth.accountName = data.accountName || ''
+    state.auth.chapterId = data.chapterId || ''
     state.auth.chapter = data.chapter || ''
     state.auth.membership = data.membership || ''
     state.auth.photo = data.photo || ''
