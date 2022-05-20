@@ -73,7 +73,7 @@
                 color="error"
                 small>
                 <v-icon>mdi-eraser</v-icon>
-              </v-btn>            
+              </v-btn>     
               <v-btn
                 v-if="GET_AUTH.roleId == 2"
                 elevation="0"
@@ -96,13 +96,13 @@
                 small
                 class="white--text"
                 :color="
-                 item.status === 'Soon'
+                 item.status === 'soon'
                   ? 'indigo'
-                  : item.status === 'Finished'
+                  : item.status === 'finished'
                    ? 'success'
                    : 'primary'
                 ">
-                {{ item.status }}
+                {{ item.status.toUpperCase() }}
               </v-chip>
             </template>
           </v-data-table>
@@ -116,6 +116,7 @@
   </v-row>
 </template>
 <script>
+import moment from 'moment'
 export default {
   name: 'Election-Candidate-List',
   props: {
@@ -157,6 +158,10 @@ export default {
         { text: 'Action', value: 'actions'}
       ]
       return headerList
+    },
+
+    timer () {
+      return moment().format('LTS')
     }
   },
 

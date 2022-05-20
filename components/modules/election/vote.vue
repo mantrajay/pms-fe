@@ -7,54 +7,39 @@
         <v-row>
           <v-col
             cols="12"
-            sm="6"
-            md="6">
-            <h2 class="mb-n4">Component Society Officers:</h2>
-          </v-col>
-          <v-col
-            cols="6"
-            sm="6"
-            md="6"
-            class="mb-5 text-right"
+            sm="12"
+            md="12"
             v-if="isVoted">
             <p class="success--text">
               <v-icon color="success">mdi-thumb-up</v-icon>
               You have already voted your preferred candidates.
             </p>
           </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            sm="4"
+            md="4">
+            <h2>{{ name }}</h2>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="4"
+            md="4">
+            <h2>{{ date }}</h2>
+          </v-col>
           <v-col
             cols="12"
             sm="12"
-            md="12"
-            class="text-right"
-            v-else>
-            <v-btn
-              elevation="0"
-              @click="confirmSubmit"
-              color="primary">
-              <v-icon>mdi-thumb-up-outline</v-icon>
-              Submit
-            </v-btn>   
-          </v-col>
-        </v-row>
-        <v-row class="mt-n11">
-          <v-col
-            cols="12"
-            sm="4"
-            md="4">
-            <h3>{{ name }}</h3>
-          </v-col>
-          <v-col
-            cols="12"
-            sm="4"
-            md="4">
-            <h3>{{ date }}</h3>
+            md="12">
+            <h2 class="mb-n1">Component Society Officers:</h2>
           </v-col>
         </v-row>
         <v-row
           v-for="(item, index) in form"
           :key="index"
-          :class="{'dotted': index > 0}">
+          class="dotted">
           <v-col
             cols="12"
             sm="12"
@@ -89,6 +74,22 @@
                 :label="`${candidate.name}`"
                 :value="candidate.id"/>
             </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            sm="3"
+            md="3"
+            v-if="!isVoted">
+            <v-btn
+              block
+              elevation="0"
+              @click="confirmSubmit"
+              color="primary">
+              <v-icon>mdi-thumb-up-outline</v-icon>
+               Submit
+            </v-btn>   
           </v-col>
         </v-row>
       </v-container>

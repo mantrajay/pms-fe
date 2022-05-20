@@ -31,26 +31,104 @@
        <v-container
         class="dotted mt-4"
         fluid>
+        <v-row class="mt-5">
+          <v-col
+            cols="12"
+            md="3"
+            sm="3"
+            class="mt-n4">
+            <v-menu
+              v-model="startDate"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                type="date"
+                v-model="filter.start"
+                outlined
+                dense
+                label="Select Start Date"
+                v-bind="attrs"
+                v-on="on" />
+            </template>
+              <v-date-picker
+                v-model="filter.start"
+                @input="startDate = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col
+            cols="12"
+            md="3"
+            sm="3"
+            class="mt-n4">
+            <v-menu
+              v-model="endDate"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                type="date"
+                v-model="filter.end"
+                outlined
+                dense
+                label="Select End Date"
+                v-bind="attrs"
+                v-on="on" />
+            </template>
+              <v-date-picker
+                v-model="filter.end"
+                @input="endDate = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+            sm="6"
+            class="mt-n4">
+            <v-btn
+              color="primary"
+              elevation="0"
+              @click="fetchMemberActivities('/filter')">
+              Filter
+            </v-btn>
+            <v-btn
+              color="error"
+              elevation="0"
+              @click="clearFilter">
+              Clear
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col
             cols="12"
             md="12"
             sm="12"
-            class="mt-3">
+            class="mt-n5">
             <h2>Total Points:
               <span class="points">{{ totalPoints }}</span>
             </h2>
           </v-col>
+        </v-row>
+        <v-row class="mt-n5">
           <v-col
             cols="12"
             md="12"
-            sm="12"
-            class="mt-n2">
+            sm="12">
             <v-data-table
               class="mt-5"
               :headers="headers"
               :items="activities"
               :items-per-page="15"
+              loading-text="Loading... Please wait"
               :loading="loading">
             </v-data-table>
           </v-col>
@@ -75,6 +153,12 @@ export default {
       dialog: true,
       loading: false,
       activities: [],
+      startDate: false,
+      endDate: false,
+      filter: {
+        start: '',
+        end:''
+      },
       headers: [
         { text: 'Code', value: 'code' },
         { text: 'Name', value: 'name' },
@@ -100,14 +184,27 @@ export default {
   },
 
   methods: {
+    clearFilter() {
+      this.fetchMemberActivities()
+      this.filter.start = ''
+      this.filter.end = ''
+    },
 
-    fetchMemberActivities () {
+    fetchMemberActivities (params = '') {
       this.loading = true
-      this.API_POST({ url: 'Members/fetchMemberActivities/' + this.memberId})
-        .then(response => {
-          this.activities = response.data
-        }).catch(error => {  })
-        .finally(this.loading = false)
+      this.API_POST({
+        url: `Members/fetchMemberActivities/${this.memberId}${params}`,
+        data: this.formParams({
+          start: this.filter.start,
+          end: this.filter.end
+        })
+      })
+      .then(response => {
+        this.activities = response.data
+      }).catch(error => {  })
+      .finally(() => {
+        this.loading = false
+      })
     }
   }
 }

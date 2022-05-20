@@ -2,11 +2,11 @@
   <v-card elevation="0">
     <v-container
       fluid>
-      <v-row class="pa-3 mt-2">
+      <v-row class="pa-3 mt-1">
         <v-col
           cols="12"
-          sm="4"
-          md="4">
+          sm="3"
+          md="3">
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -17,7 +17,78 @@
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col
+          <v-col
+            cols="12"
+            md="3"
+            sm="3">
+            <v-menu
+              v-model="startDate"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                type="date"
+                v-model="filter.start"
+                outlined
+                dense
+                label="Select Start Date"
+                v-bind="attrs"
+                v-on="on" />
+            </template>
+              <v-date-picker
+                v-model="filter.start"
+                @input="startDate = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col
+            cols="12"
+            md="3"
+            sm="3">
+            <v-menu
+              v-model="endDate"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                type="date"
+                v-model="filter.end"
+                outlined
+                dense
+                label="Select End Date"
+                v-bind="attrs"
+                v-on="on" />
+            </template>
+              <v-date-picker
+                v-model="filter.end"
+                @input="endDate = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col
+            cols="12"
+            md="3"
+            sm="3">
+            <v-btn
+              color="primary"
+              elevation="0"
+              @click="fetchMemberActivities('/filter')">
+              Filter
+            </v-btn>
+            <v-btn
+              color="error"
+              elevation="0"
+              @click="reset">
+              Clear
+            </v-btn>
+          </v-col>
+        <!-- <v-col
           cols="12"
           sm="3"
           md="3">
@@ -31,8 +102,8 @@
             outlined
             label="Filter by year"
           ></v-select>
-        </v-col>
-        <v-col
+        </v-col> -->
+        <!-- <v-col
           cols="12"
           sm="1"
           md="1">
@@ -41,12 +112,11 @@
             color="primary">
             Reset
           </v-btn>
-        </v-col>
+        </v-col> -->
         <v-col
           cols="12"
           sm="4"
-          md="4"
-          class="text-right">
+          md="4">
           <h2>Total Points:
             <span class="points">{{ totalPoints }}</span>
           </h2>
@@ -85,6 +155,12 @@ export default {
       activities: [],
       search: '',
       yearListStartArrear: [],
+      startDate: false,
+      endDate: false,
+      filter: {
+        start: '',
+        end:''
+      },
       headers: [
         { text: 'Code', value: 'code' },
         { text: 'Name', value: 'name' },
@@ -114,21 +190,37 @@ export default {
     reset () {
       this.year = ''
       this.search = ''
+      this.filter.start = ''
+      this.filter.end = ''
       this.fetchMemberActivities()
     },
   
-    fetchMemberActivities () {
-      let formData = new FormData()
-      formData.append('year', this.year)
+    fetchMemberActivities (params = '') {
+      // let formData = new FormData()
+      // formData.append('year', this.year)
       this.loading = true
+      this.activities = []
       this.API_POST({
-        url: 'Members/fetchMemberActivities',
-        data: formData
+        url: `Members/fetchMemberActivities/${this.memberId}${params}`,
+        data: this.formParams({
+          start: this.filter.start,
+          end: this.filter.end
+        })
       })
       .then(response => {
-        this.activities = response.data
+        this.activities = response.data.map(item => {
+            return {
+              code: item.code,
+              name: item.name,
+              points: item.points,
+              start_time: this.dateFormat(item.start_time),
+              end_time: this.dateFormat(item.end_time),
+            }
+        })
       }).catch(error => {  })
-      .finally(this.loading = false)
+      .finally(() => {
+        this.loading = false
+      })
     }
   }
 }

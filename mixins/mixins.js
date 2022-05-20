@@ -342,7 +342,7 @@ export const Mixins = {
       return true
     },
 
-    dateFormat (date, format = 'MMM D, YYYY HH:mm:ss A') {
+    dateFormat (date, format = 'MMM D, YYYY h:mm A') {
       return moment(date).format(format)
     },
 
