@@ -31,10 +31,10 @@
        <v-row>
         <img
           class="banner-img"
-          :src="require(`@/assets/banner.jpg`)" />
+          :src="image" />
       </v-row>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions v-if="showBtn">
       <v-btn
         color="#10946d"
         class="white--text"
@@ -53,7 +53,10 @@ export default {
   name: 'Home-Banner',
   data() {
     return {
-      dialog: true
+      dialog: true,
+      // image: require('@/assets/banner.jpg')
+      image: require('@/assets/banner-2.jpg'),
+      showBtn: false
     }
   }
 }

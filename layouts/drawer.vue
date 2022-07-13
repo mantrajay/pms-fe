@@ -74,9 +74,9 @@ export default {
           to: '/public/past-presidents'
         },
         {
-          label: 'Board of Resolutions',
+          label: 'Board Resolutions',
           name: 'public-board-of-resolution',
-          title: 'Board of Resolutions',
+          title: 'Board Resolutions',
           to: '/public/board-of-resolution'
         },
         {
