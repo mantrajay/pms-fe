@@ -106,7 +106,7 @@
                   <span
                     class="success--text"
                     v-if="counterColor(item.nominees).id === selected.id && selected.voteCount">
-                    <b>(Winner)</b>
+                    <b v-if="status === 'finished'">(Winner)</b>
                   </span>
                 </div>
               </v-col>

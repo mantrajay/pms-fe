@@ -73,21 +73,27 @@
                 color="error"
                 small>
                 <v-icon>mdi-eraser</v-icon>
-              </v-btn>     
+              </v-btn>
               <v-btn
                 v-if="GET_AUTH.roleId == 2"
                 elevation="0"
                 @click.stop
+                class="white--text"
+                :disabled="item.status === 'soon'"
                 @click="voteNow(item)"
-                :color="item.doneVote ? 'success' : 'primary'"
+                :color="!item.doneVote && item.status === 'soon'
+                  ? 'indigo'
+                    : !item.doneVote && item.status === 'ongoing'
+                      ? 'primary'
+                      : 'success'"
                 small>
-                <div v-if="!item.doneVote">
+                <div v-if="!item.doneVote && item.status === 'soon' || !item.doneVote && item.status === 'ongoing'">
                   <v-icon>mdi-account-multiple-plus-outline</v-icon>
                   Vote Now
                 </div>
-                <div v-else>
+                <div v-if="item.status === 'finished' && item.doneVote || item.status === 'ongoing' && item.doneVote">
                   <v-icon>mdi-format-list-bulleted-square</v-icon>
-                  Vote Details
+                  Details
                 </div>
               </v-btn>            
             </template>
@@ -95,12 +101,13 @@
               <v-chip
                 small
                 class="white--text"
-                :color="
-                 item.status === 'soon'
+                :color="!item.doneVote && item.status === 'soon'
                   ? 'indigo'
-                  : item.status === 'finished'
-                   ? 'success'
-                   : 'primary'
+                    : !item.doneVote && item.status === 'ongoing'
+                      ? 'primary'
+                      : item.doneVote && item.status === 'ongoing'
+                       ? 'primary'
+                       : 'success'
                 ">
                 {{ item.status.toUpperCase() }}
               </v-chip>
@@ -212,7 +219,7 @@ export default {
             year: this.dateFormat(item.date, 'YYYY'),
             date: this.dateFormat(item.date, 'll'),
             name: item.name,
-            status: item.status,
+            status: item.status.toLowerCase(),
             doneVote: item.doneVote,
           }
         })

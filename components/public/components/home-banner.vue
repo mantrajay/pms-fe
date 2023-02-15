@@ -4,9 +4,9 @@
     v-model="dialog"
     persistent
     :max-width="$vuetify.breakpoint.lg
-      ? '25%'
+      ? '100%'
       : $vuetify.breakpoint.md
-       ? '50%'
+       ? '100%'
        : '100%'">
     <v-card :class="!$vuetify.breakpoint.lg ? 'card-banner-mobile' : 'card-banner'">
       <v-card-title>
@@ -29,9 +29,30 @@
       </v-card-title>
       <v-card-text class="mt-n14 text-center">
        <v-row>
-        <img
-          class="banner-img"
-          :src="image" />
+          <v-col
+            cols="12"
+            md="4"
+            sm="12">
+            <img
+              class="banner-img"
+              :src="image1" />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            sm="12">
+            <img
+              class="banner-img"
+              :src="image2" />
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            sm="12">
+            <img
+              class="banner-img"
+              :src="image3" />
+          </v-col>
       </v-row>
     </v-card-text>
     <v-card-actions v-if="showBtn">
@@ -55,7 +76,9 @@ export default {
     return {
       dialog: true,
       // image: require('@/assets/banner.jpg')
-      image: require('@/assets/banner-2.jpg'),
+      image1: require('@/assets/banners/banner1.png'),
+      image2: require('@/assets/banners/banner2.png'),
+      image3: require('@/assets/banners/banner3.png'),
       showBtn: false
     }
   }
